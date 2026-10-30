@@ -68,7 +68,6 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 - [ ] ⚠️ Tokens nunca expostos em logs, templates ou URLs
 - [ ] ⚠️ Dados sensíveis não persistidos em localStorage sem necessidade
 - [ ] ⚠️ Validação de input antes de enviar ao backend
-- [ ] Requisições enviam credenciais (`credentials: 'include'`) para o cookie de sessão
 - [ ] 💡 Sanitização de dados exibidos em `v-html` (se usado)
 
 ---

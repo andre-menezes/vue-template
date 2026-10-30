@@ -14,12 +14,12 @@ Voltar para o índice: [README.md](README.md)
 Consolidado na `develop` (ver `CHANGELOG.md`):
 
 - Telas de documentação: Home (hub), Arquitetura, Onboarding, Componentes & UI,
-  Convenções, Decisões (ADRs) e Exemplo autenticado.
-- Autenticação OAuth/SSC centralizada no router, com mock por `VITE_AUTH_MOCK`
-  e sessão em cookie `HttpOnly` (ADR-0014); tela de erro de autenticação.
+  Convenções e Decisões (ADRs). Todas as páginas são públicas: a autenticação
+  corporativa foi removida (ADR-0021).
+- Hospedagem e CI no GitHub (GitHub Actions — ADR-0022).
 - Camada HTTP (factory `createApiInstance` + ofetch), erros no padrão RFC 9457,
   download de arquivos binários (service + helper + utils).
-- Qualidade: ESLint/Prettier, Husky, Vitest, Playwright, CI (GitHub Actions), ADRs 0001–0020.
+- Qualidade: ESLint/Prettier, Husky, Vitest, Playwright, CI (GitHub Actions), ADRs 0001–0022.
 - i18n **configurado e migrado** (`vue-i18n`, locale único `pt-BR`): todo texto
   de UI consolidado em `pt-BR.json` (ver `I18N-MIGRATION-PLAN.md`).
 
@@ -68,12 +68,13 @@ o "exemplo canônico" citado no Onboarding.
 
 Objetivo: padronizar feedback ao usuário e endurecer o tratamento de erros.
 
-| #   | Item                               | Entregável                                                          | Camadas                               | Risco |
-| --- | ---------------------------------- | ------------------------------------------------------------------- | ------------------------------------- | ----- |
-| 3.1 | **Notificações (snackbar/toast)**  | Store + composable `useNotify` + render global                      | `shared/stores`, `composables`, `app` | Baixo |
-| 3.2 | **Tratamento global de erro HTTP** | Interceptor/handler central mapeando RFC 9457 → notificação         | `shared/api`, `helpers`               | Médio |
-| 3.3 | **Formulários + validação**        | Padrão de form com validação (avaliar lib em ADR) e exemplo no CRUD | `shared/ui`, `composables`            | Médio |
-| 3.4 | **Acessibilidade (a11y)**          | Auditoria das telas (foco, labels, contraste) + ajustes             | transversal                           | Baixo |
+| #   | Item                               | Entregável                                                                                            | Camadas                               | Risco |
+| --- | ---------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------- | ----- |
+| 3.1 | **Notificações (snackbar/toast)**  | Store + composable `useNotify` + render global                                                        | `shared/stores`, `composables`, `app` | Baixo |
+| 3.2 | **Tratamento global de erro HTTP** | Interceptor/handler central mapeando RFC 9457 → notificação                                           | `shared/api`, `helpers`               | Médio |
+| 3.3 | **Formulários + validação**        | Padrão de form com validação (avaliar lib em ADR) e exemplo no CRUD                                   | `shared/ui`, `composables`            | Médio |
+| 3.4 | **Acessibilidade (a11y)**          | Auditoria das telas (foco, labels, contraste) + ajustes                                               | transversal                           | Baixo |
+| 3.5 | **Login próprio**                  | Tela de login, guard de rotas e sessão integrados ao backend de autenticação próprio (quando existir) | `app`, `shared`, `core`               | Alto  |
 
 ## Fase 4 — Visão de longo prazo (multi-framework)
 
@@ -103,9 +104,10 @@ pelo módulo CRUD de exemplo (2.1) que vira o "exemplo canônico" do Onboarding.
 - 2.3 Upload (se exigir lib de multipart específica).
 - 3.1/3.2 Padrão de notificação + handler global de erro.
 - 3.3 Biblioteca de formulários/validação.
+- 3.5 Fluxo de autenticação do login próprio.
 - 4.x Toda a estratégia multi-framework.
 
 ## Fora de escopo (por ora)
 
 - SSR/SSG (o template é SPA por decisão).
-- Gerência de permissões finas por recurso além do que o SSC já fornece.
+- Gerência de permissões finas por recurso (depende do login próprio).

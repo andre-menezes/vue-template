@@ -60,7 +60,7 @@ O escopo identifica a camada ou módulo afetado. Use o nome da pasta/contexto:
 | `config`   | Variáveis de ambiente, constantes           |
 | `router`   | Rotas, guards, navegação                    |
 | `i18n`     | Traduções, locale                           |
-| `core`     | Camada core (config, cliente OAuth)         |
+| `core`     | Camada core (config, constantes)            |
 | `home`     | Módulo Home                                 |
 | `<módulo>` | Nome da pasta do módulo (ex.: `decisions`)  |
 | `types`    | Contratos TypeScript                        |

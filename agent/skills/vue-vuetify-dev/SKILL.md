@@ -16,10 +16,10 @@ via `createApiInstance`, Vue Router com auto-discovery, aliases de importação
 
 ```text
 src/
-├── app/       → bootstrap, providers, guard (nunca importa modules)
+├── app/       → bootstrap, providers, rotas base (nunca importa modules)
 ├── modules/   → features por domínio (independentes entre si)
 ├── shared/    → infraestrutura transversal (nunca importa modules/app)
-├── core/      → config/env e cliente OAuth (importa só types)
+├── core/      → config/env e constantes (importa só types)
 ├── types/     → contratos centralizados (sem imports de camadas)
 └── test/      → testes (pode importar todas as camadas)
 ```
@@ -126,7 +126,6 @@ const routes: RouteRecordRaw[] = [
     path: '/customers',
     name: 'Customers',
     component: () => import('./views/CustomersView.vue'),
-    meta: { requiresAuth: true },
   },
 ];
 
@@ -135,24 +134,23 @@ export default routes;
 
 - Tipagem explícita `RouteRecordRaw[]`.
 - Lazy loading com `import()`.
-- Meta fields: `requiresAuth`, `layout`.
+- Meta fields: `layout` (todas as rotas são públicas — ADR-0021).
 
 ### Composable
 
 ```ts
 import { computed } from 'vue';
-import { useUserStore } from '@shared/stores/user.store';
-import { endSession } from '@shared/helpers/session';
+import { useAppStore } from '@shared/stores/app.store';
 
-export function useSession() {
-  const userStore = useUserStore();
-  const isLoggedIn = computed(() => userStore.isAuthorized);
+export function useTheme() {
+  const appStore = useAppStore();
+  const isDark = computed(() => appStore.theme === 'dark');
 
-  function logout(): Promise<void> {
-    return endSession();
+  function toggleTheme(): void {
+    appStore.switchTheme();
   }
 
-  return { isLoggedIn, logout };
+  return { isDark, toggleTheme };
 }
 ```
 

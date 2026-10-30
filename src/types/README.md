@@ -15,14 +15,12 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 Cada subpasta representa um contexto. Toda tipagem exportada mora aqui e é
 consumida via alias `@typings/<contexto>`.
 
-- `auth`: contratos de autenticação e OAuth
-- `user`: payloads de usuário vindos do backend
 - `store`: modelos usados pelas stores e pela camada de UI
 - `services`: contratos genéricos da camada HTTP (query, body, options)
 - `components`: contratos de props de componentes compartilhados
 - `home`: contratos da feature Home
 - `theme`: contratos de tema do Vuetify
-- `router`: augmentation de `RouteMeta` (`requiresAuth`, `layout`)
+- `router`: augmentation de `RouteMeta` (`layout`)
 - `docs`: props dos componentes de documentação (`CodeBlock`, `FlowSteps`...)
 - `http`: corpo de erro RFC 9457 (`ProblemDetails`)
 

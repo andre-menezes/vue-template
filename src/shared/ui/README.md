@@ -26,7 +26,7 @@ A seleção de layout é dinâmica, baseada em `route.meta.layout`:
 | Layout          | Quando usar                                     |
 | --------------- | ----------------------------------------------- |
 | `DefaultLayout` | Páginas com header + navegação lateral (padrão) |
-| `EmptyLayout`   | Páginas sem chrome (login, callback, erros)     |
+| `EmptyLayout`   | Páginas sem chrome (ex.: telas de erro)         |
 
 Para usar `EmptyLayout`, defina `meta: { layout: 'empty' }` na rota.
 

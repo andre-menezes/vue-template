@@ -9,10 +9,10 @@ Guia central: [../docs/ARCHITECTURE-GUIDE.md](../docs/ARCHITECTURE-GUIDE.md)
 
 | Pasta      | Responsabilidade                              |
 | ---------- | --------------------------------------------- |
-| `app/`     | Inicialização, providers, guard e rotas base  |
+| `app/`     | Inicialização, providers e rotas base         |
 | `modules/` | Funcionalidades por domínio (features)        |
 | `shared/`  | Recursos reutilizáveis entre módulos          |
-| `core/`    | Base sem UI: config/env e cliente OAuth       |
+| `core/`    | Base sem UI: config/env e constantes          |
 | `test/`    | Testes automatizados (unitários e integração) |
 | `types/`   | Contratos TypeScript centralizados            |
 
