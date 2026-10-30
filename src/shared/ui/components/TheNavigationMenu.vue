@@ -12,19 +12,6 @@
         <template #prepend><v-icon :icon="item.icon" /></template>
         <v-list-item-title class="font-weight-medium">
           {{ $t(item.titleKey) }}
-
-          <v-tooltip location="top" :text="$t('nav.blockedAccess')" color="surface" theme="dark">
-            <template #activator="{ props: tooltipProps }">
-              <v-chip
-                v-if="!isAuthorized && item.requiresAuth"
-                v-bind="tooltipProps"
-                size="small"
-                color="primary"
-              >
-                <v-icon icon="lock-fill" size="x-small"></v-icon>
-              </v-chip>
-            </template>
-          </v-tooltip>
         </v-list-item-title>
       </v-list-item>
     </v-list>
@@ -46,7 +33,7 @@ import { useDisplay } from 'vuetify';
 import { version } from '@root/package.json';
 import type { MenuItem } from '@typings/components';
 
-const props = defineProps<{ modelValue: boolean; isAuthorized: boolean }>();
+const props = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>();
 const drawer = computed({
   get: () => props.modelValue,
@@ -60,27 +47,19 @@ const rail = computed(() => !drawer.value && mdAndUp.value);
 // Itens de navegação. Cada tela de documentação é adicionada aqui conforme é
 // implementada (por entrega), evitando links para rotas ainda inexistentes.
 const menuItems: MenuItem[] = [
-  { titleKey: 'nav.home', route: '/', icon: 'dashboard', requiresAuth: false },
+  { titleKey: 'nav.home', route: '/', icon: 'dashboard' },
   {
     titleKey: 'nav.architecture',
     route: '/arquitetura',
     icon: 'account_tree',
-    requiresAuth: false,
   },
   {
     titleKey: 'nav.onboarding',
     route: '/onboarding',
     icon: 'rocket_launch-fill',
-    requiresAuth: false,
   },
-  { titleKey: 'nav.components', route: '/componentes', icon: 'palette', requiresAuth: false },
-  { titleKey: 'nav.conventions', route: '/convencoes', icon: 'checklist', requiresAuth: false },
-  { titleKey: 'nav.decisions', route: '/decisoes', icon: 'gavel', requiresAuth: false },
-  {
-    titleKey: 'nav.protectedExample',
-    route: '/exemplo-protegido',
-    icon: 'lock',
-    requiresAuth: true,
-  },
+  { titleKey: 'nav.components', route: '/componentes', icon: 'palette' },
+  { titleKey: 'nav.conventions', route: '/convencoes', icon: 'checklist' },
+  { titleKey: 'nav.decisions', route: '/decisoes', icon: 'gavel' },
 ];
 </script>

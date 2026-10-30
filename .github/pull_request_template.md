@@ -1,6 +1,6 @@
 ## Descrição
 
-<!-- Resuma o que este MR faz e por quê. Seja objetivo. -->
+<!-- Resuma o que este PR faz e por quê. Seja objetivo. -->
 
 ## Tipo de mudança
 
@@ -31,7 +31,7 @@ Closes #
 
 <!-- Referência: docs/CODE-REVIEW-CHECKLIST.md -->
 
-- [ ] O MR aponta para a branch `develop`.
+- [ ] O PR aponta para a branch `develop`.
 - [ ] Código na camada correta; regras de dependência respeitadas.
 - [ ] Sem `any` em contratos de domínio; props/emits tipados.
 - [ ] Testes cobrindo as regras de negócio novas (ou regressão do bug).
@@ -44,5 +44,3 @@ Closes #
 ## Observações
 
 <!-- Pendências, decisões técnicas, itens fora de escopo, etc. -->
-
-/assign me

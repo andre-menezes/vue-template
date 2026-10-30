@@ -1,9 +1,6 @@
 {
   "common": {
     "backToHome": "Voltar para o início",
-    "enter": "Entrar",
-    "exit": "Sair",
-    "notInformed": "Não informado",
     "currentVersion": "Versão atual"
   },
   "nav": {
@@ -13,45 +10,17 @@
     "components": "Componentes",
     "conventions": "Convenções",
     "decisions": "Decisões",
-    "protectedExample": "Página protegida",
     "blockedAccess": "Acesso bloqueado"
   },
   "header": {
     "activateLightTheme": "Ativar tema claro",
-    "activateDarkTheme": "Ativar tema escuro",
-    "openUserMenu": "Abrir menu do usuário"
-  },
-  "account": {
-    "defaultUser": "Usuário",
-    "cpf": "CPF",
-    "emailNotInformed": "E-mail não informado",
-    "unitInfo": "Informações da Unidade",
-    "unitCode": "Código da Unidade",
-    "unitName": "Nome",
-    "loggedOutTitle": "Acesso ao template",
-    "loggedOutSubtitle": "Você não está conectado"
+    "activateDarkTheme": "Ativar tema escuro"
   },
   "notFound": {
     "eyebrow": "Erro 404",
     "title": "Página não encontrada",
     "description": "O endereço informado não aponta para uma página disponível.",
     "illustrationCredit": "Web illustrations by Storyset"
-  },
-  "authError": {
-    "eyebrow": "Erro de autenticação",
-    "title": "Não foi possível autenticar",
-    "defaultMessage": "Ocorreu um erro durante a autenticação.",
-    "reasons": {
-      "stateMismatch": "Não foi possível validar o retorno do login. Inicie a autenticação novamente a partir desta aplicação.",
-      "tokenExchangeFailed": "Não foi possível concluir o login no servidor de autenticação."
-    },
-    "hint": "Tente entrar novamente. Se o problema persistir, contate o suporte.",
-    "illustrationAlt": "Ilustração de falha na autenticação",
-    "illustrationCredit": "Worker illustrations by Storyset"
-  },
-  "tokenCallback": {
-    "title": "Autenticando...",
-    "description": "Estamos validando seu acesso. Aguarde alguns segundos."
   },
   "home": {
     "eyebrow": "Documentação viva",
@@ -60,10 +29,22 @@
     "navEyebrow": "Navegação",
     "navTitle": "Explore a documentação",
     "metrics": {
-      "totalDeps": { "label": "Dependências totais", "detail": "pacotes instalados" },
-      "runtime": { "label": "Runtime", "detail": "dependências de produção" },
-      "tooling": { "label": "Ferramentas", "detail": "dependências de desenvolvimento" },
-      "quality": { "label": "Qualidade", "detail": "build e typecheck disponíveis" }
+      "totalDeps": {
+        "label": "Dependências totais",
+        "detail": "pacotes instalados"
+      },
+      "runtime": {
+        "label": "Runtime",
+        "detail": "dependências de produção"
+      },
+      "tooling": {
+        "label": "Ferramentas",
+        "detail": "dependências de desenvolvimento"
+      },
+      "quality": {
+        "label": "Qualidade",
+        "detail": "build e typecheck disponíveis"
+      }
     },
     "cards": {
       "architecture": {
@@ -85,10 +66,6 @@
       "decisions": {
         "title": "Decisões (ADRs)",
         "description": "Registro das decisões arquiteturais e seus contextos."
-      },
-      "protectedExample": {
-        "title": "Exemplo autenticado",
-        "description": "Demonstra o fluxo de autenticação e o guard de rotas protegidas."
       }
     },
     "workflow": {
@@ -124,10 +101,6 @@
         "title": "Fluxo de inicialização",
         "description": "O que acontece do bootstrap até a aplicação montar."
       },
-      "auth": {
-        "title": "Fluxo de autenticação",
-        "description": "Autenticação OAuth SSC centralizada no guard do router."
-      },
       "routes": {
         "title": "Composição de rotas",
         "description": "Rotas descobertas automaticamente por módulo, sem registro central.",
@@ -154,10 +127,10 @@
       }
     },
     "layers": {
-      "app": "Inicialização, providers, rotas base, telas globais e composição do login.",
+      "app": "Inicialização, providers, rotas base e telas globais.",
       "modules": "Funcionalidades por domínio (features), independentes entre si.",
       "shared": "Infraestrutura transversal reutilizável (api, stores, ui, utils).",
-      "core": "Base sem dependências de UI: configuração/env, constantes e cliente OAuth (state/nonce).",
+      "core": "Base sem dependências de UI: configuração/env e constantes.",
       "types": "Contratos TypeScript centralizados por contexto.",
       "test": "Validação automatizada — unitários e integração (Vitest).",
       "e2e": "Testes end-to-end (Playwright) contra a aplicação rodando."
@@ -193,37 +166,26 @@
         "description": "O Router carrega todos os routes.ts via import.meta.glob('{'@'}/**/routes.ts')."
       },
       "step4": {
-        "title": "beforeResolveGuard",
-        "description": "Verifica autenticação antes de cada navegação."
-      },
-      "step5": { "title": "mount #app", "description": "A aplicação é montada no elemento raiz." }
-    },
-    "authFlow": {
-      "step1": {
-        "title": "Acesso a rota protegida",
-        "description": "O guard valida a sessão pelo backend (o cookie HttpOnly vai automático)."
-      },
-      "step2": {
-        "title": "Sem sessão válida",
-        "description": "Redireciona para o login SSC e salva o destino em sessionStorage."
-      },
-      "step3": {
-        "title": "Retorno em /token?code=...",
-        "description": "O backend troca o code por tokens e emite o cookie HttpOnly (Set-Cookie)."
-      },
-      "step4": {
-        "title": "Carrega dados do usuário",
-        "description": "getUserDataRequest popula a user store e a navegação prossegue."
+        "title": "mount #app",
+        "description": "A aplicação é montada no elemento raiz."
       }
     },
     "stores": {
-      "app": "Estado global de UX (tema, loading).",
-      "user": "Identidade e autorização do usuário."
+      "app": "Estado global de UX (tema, loading)."
     },
     "languageRules": {
-      "docs": { "title": "Documentação", "detail": "português (UTF-8)" },
-      "code": { "title": "Código", "detail": "inglês (funções, variáveis, arquivos)" },
-      "commits": { "title": "Commits", "detail": "português" }
+      "docs": {
+        "title": "Documentação",
+        "detail": "português (UTF-8)"
+      },
+      "code": {
+        "title": "Código",
+        "detail": "inglês (funções, variáveis, arquivos)"
+      },
+      "commits": {
+        "title": "Commits",
+        "detail": "português"
+      }
     }
   },
   "onboarding": {
@@ -369,14 +331,14 @@
   "conventions": {
     "eyebrow": "Qualidade",
     "title": "Convenções",
-    "description": "O padrão de commits e o checklist de code review adotados no projeto. Os hooks de Git validam as mensagens automaticamente — o checklist guia a revisão de cada Merge Request.",
+    "description": "O padrão de commits e o checklist de code review adotados no projeto. Os hooks de Git validam as mensagens automaticamente — o checklist guia a revisão de cada Pull Request.",
     "branches": {
       "title": "Convenção de branches",
       "description": "Toda branch nasce da develop e segue o padrão tipo/<código-opcional>-slug em kebab-case.",
       "neverDirect": "Nunca trabalhe direto na",
       "or": "ou",
       "createFrom": "Crie a nova branch sempre a partir da",
-      "updated": "atualizada e depois solicite o MR (merge request) para a",
+      "updated": "atualizada e depois abra o PR (pull request) para a",
       "atEnd": "ao concluir.",
       "flowFilename": "criar uma branch",
       "prefixesTitle": "Prefixos por tipo",
@@ -416,7 +378,7 @@
     "scopes": {
       "title": "Escopos comuns",
       "description": "Identificam a camada ou módulo afetado. Opcionais quando a mudança é transversal.",
-      "auth": "autenticação, tokens, guard",
+      "auth": "autenticação, sessão, guards de acesso",
       "http": "instâncias HTTP, services",
       "stores": "stores Pinia",
       "ui": "componentes, layouts",
@@ -546,43 +508,6 @@
       "columnTitle": "Título",
       "columnStatus": "Status",
       "footer": "Arquivos completos em {path}. Novas decisões seguem a numeração sequencial (ex.: {example})."
-    }
-  },
-  "protectedExample": {
-    "eyebrow": "Rota protegida",
-    "title": "Exemplo autenticado",
-    "description": "Esta é a única tela do template que exige autenticação. Ao acessá-la, o guard do router garante uma sessão válida e carrega os dados do usuário. Abaixo, os dados reais da sua sessão e a explicação de como a proteção funciona.",
-    "user": {
-      "title": "Dados do usuário autenticado",
-      "description": "Retornados por GET /auth-backend/token/user e mantidos na user store (Pinia).",
-      "empty": "Nenhum dado de usuário carregado.",
-      "rolesTitle": "Papéis (roles)",
-      "name": "Nome",
-      "login": "Login",
-      "email": "E-mail",
-      "unit": "Unidade"
-    },
-    "guard": {
-      "title": "Como o guard protege esta rota",
-      "description": "A rota declara meta.requiresAuth: true — o resto é resolvido no beforeResolveGuard.",
-      "step1": {
-        "title": "Rota marcada com meta.requiresAuth",
-        "description": "A navegação para uma rota protegida entra no beforeResolveGuard."
-      },
-      "step2": {
-        "title": "Sessão validada pelo backend",
-        "description": "O cookie HttpOnly é enviado automaticamente; o backend confirma a sessão."
-      },
-      "step3": {
-        "title": "Sem sessão válida → login SSC",
-        "description": "Salva o destino e inicia o login no OAuth SSC (startLogin)."
-      },
-      "step4": {
-        "title": "Com sessão → carrega o usuário",
-        "description": "getUserDataRequest popula a user store e a rota é liberada."
-      },
-      "showcaseTitle": "Declaração da rota protegida",
-      "showcaseDescription": "Basta marcar a rota com meta.requiresAuth; o guard central cuida do resto."
     }
   }
 }

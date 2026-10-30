@@ -2,7 +2,7 @@
 
 Obrigado por contribuir com o **vue3-template**. Este guia reúne o fluxo de
 trabalho, as convenções e os critérios de qualidade do projeto. Leia antes de
-abrir seu primeiro Merge Request (MR).
+abrir seu primeiro Pull Request (PR).
 
 > Documentação de referência (fonte de verdade):
 >
@@ -23,8 +23,8 @@ abrir seu primeiro Merge Request (MR).
 - [Git hooks (Husky)](#git-hooks-husky)
 - [Padrões de código](#padrões-de-código)
 - [Testes](#testes)
-- [Validação antes do MR](#validação-antes-do-mr)
-- [Abrindo um Merge Request](#abrindo-um-merge-request)
+- [Validação antes do PR](#validação-antes-do-pr)
+- [Abrindo um Pull Request](#abrindo-um-pull-request)
 - [Registrando no CHANGELOG](#registrando-no-changelog)
 
 ---
@@ -94,9 +94,9 @@ Não é necessário nenhum passo manual adicional para habilitar os hooks.
 4. Escreva testes cobrindo as regras de negócio.
 5. Valide localmente: `npm run lint && npm run build && npm run test`.
 6. Commite seguindo as convenções (os hooks validam automaticamente).
-7. Faça push e abra um Merge Request para a `develop`.
+7. Faça push e abra um Pull Request para a `develop`.
 
-> **Nunca** faça push direto em `main` ou `develop`. Toda mudança passa por MR.
+> **Nunca** faça push direto em `main` ou `develop`. Toda mudança passa por PR.
 
 ---
 
@@ -108,7 +108,7 @@ Não é necessário nenhum passo manual adicional para habilitar os hooks.
 | Bug fix      | `fix/BUG-XXX-<slug>`         | `fix/BUG-007-login-redirect`  |
 | Refactor     | `refactor/<descrição-curta>` | `refactor/http-interceptors`  |
 | Documentação | `docs/<descrição-curta>`     | `docs/contributing-guide`     |
-| Chore/infra  | `chore/<descrição-curta>`    | `chore/gitlab-ci`             |
+| Chore/infra  | `chore/<descrição-curta>`    | `chore/github-actions`        |
 
 Use `kebab-case` no slug e mantenha-o curto e descritivo.
 
@@ -126,7 +126,7 @@ tipo(escopo): descrição em português, imperativo, ≤72 chars
 
 **Tipos aceitos:** `feat`, `fix`, `docs`, `refactor`, `test`, `chore`,
 `style`, `perf`, `ci`, `revert`, `build`, `wip` (o mesmo conjunto validado pelo
-hook `commit-msg`; `wip` só em branch de trabalho, reescrito antes do MR).
+hook `commit-msg`; `wip` só em branch de trabalho, reescrito antes do PR).
 
 Exemplos:
 
@@ -189,10 +189,10 @@ Thresholds de cobertura (o CI reprova abaixo destes valores):
 
 | Métrica    | Mínimo |
 | ---------- | ------ |
-| Lines      | 45%    |
-| Functions  | 29%    |
-| Branches   | 57%    |
-| Statements | 43%    |
+| Lines      | 29%    |
+| Functions  | 19%    |
+| Branches   | 51%    |
+| Statements | 28%    |
 
 Os valores são um **piso que só sobe** (ratchet — ADR-0016): refletem a
 cobertura real medida e devem ser elevados em `vite.config.ts` sempre que a
@@ -201,7 +201,7 @@ cobertura aumentar. A fonte de verdade é o `coverage.thresholds` do
 
 ---
 
-## Validação antes do MR
+## Validação antes do PR
 
 Garanta que os três comandos passam sem erros:
 
@@ -215,16 +215,16 @@ Para conferir cobertura: `npm run test:coverage`.
 
 ---
 
-## Abrindo um Merge Request
+## Abrindo um Pull Request
 
-1. O MR deve apontar para a branch `develop`.
-2. Preencha o template de MR (carregado automaticamente pelo GitLab).
+1. O PR deve apontar para a branch `develop`.
+2. Preencha o template de PR (carregado automaticamente pelo GitHub).
 3. Aplique as labels adequadas (tipo e prioridade) — veja
-   [.gitlab/labels.md](.gitlab/labels.md).
+   [.github/labels.md](.github/labels.md).
 4. Título conciso (< 70 caracteres) no formato Conventional Commits.
 5. Descreva o que foi feito, como testar e pendências (se houver).
 6. Vincule a issue relacionada (ex.: `Closes #123`).
-7. Aguarde o pipeline de CI passar (lint, build, testes) antes de solicitar review.
+7. Aguarde o CI do GitHub Actions passar (lint, build, testes e E2E) antes de solicitar review.
 
 O checklist objetivo de aprovação está em
 [docs/CODE-REVIEW-CHECKLIST.md](docs/CODE-REVIEW-CHECKLIST.md).

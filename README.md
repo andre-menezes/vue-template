@@ -4,7 +4,7 @@ Template frontend baseado em Vue 3 + TypeScript + Vite, com foco em:
 
 - separação clara de responsabilidades por camada
 - modularização por contexto de domínio
-- fluxo de autenticação centralizado no roteador
+- rotas auto-descobertas por módulo
 - padronização de stores, services e tipagem
 - qualidade via lint, typecheck, testes unitários/integração e E2E
 
@@ -38,9 +38,14 @@ Template frontend baseado em Vue 3 + TypeScript + Vite, com foco em:
 ## Como executar
 
 ```bash
+cp .env.example .env.development.local   # ajuste VITE_API_BASE_URL
 npm install
 npm run dev
 ```
+
+Todas as páginas são públicas: o template ainda não tem autenticação
+(ADR-0021). A integração contínua roda no GitHub Actions
+(`.github/workflows/ci.yml`).
 
 ## Qualidade e validação
 
@@ -71,7 +76,8 @@ npm run test:all
 
 ```text
 src/
-  app/      # bootstrap, providers, auth, configurações globais, rotas base
+  app/      # bootstrap, providers, configurações globais, rotas base
+  core/     # base sem UI: config/env e constantes
   modules/  # módulos de domínio (views, componentes e rotas por contexto)
   shared/   # blocos transversais (api, stores, ui, helpers, utils, composables)
   test/     # setup e suítes de teste (Vitest)

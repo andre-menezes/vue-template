@@ -145,7 +145,7 @@ import { buildOnboardingSteps, buildOnboardingChecklist, buildOnboardingFaqs } f
 
 const { t } = useI18n();
 
-const setupClone = `git clone https://gitlab.exemplo.com/seu-grupo/seu-projeto.git
+const setupClone = `git clone https://github.com/andre-menezes/vue-template.git seu-projeto
 cd seu-projeto`;
 
 const setupInstall = 'npm install';

@@ -5,6 +5,10 @@
 - **Decisores:** Time de frontend
 - **Relacionadas:** ADR-0005, ADR-0007, ADR-0008
 
+> Nota (ADR-0022): o pipeline de CI deixou de ser o `.gitlab-ci.yml` e passou
+> a ser o GitHub Actions (`.github/workflows/ci.yml`). Commits, hooks e
+> demais regras desta ADR seguem vigentes.
+
 ## Contexto e problema
 
 Um template mantido por várias pessoas precisa de um histórico legível, de

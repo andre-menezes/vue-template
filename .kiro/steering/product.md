@@ -8,14 +8,14 @@ partida opinativo e pronto para produção para construir aplicações Vue de p�
 
 - Fornecer às equipes uma base consistente para novos projetos frontend.
 - Demonstrar a arquitetura pretendida por meio de módulos de exemplo funcionais
-  (home, onboarding, conventions, architecture, decisions, protected-example).
+  (home, onboarding, conventions, architecture, decisions).
 - Reforçar convenções via lint, verificação de tipos, testes unitários/integração e E2E.
 
 ## Características principais
 
 - Separação clara de responsabilidades por camada (app / modules / shared / core / types).
 - Módulos de domínio agrupados por contexto (views, componentes e rotas por feature).
-- Autenticação centralizada no nível do roteador (router).
+- Rotas auto-descobertas por módulo; todas as páginas são públicas (sem login por enquanto).
 - Stores, services e tipagem TypeScript centralizada e padronizados.
 
 ## Convenções de idioma

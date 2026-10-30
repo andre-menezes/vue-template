@@ -8,7 +8,7 @@ test.describe('Página Decisões', () => {
     await page.goto('/decisoes');
   });
 
-  test('carrega a página sem exigir autenticação', async ({ page }) => {
+  test('carrega a página', async ({ page }) => {
     await expect(page.getByTestId('decisions-page')).toBeVisible();
     await expect(page.getByTestId('decisions-title')).toContainText('Decisões');
     await expect(page).toHaveURL(/\/decisoes$/);

@@ -15,18 +15,17 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 
 ## Organização de `src/test/`
 
-| Pasta          | Conteúdo                                                 |
-| -------------- | -------------------------------------------------------- |
-| `api/`         | Camada HTTP (instâncias, tratamento de 401/403)          |
-| `components/`  | Componentes Vue (renderização, emits)                    |
-| `composables/` | Composables de `shared/composables`                      |
-| `helpers/`     | `shared/helpers` e `core` (sessão, OAuth, state, config) |
-| `modules/`     | Lógica própria de módulos (ex.: índice de ADRs)          |
-| `router/`      | Guard de autenticação e navegação                        |
-| `services/`    | Services de `shared/api/services`                        |
-| `stores/`      | Estado global (Pinia)                                    |
-| `utils/`       | `shared/utils` e o helper `mountWithPlugins`             |
-| `setup.ts`     | Bootstrap do ambiente (mocks globais)                    |
+| Pasta          | Conteúdo                                        |
+| -------------- | ----------------------------------------------- |
+| `api/`         | Camada HTTP (instâncias)                        |
+| `components/`  | Componentes Vue (renderização, emits)           |
+| `composables/` | Composables de `shared/composables`             |
+| `helpers/`     | `shared/helpers` (ex.: download de arquivos)    |
+| `modules/`     | Lógica própria de módulos (ex.: índice de ADRs) |
+| `services/`    | Services de `shared/api/services`               |
+| `stores/`      | Estado global (Pinia)                           |
+| `utils/`       | `shared/utils` e o helper `mountWithPlugins`    |
+| `setup.ts`     | Bootstrap do ambiente (mocks globais)           |
 
 ## Comandos
 
@@ -45,10 +44,10 @@ Definidos em `vite.config.ts`. O pipeline falha se a cobertura cair abaixo de:
 
 | Métrica    | Mínimo |
 | ---------- | ------ |
-| Lines      | 45%    |
-| Functions  | 29%    |
-| Branches   | 57%    |
-| Statements | 43%    |
+| Lines      | 29%    |
+| Functions  | 19%    |
+| Branches   | 51%    |
+| Statements | 28%    |
 
 Os valores são um **piso que só sobe** (ratchet — ADR-0016): refletem a
 cobertura real medida e devem ser elevados em `vite.config.ts` sempre que a
@@ -120,9 +119,9 @@ resultado esperado.
 ## Exemplo — mau código (teste sem assertion)
 
 ```ts
-it('carrega os dados do usuário', async () => {
-  const store = useUserStore();
-  await store.login();
+it('alterna o tema', () => {
+  const store = useAppStore();
+  store.switchTheme();
   // sem expect — teste sempre passa, falso positivo
 });
 ```
@@ -131,13 +130,13 @@ Por que é ruim: teste sem `expect` nunca falha, dando falsa confiança de que
 o código funciona. Sempre valide o resultado:
 
 ```ts
-it('autoriza a aplicação quando recebe os dados do usuário', () => {
-  const store = useUserStore();
+it('alterna o tema de claro para escuro e persiste a escolha', () => {
+  const store = useAppStore();
 
-  store.setUserData(mockUserData);
+  store.switchTheme();
 
-  expect(store.isAuthorized).toBe(true);
-  expect(store.userData).not.toBeNull();
+  expect(store.theme).toBe('dark');
+  expect(localStorage.getItem(STORAGE_KEYS.THEME)).toBe('dark');
 });
 ```
 
@@ -146,11 +145,6 @@ it('autoriza a aplicação quando recebe os dados do usuário', () => {
 ```ts
 // RUIM: mock intercepta todo o módulo, escondendo bugs reais
 vi.mock('@shared/stores', () => ({
-  useUserStore: () => ({
-    userData: { nome: 'Teste' },
-    isAuthorized: true,
-    setUserData: vi.fn(),
-  }),
   useAppStore: () => ({
     loading: false,
     theme: 'light',
@@ -168,7 +162,7 @@ o service externo (API):
 // BOM: Pinia real, só o fetch é mockado
 beforeEach(() => {
   setActivePinia(createPinia());
-  vi.mocked(getUserDataRequest).mockResolvedValue(mockUserData);
+  vi.mocked(getCustomersRequest).mockResolvedValue(mockCustomers);
 });
 ```
 
@@ -189,7 +183,7 @@ npm run test:e2e:install
 
 O Playwright **sobe o servidor sozinho** (`webServer` em `playwright.config.ts`):
 o Vite roda na porta **9091**, no modo `test` (variáveis fictícias do
-`.env.test`) e com `VITE_AUTH_MOCK=true`. Não é preciso rodar `npm run dev`
+`.env.test`). Não é preciso rodar `npm run dev`
 antes, e o `.env.development.local` da máquina não interfere.
 
 ```bash
@@ -205,10 +199,10 @@ HTML (`playwright-report/`) fica nos artefatos do job `e2e`.
 
 - Arquivo por página/fluxo: `<contexto>.spec.ts` em `e2e/`.
 - `test.describe`: nome da página ou fluxo (ex.: `Página Home`); aninhe outro
-  `test.describe` para agrupar cenários (ex.: `com usuário autenticado`).
+  `test.describe` para agrupar cenários (ex.: `com a API indisponível`).
 - `test`: frase em português com o comportamento esperado. Sempre com `expect`.
 - `baseURL` já configurada (`playwright.config.ts`): use caminhos relativos
-  (`page.goto('/exemplo-protegido')`), nunca URLs absolutas.
+  (`page.goto('/arquitetura')`), nunca URLs absolutas.
 - Prefira as asserções com espera automática (`await expect(locator)...`).
 
 ### Seletores — `data-cy`
@@ -232,9 +226,10 @@ await page.getByTestId('submit-btn').click();
 await expect(page.getByText('Comandos úteis')).toBeVisible(); // conteúdo textual
 ```
 
-### Rota pública
+### Navegando para uma página
 
-Rotas sem `meta.requiresAuth` (ex.: Home `/`) são acessadas direto, sem login:
+Todas as rotas são públicas (o template não tem login — ADR-0021), então o
+teste acessa a página direto:
 
 ```ts
 // e2e/home_page.spec.ts
@@ -245,47 +240,21 @@ test.describe('Página Home', () => {
     await page.goto('/');
   });
 
-  test('carrega a página inicial sem exigir autenticação', async ({ page }) => {
+  test('carrega a página inicial', async ({ page }) => {
     await expect(page.getByTestId('home-page')).toBeVisible();
     await expect(page.getByTestId('home-title')).toContainText('Vue 3 Template');
   });
 });
 ```
 
-### Rota protegida — `mockUserSession(page)`
+### Interceptando a API — `page.route`
 
-Rotas com `meta.requiresAuth` exigem sessão válida. A sessão usa um cookie
-`HttpOnly` emitido pelo backend; o guard do router (`beforeResolveGuard`) valida
-a sessão pelo endpoint `GET /auth-backend/authorization/user` (200 = sessão válida).
-
-O helper `mockUserSession(page)` (em `e2e/support/session.ts`) intercepta esse
-endpoint retornando um usuário mock. Chame-o **antes** do `goto`:
+Quando a página consome a API, intercepte o endpoint **antes** do `goto` para
+manter o teste determinístico:
 
 ```ts
-// e2e/protected_example_page.spec.ts
-import { expect, test } from '@playwright/test';
-import { mockUserSession } from './support/session';
-
-test.describe('Página Exemplo autenticado (protegida)', () => {
-  test.describe('com usuário autenticado', () => {
-    test.beforeEach(async ({ page }) => {
-      await mockUserSession(page); // intercepta GET /auth-backend/authorization/user
-      await page.goto('/exemplo-protegido');
-    });
-
-    test('libera o acesso à página protegida', async ({ page }) => {
-      await expect(page.getByTestId('protected-example-page')).toBeVisible();
-    });
-  });
-});
+await page.route('**/customers', (route) =>
+  route.fulfill({ json: [{ id: 1, name: 'Maria Souza' }] })
+);
+await page.goto('/customers');
 ```
-
-Personalize os dados do usuário passando um override:
-
-```ts
-await mockUserSession(page, { nomeUsuario: 'Maria Souza', roles: ['ARCH_PRODEMGE'] });
-```
-
-> **Por que não gravar `userData` no storage?** A `userStore` não persiste
-> dados — o guard sempre busca o usuário pelo endpoint. Por isso o mock é feito
-> via `page.route`, não via cookie.

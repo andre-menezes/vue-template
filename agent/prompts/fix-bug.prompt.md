@@ -14,19 +14,18 @@ agent/workflows/fix-bug.workflow.md.
 ### Com spec de bug
 
 ```text
-Corrija o bug descrito em docs/specs/BUG-001-login-redirect.md.
+Corrija o bug descrito em docs/specs/BUG-001-theme-persistence.md.
 Siga o workflow de correção de bug.
 ```
 
 ### Com descrição direta
 
 ```text
-Bug: ao clicar em "Sair", o usuário é redirecionado para /token mas o
-estado da sessão na store não é limpo. Na próxima visita, o guard
-considera a sessão válida e não solicita novo login.
+Bug: ao alternar para o tema escuro e recarregar a página, a aplicação
+volta para o tema claro.
 
-Comportamento esperado: ao clicar em "Sair", o estado da sessão deve ser
-limpo (cleanStorage) antes do redirect para o logout do SSC.
+Comportamento esperado: o tema escolhido é persistido em localStorage
+(STORAGE_KEYS.THEME) e restaurado no carregamento da app.store.
 
 Corrija seguindo o workflow de correção de bug.
 ```
@@ -34,12 +33,12 @@ Corrija seguindo o workflow de correção de bug.
 ### Com stacktrace
 
 ```text
-Bug: erro no console ao acessar /exemplo-protegido sem estar autenticado.
+Bug: erro no console ao abrir a tela de Decisões.
 
-Erro: TypeError: Cannot read properties of null (reading 'nome')
-Arquivo: src/shared/ui/components/TheAppHeader.vue:42
+Erro: TypeError: Cannot read properties of null (reading 'status')
+Arquivo: src/modules/decisions/views/DecisionsView.vue:42
 
-O componente tenta acessar userData.nome sem verificar null.
+O componente tenta acessar adr.status sem verificar null.
 Corrija e adicione teste de regressão.
 ```
 

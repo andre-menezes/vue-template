@@ -21,7 +21,6 @@ prevenindo regressões e validando regras de negócio.
 | Regra de negócio (lógica pura)    | Unitário       |
 | Service (comunicação HTTP)        | Unitário       |
 | Store (state + actions)           | Unitário       |
-| Guard de rota (auth)              | Unitário       |
 | Componente com lógica (computeds) | Integração     |
 | Fluxo completo do usuário         | E2E            |
 | Regressão de bug corrigido        | Unitário + E2E |
@@ -77,11 +76,13 @@ vi.mocked(httpClient.get).mockResolvedValue(mockData);
 
 ## Padrões — Teste E2E (Playwright)
 
-O `webServer` do `playwright.config.ts` sobe o Vite (porta 9091, modo `test`,
-mock de auth ligado); não é preciso rodar `npm run dev` antes. Na primeira
+O `webServer` do `playwright.config.ts` sobe o Vite (porta 9091, modo `test`);
+não é preciso rodar `npm run dev` antes. Na primeira
 execução, instale o navegador com `npm run test:e2e:install`.
 
-### Rota pública
+### Navegando para uma página
+
+Todas as rotas são públicas (o template não tem login — ADR-0021).
 
 ```ts
 import { expect, test } from '@playwright/test';
@@ -91,39 +92,24 @@ test.describe('Página Home', () => {
     await page.goto('/');
   });
 
-  test('carrega a página inicial sem exigir autenticação', async ({ page }) => {
+  test('carrega a página inicial', async ({ page }) => {
     await expect(page.getByTestId('home-page')).toBeVisible();
     await expect(page.getByTestId('home-title')).toContainText('Vue 3 Template');
   });
 });
 ```
 
-### Rota protegida (`meta.requiresAuth`)
+### Interceptando a API
 
-Use o helper `mockUserSession(page)` (`e2e/support/session.ts`) antes do
-`goto`. A sessão usa um cookie `HttpOnly` do backend; o helper intercepta
-`GET /auth-backend/authorization/user` para simular a sessão válida.
+Intercepte os endpoints consumidos pela página com `page.route` antes do
+`goto`, para não depender do backend:
 
 ```ts
-import { expect, test } from '@playwright/test';
-import { mockUserSession } from './support/session';
-
-test.describe('Página Exemplo autenticado (protegida)', () => {
-  test.describe('com usuário autenticado', () => {
-    test.beforeEach(async ({ page }) => {
-      await mockUserSession(page);
-      await page.goto('/exemplo-protegido');
-    });
-
-    test('libera o acesso à página protegida', async ({ page }) => {
-      await expect(page.getByTestId('protected-example-page')).toBeVisible();
-    });
-  });
-});
+await page.route('**/customers', (route) =>
+  route.fulfill({ json: [{ id: 1, name: 'Maria Souza' }] })
+);
+await page.goto('/customers');
 ```
-
-`mockUserSession(page, overrides?)` aceita sobrescrever campos do usuário
-mockado: `mockUserSession(page, { nomeUsuario: 'Maria Souza' })`.
 
 ### Regras
 
@@ -132,12 +118,11 @@ mockado: `mockUserSession(page, { nomeUsuario: 'Maria Souza' })`.
   para validar conteúdo textual visível.
 - `test.describe` = página/fluxo; `test.describe` aninhado = cenário;
   `test` = comportamento (pt-BR).
-- Use caminhos relativos (`page.goto('/exemplo-protegido')`) — a `baseURL` já está definida.
+- Use caminhos relativos (`page.goto('/arquitetura')`) — a `baseURL` já está definida.
 - Use asserções com espera automática (`await expect(locator).toBeVisible()`),
   nunca `waitForTimeout`.
 - Não mocke stores — o E2E testa o sistema integrado. Intercepte apenas as
   fronteiras externas (endpoints HTTP) com `page.route`.
-- Rotas protegidas: sempre `mockUserSession(page)` antes do `goto`.
 
 ## Atributos data-cy
 
@@ -158,10 +143,10 @@ Adicione nos componentes para seletores estáveis:
 
 | Métrica    | Mínimo |
 | ---------- | ------ |
-| Lines      | 45%    |
-| Functions  | 29%    |
-| Branches   | 57%    |
-| Statements | 43%    |
+| Lines      | 29%    |
+| Functions  | 19%    |
+| Branches   | 51%    |
+| Statements | 28%    |
 
 Os valores são um **piso que só sobe** (ratchet — ADR-0016): refletem a
 cobertura real medida e devem ser elevados em `vite.config.ts` sempre que a

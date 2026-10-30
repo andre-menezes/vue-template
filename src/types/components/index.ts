@@ -3,5 +3,4 @@ export interface MenuItem {
   titleKey: string;
   route: string;
   icon: string;
-  requiresAuth: boolean;
 }

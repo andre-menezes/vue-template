@@ -8,7 +8,7 @@ test.describe('Página Componentes', () => {
     await page.goto('/componentes');
   });
 
-  test('carrega a página sem exigir autenticação', async ({ page }) => {
+  test('carrega a página', async ({ page }) => {
     await expect(page.getByTestId('components-page')).toBeVisible();
     await expect(page.getByTestId('components-title')).toContainText('Componentes');
     await expect(page).toHaveURL(/\/componentes$/);

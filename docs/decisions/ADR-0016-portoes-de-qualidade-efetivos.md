@@ -5,6 +5,12 @@
 - **Decisores:** Time de frontend / Arquitetura
 - **Relacionadas:** ADR-0005 (Estratégia de testes), ADR-0011 (Fluxo de contribuição: commits, hooks e CI)
 
+> Nota (ADR-0021): o piso de cobertura foi rebaixado uma única vez, para a
+> cobertura medida após a remoção da autenticação corporativa (código testado
+> saiu do denominador). Depois disso, o ratchet volta a valer.
+>
+> Nota (ADR-0022): o CI passou do GitLab para o GitHub Actions.
+
 ## Contexto e problema
 
 Uma auditoria do template mostrou que três portões de qualidade documentados

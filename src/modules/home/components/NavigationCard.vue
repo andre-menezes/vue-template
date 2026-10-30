@@ -12,14 +12,6 @@
           <v-icon :icon="card.icon" />
         </v-avatar>
       </template>
-      <template v-if="card.requiresAuth" #append>
-        <v-chip size="x-small" variant="tonal" color="primary">
-          <template #prepend>
-            <v-icon icon="lock-fill" size="x-small"></v-icon>
-          </template>
-          Autenticada
-        </v-chip>
-      </template>
       <v-card-title class="text-subtitle-1 font-weight-bold">{{ card.title }}</v-card-title>
     </v-card-item>
 

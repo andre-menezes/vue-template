@@ -8,7 +8,7 @@ test.describe('Página Arquitetura', () => {
     await page.goto('/arquitetura');
   });
 
-  test('carrega a página sem exigir autenticação', async ({ page }) => {
+  test('carrega a página', async ({ page }) => {
     await expect(page.getByTestId('architecture-page')).toBeVisible();
     await expect(page.getByTestId('architecture-title')).toContainText('Arquitetura em camadas');
     await expect(page).toHaveURL(/\/arquitetura$/);
@@ -27,10 +27,8 @@ test.describe('Página Arquitetura', () => {
     await expect(page.getByText('Não pode importar de').first()).toBeVisible();
   });
 
-  test('exibe os fluxos de inicialização e autenticação', async ({ page }) => {
-    const flows = page.getByTestId('flow-steps');
-    await expect(flows.first()).toBeVisible();
-    expect(await flows.count()).toBeGreaterThan(1);
+  test('exibe o fluxo de inicialização', async ({ page }) => {
+    await expect(page.getByTestId('flow-steps').first()).toBeVisible();
   });
 
   test('permite copiar um bloco de código', async ({ page }) => {

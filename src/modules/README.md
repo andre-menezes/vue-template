@@ -37,10 +37,9 @@ sem nenhuma configuração manual adicional.
 
 ## Meta fields disponíveis
 
-| Meta           | Tipo      | Efeito                                      |
-| -------------- | --------- | ------------------------------------------- |
-| `requiresAuth` | `boolean` | Ativa guard de autenticação na rota         |
-| `layout`       | `string`  | Define o layout (`'empty'` para sem chrome) |
+| Meta     | Tipo     | Efeito                                      |
+| -------- | -------- | ------------------------------------------- |
+| `layout` | `string` | Define o layout (`'empty'` para sem chrome) |
 
 ## Exemplo — bom código (módulo completo)
 
@@ -55,13 +54,11 @@ const routes: RouteRecordRaw[] = [
     path: '/customers',
     name: 'Customers',
     component: () => import('./views/CustomersView.vue'),
-    meta: { requiresAuth: true },
   },
   {
     path: '/customers/:id',
     name: 'CustomerDetail',
     component: () => import('./views/CustomerDetailView.vue'),
-    meta: { requiresAuth: true },
   },
 ];
 
@@ -150,10 +147,10 @@ const loading = ref(false);
 
 onMounted(async () => {
   loading.value = true;
-  // RUIM: monta credencial na mão. A sessão é um cookie HttpOnly — nem é
-  // legível por JS — e a instância já a envia via `credentials: 'include'`.
-  customers.value = await ofetch('/api/customers', {
-    credentials: 'include',
+  // RUIM: URL e configuração de transporte montadas na view, ignorando a
+  // instância `httpClient` (base URL, timeout e cancelamento centralizados).
+  customers.value = await ofetch('https://api.exemplo.com/customers', {
+    timeout: 5000,
   });
   loading.value = false;
 });
@@ -163,8 +160,8 @@ onMounted(async () => {
 Por que é ruim:
 
 - Fetch direto na view (viola separation of concerns — use service).
-- Autenticação/credenciais manuais (viola DRY — a instância HTTP já envia o cookie de sessão via `credentials: 'include'`).
-- Manipular credenciais no componente (viola encapsulamento — use a instância/service).
+- Base URL e timeout fixos na view (viola DRY — a instância `httpClient` já centraliza a configuração de transporte).
+- Configuração de transporte no componente (viola encapsulamento — use a instância/service).
 - Lógica de negócio no template (`c.active && c.balance > 1000`).
 - Tipo `any[]` (viola type safety).
 - Sem separação view/componente (SRP violado).

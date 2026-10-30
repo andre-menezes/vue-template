@@ -11,25 +11,24 @@ Voltar para o guia geral: [../../../docs/ARCHITECTURE-GUIDE.md](../../../docs/AR
 
 ## Padrão de implementação
 
-- A factory (`instances/index.ts`) cuida de cabeçalhos, timeout e tratamento
-  transversal (`credentials: 'include'`, CSRF, header de módulo, 401/403).
-- Services expõem métodos com nome de negócio técnico (ex: `getUserDataRequest`).
+- A factory (`instances/index.ts`) cuida da base URL, do timeout e do
+  cancelamento (`signal`).
+- Services expõem métodos com nome de negócio técnico (ex: `downloadReportRequest`).
 - View/store consome service, nunca chama endpoint diretamente.
 
 ## Instâncias disponíveis
 
-| Instância     | Base URL            | Uso                                          |
-| ------------- | ------------------- | -------------------------------------------- |
-| `httpClient`  | `VITE_API_BACKEND`  | API interna da aplicação                     |
-| `authBackend` | `VITE_AUTH_BACKEND` | Sessão BFF (login, dados do usuário, logout) |
+| Instância    | Base URL            | Uso              |
+| ------------ | ------------------- | ---------------- |
+| `httpClient` | `VITE_API_BASE_URL` | API da aplicação |
 
-Todas são criadas via `createApiInstance(baseURL, options?)` e expõem os métodos:
-`get`, `post`, `put`, `patch`, `delete` e `download`.
+Novas instâncias (ex.: uma API de terceiros) são criadas via
+`createApiInstance(baseURL)` e expõem os métodos `get`, `post`, `put`, `patch`,
+`delete` e `download`.
 
-O tratamento global de `401`/`403` (`instances/auth-error.ts`) vale para todas,
-**exceto** `authBackend` (`handleAuthErrors: false`): suas chamadas fazem parte do
-próprio fluxo de autenticação, que trata os erros no guard e no logout. Isso
-evita login duplicado e loop de redirecionamento (ADR-0017).
+Não há tratamento global de autenticação (401/403) nem envio de credenciais:
+o template não tem login (ADR-0021). Quando o login próprio existir, esse
+tratamento entra na factory.
 
 ## Exemplo de novo service
 
@@ -103,8 +102,7 @@ httpClient.patch<T, TQuery, TBody>(url, { query?, body?, headers?, signal? })
 
 - `query` aceita qualquer objeto, inclusive uma `interface` de filtro do
   domínio, sem cast.
-- `headers` são somados aos da instância (`x-id-modulo` e, nas mutantes, o
-  CSRF).
+- `headers` são enviados junto com a requisição.
 - `signal` cancela a requisição; o timeout padrão (`HTTP_TIMEOUT_MS`) continua
   valendo junto com ele.
 

@@ -251,7 +251,7 @@ const branchFlow = `git checkout develop
 git pull
 git checkout -b feat/FEAT-012-customer-list
 # ...trabalhe e commite...
-# ao concluir, faça o pull para o remoto e solicite o MR na develop`;
+# ao concluir, faça o push para o remoto e abra o PR para a develop`;
 
 const branchTypes = computed<BranchType[]>(() => [
   {
@@ -281,7 +281,7 @@ const branchTypes = computed<BranchType[]>(() => [
   {
     prefix: 'chore',
     when: t('conventions.branches.types.chore'),
-    example: 'chore/gitlab-ci',
+    example: 'chore/github-actions',
     badExample: 'chore/versao-nova-1.2.3',
   },
 ]);

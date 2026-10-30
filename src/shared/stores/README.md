@@ -6,10 +6,9 @@ Voltar para o guia geral: [../../../docs/ARCHITECTURE-GUIDE.md](../../../docs/AR
 
 ## Stores existentes
 
-| Store        | Responsabilidade                                                       |
-| ------------ | ---------------------------------------------------------------------- |
-| `app.store`  | Estado de UX global (tema persistido em localStorage, loading)         |
-| `user.store` | Dados do usuário autenticado (login/logout ficam em `helpers/session`) |
+| Store       | Responsabilidade                                               |
+| ----------- | -------------------------------------------------------------- |
+| `app.store` | Estado de UX global (tema persistido em localStorage, loading) |
 
 ## Quando criar uma store
 
@@ -17,7 +16,7 @@ Crie store apenas quando o estado for:
 
 - **Transversal** — usado por dois ou mais módulos/componentes desconectados.
 - **Persistente** — precisa sobreviver a navegação entre rotas.
-- **Infraestrutural** — necessário para a mecânica da app (auth, tema, loading).
+- **Infraestrutural** — necessário para a mecânica da app (tema, loading).
 
 Se o estado é **local de tela** (modal aberto, valor de formulário, scroll
 position), use `ref`/`reactive` no próprio componente.
@@ -134,9 +133,9 @@ actions: {
 
 ```ts
 // RUIM: componente muta state diretamente
-const userStore = useUserStore();
-userStore.userData = { nome: 'João' }; // mutação direta sem action
-userStore.isAuthorized = true;
+const appStore = useAppStore();
+appStore.theme = 'dark'; // mutação direta sem action (e sem persistir)
+appStore.loading = true;
 ```
 
 Por que é ruim: dificulta rastreamento de mudanças (devtools não logam),
@@ -145,7 +144,8 @@ e quebra a previsibilidade do fluxo unidirecional.
 
 ```ts
 // BOM: usar action para mutar
-userStore.setUserData({ nome: 'João' });
+appStore.switchTheme();
+appStore.setLoading(true);
 ```
 
 ## Resumo
