@@ -8,10 +8,7 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import { defineConfig } from 'vitest/config';
 import { fileURLToPath, URL } from 'node:url';
 import { readFileSync } from 'node:fs';
-import dns from 'dns';
 import vueDevTools from 'vite-plugin-vue-devtools';
-
-dns.setDefaultResultOrder('verbatim');
 
 // Só os dados do `package.json` que a UI exibe. Importar o arquivo no código
 // colocaria a lista inteira de dependências no bundle.
