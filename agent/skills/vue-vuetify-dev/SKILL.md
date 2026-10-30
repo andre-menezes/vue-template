@@ -170,6 +170,9 @@ export function useTheme() {
 
 - Tema configurado em `src/app/providers/vuetify.ts`.
 - Variáveis de tema acessíveis via classes utilitárias do Vuetify.
+- Texto colorido usa os tons `<cor>-text` do tema (`text-primary-text`,
+  `color="secondary-text"` em chips de texto), que têm contraste AA. A cor da
+  marca (`primary`, `secondary`...) fica para fundos, bordas e botões (ADR-0029).
 - Componentes Vuetify usados diretamente nos templates (auto-import ativo).
 - Ícones via Material Symbols (pacote `material-symbols`, icon set `ms` do
   Vuetify). Use a ligatura do ícone, sem prefixo: `icon="settings"`,

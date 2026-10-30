@@ -50,6 +50,9 @@ um módulo, ele pertence ao módulo (não ao shared).
 - Componentes compartilhados com prefixo `The` para singletons (`TheAppHeader`)
   ou `Base` para componentes base reutilizáveis (`BaseLogo`).
 - Slots para composição flexível; evitar props complexas que poderiam ser slots.
+- Texto colorido usa os tons `<cor>-text` do tema (`text-primary-text`); a cor
+  da marca não tem contraste AA como texto e fica para fundos, bordas e botões
+  (ADR-0029).
 
 ## Exemplo — bom código (componente apresentacional)
 
