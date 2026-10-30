@@ -82,3 +82,4 @@ substitui a anterior e atualize o status da antiga.
 | [ADR-0025](ADR-0025-colocalizacao-por-modulo.md)              | Colocalização do código de cada feature no próprio módulo   | Aceita        |
 | [ADR-0026](ADR-0026-vitrine-em-modulo-removivel.md)           | Vitrine de documentação num módulo removível                | Aceita        |
 | [ADR-0027](ADR-0027-tanstack-query-para-dados-assincronos.md) | TanStack Query para dados assíncronos                       | Aceita        |
+| [ADR-0028](ADR-0028-tratamento-global-de-erros.md)            | Tratamento global de erros e remoção do analytics           | Aceita        |
