@@ -82,7 +82,17 @@
       <p class="text-body-2 text-medium-emphasis mb-4">
         {{ $t('architecture.sections.http.intro') }}
       </p>
-      <CodeBlock :code="httpExample" language="ts" filename="customer.service.ts" />
+      <CodeBlock
+        :code="httpExample"
+        language="ts"
+        filename="modules/customers/api/customer.service.ts"
+        class="mb-4"
+      />
+      <CodeBlock
+        :code="queryExample"
+        language="ts"
+        filename="modules/customers/composables/useCustomersQuery.ts"
+      />
     </DocSection>
 
     <DocSection
@@ -254,18 +264,19 @@ const folderStructure = `src/
 │   └── views/      # views globais (404)
 ├── core/         # base sem UI: config/env
 │   └── config/     # constantes e variáveis de ambiente
-├── modules/      # features por domínio
+├── modules/      # features por domínio (cada uma na própria pasta)
 │   ├── home/
-│   └── architecture/ …
+│   └── customers/    # routes.ts, views/, components/,
+│                     # types.ts, api/, composables/
 ├── shared/       # infraestrutura transversal
-│   ├── api/        # instâncias HTTP e services
+│   ├── api/        # instâncias HTTP e services compartilhados
 │   ├── composables/
 │   ├── helpers/    # efeitos (ex.: downloadAndSave)
 │   ├── stores/     # estado global (Pinia)
 │   ├── ui/         # layouts, componentes globais, ícones
 │   └── utils/      # funções puras
 ├── test/         # testes unitários e de integração
-└── types/        # contratos TypeScript centralizados`;
+└── types/        # contratos TypeScript compartilhados`;
 
 const routesExample = `import type { RouteRecordRaw } from 'vue-router';
 
@@ -281,10 +292,20 @@ const routes: RouteRecordRaw[] = [
 export default routes;`;
 
 const httpExample = `import { httpClient } from '@shared/api/instances';
-import type { Customer } from '@typings/customer';
+import type { Customer } from '../types';
 
-export function getCustomersRequest(): Promise<Customer[]> {
-  return httpClient.get<Customer[]>('/customers');
+export function getCustomersRequest(options: { signal?: AbortSignal } = {}): Promise<Customer[]> {
+  return httpClient.get<Customer[]>('/customers', { signal: options.signal });
+}`;
+
+const queryExample = `import { useQuery } from '@tanstack/vue-query';
+import { getCustomersRequest } from '../api/customer.service';
+
+export function useCustomersQuery() {
+  return useQuery({
+    queryKey: ['customers'],
+    queryFn: ({ signal }) => getCustomersRequest({ signal }),
+  });
 }`;
 
 const initFlow = computed<FlowStep[]>(() => [

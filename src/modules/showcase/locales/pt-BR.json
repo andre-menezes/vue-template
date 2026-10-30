@@ -101,7 +101,7 @@
       "http": {
         "title": "Camada HTTP",
         "description": "Factory createApiInstance + services semânticos.",
-        "intro": "Toda comunicação passa por uma factory sobre ofetch. Views e stores consomem apenas services — nunca chamam endpoints diretamente."
+        "intro": "Toda comunicação passa por uma factory sobre ofetch. Os services ficam no módulo que os usa (em shared/api/services só quando compartilhados) e as views os consomem por queries do TanStack Query — nunca chamam endpoints diretamente."
       },
       "state": {
         "title": "Estado global",
@@ -200,15 +200,19 @@
       },
       "types": {
         "title": "Criar os tipos",
-        "description": "Centralize os contratos do domínio em src/types/<nome>/index.ts."
+        "description": "Crie os contratos do domínio em src/modules/<nome>/types.ts. Só promova para src/types/ quando um segundo módulo precisar deles (ADR-0025)."
       },
       "service": {
         "title": "Criar o service",
-        "description": "Crie as funções de comunicação com o backend em src/shared/api/services/. Views nunca chamam endpoints diretamente."
+        "description": "Crie as funções de comunicação com o backend em src/modules/<nome>/api/, aceitando um signal opcional para cancelar a requisição. Views nunca chamam endpoints diretamente."
+      },
+      "query": {
+        "title": "Criar a query",
+        "description": "Dados do servidor são lidos com TanStack Query (ADR-0027). Encapsule a query num composable do módulo; ele cuida de cache, loading, erro e cancelamento."
       },
       "view": {
         "title": "Criar a view container",
-        "description": "A view orquestra dados (chama service, controla loading) e passa para componentes apresentacionais."
+        "description": "A view consome a query e passa os dados, o loading e o erro para componentes apresentacionais."
       },
       "components": {
         "title": "Criar componentes apresentacionais",
@@ -230,9 +234,10 @@
     "checklist": {
       "module": "Módulo criado em src/modules/<nome>/",
       "routes": "routes.ts com tipagem RouteRecordRaw[] e meta fields",
-      "types": "Tipos criados em src/types/<nome>/",
-      "service": "Service criado em src/shared/api/services/",
-      "view": "View container orquestrando dados",
+      "types": "Tipos criados em src/modules/<nome>/types.ts",
+      "service": "Service criado em src/modules/<nome>/api/",
+      "query": "Query num composable do módulo (useQuery)",
+      "view": "View container usando a query",
       "components": "Componentes apresentacionais com props tipadas",
       "unitTest": "Teste unitário cobrindo o service",
       "e2eTest": "Teste E2E cobrindo o fluxo principal",
@@ -252,7 +257,7 @@
       },
       "store": {
         "question": "Preciso criar uma store para minha feature?",
-        "answer": "Só se o estado for transversal (usado por outros módulos/componentes) ou persistente. Estado local de tela fica em ref/reactive no componente."
+        "answer": "Para dados do servidor, não: use TanStack Query (ADR-0027). Crie store só para estado de cliente transversal ou persistente. Estado local de tela fica em ref/reactive no componente."
       },
       "crossModule": {
         "question": "Posso importar de outro módulo?",
