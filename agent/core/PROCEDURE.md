@@ -41,13 +41,17 @@ Nunca prossiga com dúvida que impacte comportamento funcional.
 
 Seguir a ordem de camadas (de baixo para cima):
 
-1. **Types** — Criar/atualizar contratos em `src/types/<contexto>/`.
-2. **Service** — Criar/atualizar em `src/shared/api/services/`.
-3. **Store** — Criar/atualizar em `src/shared/stores/` (se necessário).
-4. **Composable** — Criar em `src/shared/composables/` (se necessário).
-5. **Módulo/Rotas** — Criar `routes.ts` em `src/modules/<nome>/`.
-6. **View** — Criar view container em `src/modules/<nome>/views/`.
-7. **Components** — Criar componentes apresentacionais em `src/modules/<nome>/components/`.
+1. **Types** — Criar/atualizar contratos em `src/modules/<nome>/types.ts`
+   (em `src/types/<contexto>/` só se outro módulo também usar; ADR-0025).
+2. **Service** — Criar/atualizar em `src/modules/<nome>/api/` (em
+   `src/shared/api/services/` só se compartilhado), aceitando `signal`.
+3. **Query** — Ler dados do servidor com `useQuery` num composable do módulo
+   (`src/modules/<nome>/composables/`; TanStack Query, ADR-0027).
+4. **Store** — Criar só para estado de cliente transversal ou persistente (se necessário).
+5. **Composable** — Criar no módulo; em `src/shared/composables/` só se compartilhado.
+6. **Módulo/Rotas** — Criar `routes.ts` em `src/modules/<nome>/`.
+7. **View** — Criar view container em `src/modules/<nome>/views/`.
+8. **Components** — Criar componentes apresentacionais em `src/modules/<nome>/components/`.
 
 ### Regras durante implementação
 
