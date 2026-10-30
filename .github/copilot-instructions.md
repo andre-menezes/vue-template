@@ -10,6 +10,7 @@ Consulte antes de gerar código ou sugestões:
 - `agent/core/PROCEDURE.md` — fases do workflow
 - `agent/skills/vue-vuetify-dev/SKILL.md` — padrões Vue 3 + Vuetify + TS
 - `agent/skills/testing/SKILL.md` — estratégia de testes
+- `agent/skills/documentation/SKILL.md` — convenções de documentação, ADR e CHANGELOG
 - `agent/workflows/` — create-feature, fix-bug e validate-code
 - `docs/ARCHITECTURE-GUIDE.md` — camadas e regras de dependência (verificadas pelo ESLint)
 - `docs/COMMIT-CONVENTIONS.md` e `CONTRIBUTING.md` — commits, branches e MR

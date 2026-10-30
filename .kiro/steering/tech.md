@@ -10,3 +10,5 @@ disponíveis estão em `package.json` (`scripts`).
 #[[file:CONTRIBUTING.md]]
 
 #[[file:agent/skills/testing/SKILL.md]]
+
+#[[file:agent/skills/documentation/SKILL.md]]
