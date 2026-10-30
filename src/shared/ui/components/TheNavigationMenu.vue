@@ -1,6 +1,7 @@
 <template>
   <v-navigation-drawer v-model="drawer" :rail="rail" class="navigation-menu" :temporary="!mdAndUp">
-    <v-list class="pa-3" nav>
+    <!-- O drawer já é um <nav>; os itens são links, não itens de lista. -->
+    <v-list class="pa-3" nav role="none">
       <v-list-item
         v-for="item in menuItems"
         :key="item.route"

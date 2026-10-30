@@ -45,6 +45,20 @@ const lightTheme: AppThemeDefinition = {
     'warning-variant': '#f4a2611a',
     'info-variant': '#1677ff1a',
     'success-variant': '#168a631a',
+
+    // Tons para texto: a paleta da marca não atinge o contraste AA (4,5:1)
+    // como cor de texto sobre o fundo claro. Use `text-<cor>-text` em texto e
+    // a cor da marca em fundos, bordas e botões.
+    'primary-text': '#D92500',
+    'secondary-text': '#325EFF',
+    'accent-text': '#007D73',
+    'info-text': '#005FE3',
+    'success-text': '#147F5B',
+    'warning-text': '#B2560C',
+  },
+  variables: {
+    // O padrão (0.6) deixa subtítulos com contraste 4,2:1 sobre o fundo.
+    'medium-emphasis-opacity': 0.7,
   },
 };
 
@@ -69,27 +83,44 @@ const darkTheme: AppThemeDefinition = {
     'warning-variant': '#ffd1661a',
     'info-variant': '#73a9ff1a',
     'success-variant': '#62d5a51a',
+
+    // No tema escuro a própria paleta já tem contraste suficiente como texto.
+    'primary-text': '#FF8066',
+    'secondary-text': '#6D8CFF',
+    'accent-text': '#42E8D3',
+    'info-text': '#73A9FF',
+    'success-text': '#62D5A5',
+    'warning-text': '#FFD166',
   },
 };
 
-// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-export default createVuetify({
-  icons: {
-    defaultSet: 'ms',
-    aliases,
-    sets: {
-      ms,
+/**
+ * Cria a instância do Vuetify da aplicação. Exportada para que os testes
+ * montem componentes com o mesmo tema, ícones e locale.
+ *
+ * https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
+ */
+export function createAppVuetify() {
+  return createVuetify({
+    icons: {
+      defaultSet: 'ms',
+      aliases,
+      sets: {
+        ms,
+      },
     },
-  },
-  theme: {
-    defaultTheme: 'light',
-    themes: {
-      light: lightTheme,
-      dark: darkTheme,
+    theme: {
+      defaultTheme: 'light',
+      themes: {
+        light: lightTheme,
+        dark: darkTheme,
+      },
     },
-  },
-  locale: {
-    locale: 'pt',
-    messages: { pt },
-  },
-});
+    locale: {
+      locale: 'pt',
+      messages: { pt },
+    },
+  });
+}
+
+export default createAppVuetify();

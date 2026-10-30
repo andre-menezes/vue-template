@@ -23,3 +23,15 @@ declare const __APP_META__: {
   readonly runtimeDependencies: number;
   readonly toolingDependencies: number;
 };
+
+/**
+ * Tipo dos `.vue` importados por arquivos `.ts` para o ESLint tipado. O
+ * vue-tsc resolve o SFC real e ignora esta declaração; o TypeScript usado pelo
+ * typescript-eslint não entende `.vue` e, sem ela, tipa esses imports como
+ * erro, gerando falsos positivos nas regras `no-unsafe-*`.
+ */
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue';
+  const component: DefineComponent;
+  export default component;
+}

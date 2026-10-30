@@ -8,19 +8,19 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 
 - Inicializar a aplicação (`main.ts`).
 - Registrar plugins globais (`providers/`).
-- Configurar o Router (`providers/router.ts`): auto-discovery de rotas,
-  rolagem e page view de analytics.
+- Configurar o Router (`providers/router.ts`): auto-discovery de rotas e
+  rolagem.
 - Definir rotas base da aplicação (`routes.ts`).
 - Selecionar layout dinamicamente (`App.vue`).
 
 ## Subpastas
 
-| Pasta        | Responsabilidade                                   |
-| ------------ | -------------------------------------------------- |
-| `locales/`   | Mensagens de internacionalização (pt-BR)           |
-| `providers/` | Registro de plugins (Pinia, i18n, Router, Vuetify) |
-| `styles/`    | SCSS global                                        |
-| `views/`     | Views de uso global (404)                          |
+| Pasta        | Responsabilidade                                                                    |
+| ------------ | ----------------------------------------------------------------------------------- |
+| `locales/`   | Mensagens de internacionalização (pt-BR)                                            |
+| `providers/` | Plugins (Pinia, TanStack Query, i18n, Router, Vuetify) e tratamento global de erros |
+| `styles/`    | SCSS global                                                                         |
+| `views/`     | Views de uso global (404)                                                           |
 
 Configuração de ambiente e constantes ficam na camada `core`
 ([../core/README.md](../core/README.md)), que não depende de `app`.
@@ -32,40 +32,53 @@ e Router possam usar stores no setup):
 
 ```ts
 import type { App } from 'vue';
+import { VueQueryPlugin } from '@tanstack/vue-query';
 import pinia from './pinia';
 import i18n from './i18n';
 import vuetify from './vuetify';
 import router from './router';
+import { queryPluginOptions } from './query';
 
 export function registerPlugins(app: App) {
   app.use(pinia);
+  app.use(VueQueryPlugin, queryPluginOptions);
   app.use(i18n);
   app.use(router);
   app.use(vuetify);
 }
 ```
 
+## Tratamento global de erros (`providers/errors.ts`)
+
+`main.ts` chama `registerErrorHandlers(app)` antes dos plugins. Erros não
+tratados em componentes (`app.config.errorHandler`) e promises rejeitadas sem
+`catch` (`unhandledrejection`) vão para um único `ErrorReporter`, que por
+padrão escreve no console (ADR-0028). Para ligar um serviço de monitoramento,
+passe outro reporter:
+
+```ts
+registerErrorHandlers(app, (error, context) => monitoring.capture(error, context));
+```
+
 ### Exemplo — bom código (adicionar novo plugin)
 
 ```ts
-// 1. Criar providers/analytics.ts
-import { ANALYTICS_ID } from '@core/config';
-
+// 1. Criar providers/notifications.ts
 export default {
   install() {
-    // inicialização do analytics
+    // inicialização do plugin
   },
 };
 
 // 2. Registrar em providers/plugins.ts
-import analytics from './analytics';
+import notifications from './notifications';
 
 export function registerPlugins(app: App) {
   app.use(pinia);
   app.use(i18n);
   app.use(router);
   app.use(vuetify);
-  app.use(analytics); // novo plugin adicionado por último
+  app.use(notifications); // novo plugin adicionado por último
 }
 ```
 

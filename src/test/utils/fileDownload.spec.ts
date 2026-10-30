@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest';
 import {
   parseContentDisposition,
   saveBinaryResponse,
@@ -54,7 +54,7 @@ describe('toBlob', () => {
 describe('saveBlob / saveBinaryResponse', () => {
   const createObjectURL = vi.fn(() => 'blob:mock-url');
   const revokeObjectURL = vi.fn();
-  let clickSpy: ReturnType<typeof vi.spyOn>;
+  let clickSpy: MockInstance<HTMLAnchorElement['click']>;
 
   beforeEach(() => {
     vi.useFakeTimers();

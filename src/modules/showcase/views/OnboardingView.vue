@@ -1,7 +1,9 @@
 <template>
   <section class="onboarding-page py-6 py-md-8" data-cy="onboarding-page">
     <div class="mb-8">
-      <p class="text-overline text-primary font-weight-bold mb-2">{{ $t('onboarding.eyebrow') }}</p>
+      <p class="text-overline text-primary-text font-weight-bold mb-2">
+        {{ $t('onboarding.eyebrow') }}
+      </p>
       <h1 class="text-h4 text-md-h3 font-weight-bold mb-2" data-cy="onboarding-title">
         {{ $t('onboarding.title') }}
       </h1>
@@ -80,7 +82,7 @@
                   $t('onboarding.stepper.stepLabel', { current: index + 1, total: steps.length })
                 }}
               </v-chip>
-              <v-chip v-if="step.reference" size="x-small" variant="text" color="secondary">
+              <v-chip v-if="step.reference" size="x-small" variant="text" color="secondary-text">
                 {{ step.reference }}
               </v-chip>
             </div>

@@ -94,7 +94,7 @@ test.describe('Página Home', () => {
 
   test('carrega a página inicial', async ({ page }) => {
     await expect(page.getByTestId('home-page')).toBeVisible();
-    await expect(page.getByTestId('home-title')).toContainText('Vue 3 Template');
+    await expect(page.getByTestId('home-title')).toContainText('Bem-vindo');
   });
 });
 ```
@@ -109,6 +109,19 @@ await page.route('**/customers', (route) =>
   route.fulfill({ json: [{ id: 1, name: 'Maria Souza' }] })
 );
 await page.goto('/customers');
+```
+
+### Acessibilidade
+
+Toda página com E2E também passa pelo axe (WCAG 2.1 A/AA, ADR-0029):
+
+```ts
+import { expectNoA11yViolations } from './support/a11y';
+
+test('não tem violações WCAG A/AA', async ({ page }) => {
+  await page.goto('/customers');
+  await expectNoA11yViolations(page);
+});
 ```
 
 ### Regras

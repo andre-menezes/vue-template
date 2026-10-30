@@ -1,7 +1,9 @@
 <template>
   <section class="components-page py-6 py-md-8" data-cy="components-page">
     <div class="mb-8">
-      <p class="text-overline text-primary font-weight-bold mb-2">{{ $t('components.eyebrow') }}</p>
+      <p class="text-overline text-primary-text font-weight-bold mb-2">
+        {{ $t('components.eyebrow') }}
+      </p>
       <h1 class="text-h4 text-md-h3 font-weight-bold mb-2" data-cy="components-title">
         {{ $t('components.title') }}
       </h1>
@@ -84,7 +86,7 @@
           <v-chip color="error" variant="tonal" prepend-icon="cancel">
             {{ $t('components.chips.blocked') }}
           </v-chip>
-          <v-chip color="info" variant="outlined">v4.0.0</v-chip>
+          <v-chip color="info-text" variant="outlined">v4.0.0</v-chip>
         </template>
       </ShowcaseCard>
     </DocSection>
@@ -123,7 +125,7 @@
           href="https://www.rfc-editor.org/rfc/rfc9457"
           target="_blank"
           rel="noopener"
-          class="text-primary"
+          class="text-primary-text"
         >
           RFC 9457
         </a>
@@ -249,7 +251,7 @@ const buttonCode = `<v-btn color="primary" variant="flat">Primário</v-btn>
 const chipCode = `<v-chip color="success" variant="tonal" prepend-icon="check_circle">Aprovado</v-chip>
 <v-chip color="warning" variant="tonal" prepend-icon="schedule">Pendente</v-chip>
 <v-chip color="error" variant="tonal" prepend-icon="cancel">Bloqueado</v-chip>
-<v-chip color="info" variant="outlined">v4.0.0</v-chip>`;
+<v-chip color="info-text" variant="outlined">v4.0.0</v-chip>`;
 
 const alertCode = `<v-alert type="success" variant="tonal" text="Feature publicada com sucesso." />
 <v-alert type="warning" variant="tonal" text="Há mudanças não commitadas." />

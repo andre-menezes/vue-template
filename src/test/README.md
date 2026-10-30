@@ -200,6 +200,25 @@ Fora do CI, se já houver um servidor na 9091 ele é reaproveitado. Em falhas,
 o Playwright guarda screenshot e trace em `test-results/`; no CI, o relatório
 HTML (`playwright-report/`) fica nos artefatos do job `e2e`.
 
+### Acessibilidade
+
+Cada página coberta pelo E2E também passa pelo axe (`@axe-core/playwright`),
+com as regras WCAG 2.1 níveis A e AA (ADR-0029). Use o helper
+`expectNoA11yViolations`, que falha listando a regra e os seletores de cada
+violação:
+
+```ts
+import { expectNoA11yViolations } from './support/a11y';
+
+test('não tem violações WCAG A/AA', async ({ page }) => {
+  await page.goto('/customers');
+  await expect(page.getByTestId('customers-page')).toBeVisible();
+  await expectNoA11yViolations(page);
+});
+```
+
+Ao criar uma página, inclua essa checagem no spec dela.
+
 ### Estrutura e nomenclatura
 
 - Arquivo por página/fluxo: `<contexto>.spec.ts` em `e2e/`.

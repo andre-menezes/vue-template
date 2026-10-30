@@ -1,7 +1,10 @@
 import { ESLint } from 'eslint';
+import tseslint from 'typescript-eslint';
 import { describe, expect, it } from 'vitest';
 
-const eslint = new ESLint();
+// Os caminhos testados não existem em disco, então não fazem parte do programa
+// TypeScript; o lint tipado é desligado para que só as regras de camada rodem.
+const eslint = new ESLint({ overrideConfig: tseslint.configs.disableTypeChecked });
 
 /** Retorna as mensagens de `no-restricted-imports` para o código no caminho informado. */
 async function restrictedImports(code: string, filePath: string): Promise<string[]> {

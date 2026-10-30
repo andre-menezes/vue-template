@@ -50,16 +50,15 @@ Eles referenciam o núcleo em `agent/` como fonte de verdade.
 
 | Ferramenta | Arquivo do adapter                |
 | ---------- | --------------------------------- |
-| Kiro       | `.kiro/steering/project.md`       |
-| Kiro       | `.kiro/skills/create-feature.md`  |
-| Kiro       | `.kiro/skills/fix-bug.md`         |
 | Cursor     | `.cursorrules`                    |
 | Claude     | `CLAUDE.md`                       |
 | Copilot    | `.github/copilot-instructions.md` |
 
+Os adapters só apontam para os arquivos deste núcleo, sem repetir regras.
+
 ## Como usar
 
-1. Abra o projeto na IDE de sua escolha (Kiro, Cursor, VS Code + Copilot).
+1. Abra o projeto na ferramenta de sua escolha (Claude Code, Cursor, VS Code + Copilot).
 2. A IDE carrega automaticamente as instruções do adapter correspondente.
 3. Envie uma tarefa ao agente (feature spec ou descrição de bug).
 4. O agente executa o fluxo completo conforme `core/PROCEDURE.md`.

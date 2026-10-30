@@ -1,7 +1,9 @@
 <template>
   <section class="home-page py-6 py-md-8" data-cy="docs-home-page">
     <div class="mb-8">
-      <p class="text-overline text-primary font-weight-bold mb-2">{{ $t('docsHome.eyebrow') }}</p>
+      <p class="text-overline text-primary-text font-weight-bold mb-2">
+        {{ $t('docsHome.eyebrow') }}
+      </p>
       <h1 class="text-h4 text-md-h3 font-weight-bold mb-2" data-cy="docs-home-title">
         {{ $t('docsHome.title') }}
       </h1>
@@ -19,7 +21,7 @@
     <v-row>
       <v-col cols="12" lg="8">
         <div class="mb-4">
-          <p class="text-overline text-primary font-weight-bold mb-1">
+          <p class="text-overline text-primary-text font-weight-bold mb-1">
             {{ $t('docsHome.navEyebrow') }}
           </p>
           <h2 class="text-h6 font-weight-bold mb-0">{{ $t('docsHome.navTitle') }}</h2>

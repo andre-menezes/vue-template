@@ -1,7 +1,9 @@
 <template>
   <section class="decisions-page py-6 py-md-8" data-cy="decisions-page">
     <div class="mb-8">
-      <p class="text-overline text-primary font-weight-bold mb-2">{{ $t('decisions.eyebrow') }}</p>
+      <p class="text-overline text-primary-text font-weight-bold mb-2">
+        {{ $t('decisions.eyebrow') }}
+      </p>
       <h1 class="text-h4 text-md-h3 font-weight-bold mb-2" data-cy="decisions-title">
         {{ $t('decisions.title') }}
       </h1>
