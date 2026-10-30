@@ -43,14 +43,17 @@ const routes: RouteRecordRaw[] = [
     path: '/customers',
     name: 'Customers',
     component: () => import('./views/CustomersView.vue'),
+    meta: { nav: { titleKey: 'nav.customers', icon: 'group', order: 70 } },
   },
 ];
 
 export default routes;
 ```
 
-A rota é registrada automaticamente pelo router (auto-discovery via glob).
-Não é necessário editar nenhum outro arquivo.
+A rota é registrada automaticamente pelo router (auto-discovery via glob), e o
+`meta.nav` coloca o item no menu lateral, na posição de `order`. Não é
+necessário editar nenhum outro arquivo além de criar a chave `nav.customers` no
+`pt-BR.json`. Rotas sem `meta.nav` (detalhe, edição) não aparecem no menu.
 
 > Referência: [src/modules/README.md](../src/modules/README.md)
 

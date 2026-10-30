@@ -39,6 +39,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Inter auto-hospedada via `@fontsource-variable/inter`, sem requisição ao Google Fonts (ADR-0023).
 - Mensagens de i18n pré-compiladas com `@intlify/unplugin-vue-i18n`, sem o compilador no bundle; regras de lint do vue-i18n ativadas (ADR-0023).
 - Variáveis SASS do Vuetify em `src/app/styles/settings.scss` (`styles.configFile`).
+- Menu lateral montado a partir do `meta.nav` das rotas (`titleKey`, `icon`, `order`); criar um módulo não exige mais editar o `TheNavigationMenu`.
 - Gerenciador de pacotes migrado do npm para o pnpm: `pnpm-lock.yaml`, `packageManager` no `package.json`, CI com `pnpm install --frozen-lockfile` e documentação com comandos `pnpm` (ADR-0024).
 
 ### Adicionado

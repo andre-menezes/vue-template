@@ -37,9 +37,10 @@ sem nenhuma configuração manual adicional.
 
 ## Meta fields disponíveis
 
-| Meta     | Tipo     | Efeito                                      |
-| -------- | -------- | ------------------------------------------- |
-| `layout` | `string` | Define o layout (`'empty'` para sem chrome) |
+| Meta     | Tipo       | Efeito                                                    |
+| -------- | ---------- | --------------------------------------------------------- |
+| `layout` | `string`   | Define o layout (`'empty'` para sem chrome)               |
+| `nav`    | `RouteNav` | Item no menu lateral: `titleKey` (i18n), `icon` e `order` |
 
 ## Exemplo — bom código (módulo completo)
 
@@ -54,6 +55,7 @@ const routes: RouteRecordRaw[] = [
     path: '/customers',
     name: 'Customers',
     component: () => import('./views/CustomersView.vue'),
+    meta: { nav: { titleKey: 'nav.customers', icon: 'group', order: 70 } },
   },
   {
     path: '/customers/:id',
