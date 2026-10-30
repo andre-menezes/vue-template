@@ -20,6 +20,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- Skills do Claude Code em `.claude/skills/` (`vue-vuetify-components`, `write-tests`, `review-code`, `write-docs`) e skill de documentação no núcleo agêntico (`agent/skills/documentation/`).
 - Telas de documentação interativa (Vue/Vuetify): Home como hub de navegação, Arquitetura, Onboarding, Componentes & UI, Convenções e Decisões (ADRs).
 - Tela de exemplo autenticado (`/exemplo-protegido`), única rota protegida, exibindo os dados do usuário e explicando o guard.
 - Rota e tela de erro de autenticação (`/erro-autenticacao`) exibindo a mensagem do parâmetro `msg`.

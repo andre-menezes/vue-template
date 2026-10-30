@@ -11,12 +11,23 @@ O núcleo de conhecimento do agente está em `agent/`. Leia antes de agir:
 - `agent/core/PROCEDURE.md` — fases do workflow (entrada → entrega)
 - `agent/skills/vue-vuetify-dev/SKILL.md` — padrões Vue 3 + Vuetify + TS
 - `agent/skills/testing/SKILL.md` — estratégia de testes (Vitest + Playwright)
+- `agent/skills/documentation/SKILL.md` — convenções de documentação, ADR e CHANGELOG
 
 ## Workflows
 
 - `agent/workflows/create-feature.workflow.md` — implementar feature completa
 - `agent/workflows/fix-bug.workflow.md` — investigar e corrigir bug
 - `agent/workflows/validate-code.workflow.md` — checklist de qualidade
+
+## Skills do Claude Code
+
+Skills de execução em `.claude/skills/` (carregadas automaticamente pelo Claude
+Code). Elas resumem o procedimento e apontam para `agent/` como fonte de verdade:
+
+- `vue-vuetify-components` — criar/alterar componentes, views e layouts `.vue`
+- `write-tests` — testes unitários (Vitest) e E2E (Playwright)
+- `review-code` — code review pelo `docs/CODE-REVIEW-CHECKLIST.md`
+- `write-docs` — READMEs, guias, ADRs, specs e CHANGELOG
 
 ## Documentação do projeto
 
