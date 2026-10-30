@@ -316,12 +316,12 @@ Documentação detalhada: [src/test/README.md](../src/test/README.md)
 **Comandos:**
 
 ```bash
-npm run test              # unitários (single run)
-npm run test:watch        # unitários (watch mode)
-npm run test:coverage     # cobertura
-npm run test:e2e          # E2E headless
-npm run test:e2e:open     # E2E interativo (Playwright UI)
-npm run test:all          # unitários + E2E
+pnpm test                 # unitários (single run)
+pnpm test:watch           # unitários (watch mode)
+pnpm test:coverage        # cobertura
+pnpm test:e2e             # E2E headless
+pnpm test:e2e:open        # E2E interativo (Playwright UI)
+pnpm test:all             # unitários + E2E
 ```
 
 **Thresholds de cobertura:**

@@ -1,7 +1,8 @@
 # Pipeline de CI — vue3-template
 #
 # Jobs: lint, build (typecheck + build), test (unitários + cobertura) e e2e
-# (Playwright). A versão do Node segue a fixada em .nvmrc / .tool-versions.
+# (Playwright). A versão do Node segue a fixada em .nvmrc / .tool-versions, e a
+# do pnpm, o campo `packageManager` do package.json (ADR-0024).
 
 name: CI
 
@@ -23,23 +24,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci --no-audit --no-fund
-      - run: npm run lint
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
 
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci --no-audit --no-fund
-      - run: npm run build
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
       - uses: actions/upload-artifact@v4
         with:
           name: dist
@@ -50,12 +53,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci --no-audit --no-fund
-      - run: npm run test:coverage
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:coverage
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -67,14 +71,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci --no-audit --no-fund
-      - run: npx playwright install --with-deps chromium
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
       # O `webServer` do playwright.config.ts sobe o Vite no modo `test`.
-      - run: npm run test:e2e
+      - run: pnpm test:e2e
       - uses: actions/upload-artifact@v4
         if: always()
         with:

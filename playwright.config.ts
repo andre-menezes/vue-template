@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Porta dedicada aos testes E2E: não colide com o `npm run dev` (9081) nem com
+ * Porta dedicada aos testes E2E: não colide com o `pnpm dev` (9081) nem com
  * outros projetos rodando na máquina.
  */
 const PORT = 9091;
@@ -28,7 +28,7 @@ export default defineConfig({
   // Sobe o Vite no modo `test` (valores padrão de `@core/config`), sem
   // depender do `.env.development.local` de cada máquina.
   webServer: {
-    command: `npx vite --mode test --port ${PORT} --strictPort`,
+    command: `pnpm exec vite --mode test --port ${PORT} --strictPort`,
     url: baseURL,
     reuseExistingServer: !isCI,
     timeout: 120_000,

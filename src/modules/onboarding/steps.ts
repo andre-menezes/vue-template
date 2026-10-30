@@ -133,9 +133,9 @@ it('retorna lista de clientes', async () => {
       title: t('onboarding.steps.validate.title'),
       description: t('onboarding.steps.validate.description'),
       language: 'bash',
-      code: `npm run lint          # sem erros de lint
-npm run build         # typecheck + build sem erros
-npm run test          # testes unitários passando`,
+      code: `pnpm lint             # sem erros de lint
+pnpm build            # typecheck + build sem erros
+pnpm test             # testes unitários passando`,
     },
   ];
 }

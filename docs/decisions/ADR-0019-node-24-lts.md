@@ -10,6 +10,9 @@
 > continua em `.nvmrc` e `.tool-versions`, que definem o que o vfox, o nvm e o
 > CI instalam. Com a versão exata em `engines`, qualquer outro patch da linha
 > 24 bloqueava o `npm install` sem ganho de reprodutibilidade.
+>
+> Nota (ADR-0024): o gerenciador passou a ser o pnpm, que também respeita o
+> `engine-strict` do `.npmrc`.
 
 ## Contexto e problema
 

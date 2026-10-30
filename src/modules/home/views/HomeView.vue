@@ -124,37 +124,37 @@ const navCards = computed<NavCard[]>(() => [
 const activity = computed<Activity[]>(() => [
   {
     title: t('home.workflow.install'),
-    detail: 'npm install',
+    detail: 'pnpm install',
     icon: 'deployed_code',
     color: 'success',
   },
   {
     title: t('home.workflow.dev'),
-    detail: 'npm run dev',
+    detail: 'pnpm dev',
     icon: 'dns',
     color: 'secondary',
   },
   {
     title: t('home.workflow.lint'),
-    detail: 'npm run lint',
+    detail: 'pnpm lint',
     icon: 'code',
     color: 'primary',
   },
   {
     title: t('home.workflow.unitTests'),
-    detail: 'npm run test',
+    detail: 'pnpm test',
     icon: 'science',
     color: 'warning',
   },
   {
     title: t('home.workflow.e2eTests'),
-    detail: 'npm run test:e2e',
+    detail: 'pnpm test:e2e',
     icon: 'travel_explore',
     color: 'info',
   },
   {
     title: t('home.workflow.build'),
-    detail: 'npm run build',
+    detail: 'pnpm build',
     icon: 'deployed_code_update',
     color: 'accent',
   },

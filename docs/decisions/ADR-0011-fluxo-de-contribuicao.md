@@ -8,6 +8,9 @@
 > Nota (ADR-0022): o pipeline de CI deixou de ser o `.gitlab-ci.yml` e passou
 > a ser o GitHub Actions (`.github/workflows/ci.yml`). Commits, hooks e
 > demais regras desta ADR seguem vigentes.
+>
+> Nota (ADR-0024): o gerenciador de pacotes passou a ser o pnpm. O CI usa
+> `pnpm install --frozen-lockfile` e o pre-commit, `pnpm exec lint-staged`.
 
 ## Contexto e problema
 

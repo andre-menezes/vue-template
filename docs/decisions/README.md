@@ -78,3 +78,4 @@ substitui a anterior e atualize o status da antiga.
 | [ADR-0021](ADR-0021-remocao-da-autenticacao-corporativa.md) | Remoção da autenticação corporativa e páginas públicas      | Aceita        |
 | [ADR-0022](ADR-0022-github-como-hospedagem-e-ci.md)         | GitHub como hospedagem e CI com GitHub Actions              | Aceita        |
 | [ADR-0023](ADR-0023-otimizacao-de-fontes-e-i18n.md)         | Fontes auto-hospedadas e mensagens de i18n pré-compiladas   | Aceita        |
+| [ADR-0024](ADR-0024-pnpm-como-gerenciador-de-pacotes.md)    | pnpm como gerenciador de pacotes                            | Aceita        |

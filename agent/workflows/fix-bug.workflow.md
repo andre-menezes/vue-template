@@ -24,7 +24,7 @@ Ler antes de executar:
 6. Aplicar a correção mínima e focada. Não refatorar código adjacente (isso é um commit separado).
 7. Criar teste de regressão que **falha** sem a correção e **passa** com ela.
 8. Verificar vulnerabilidades: a correção expõe tokens? Bypassa validação? Altera auth?
-9. Validar: `npm run lint && npm run build && npm run test`.
+9. Validar: `pnpm lint && pnpm build && pnpm test`.
 10. Corrigir regressões se necessário. Revalidar.
 11. Se a correção exigiu uma decisão arquitetural (mudança estrutural, novo padrão), registrar como ADR em `docs/decisions/` (ver `docs/decisions/README.md`). Correções pontuais de bug normalmente não geram ADR.
 12. Commitar: `fix(escopo): descrição do que foi corrigido`. Usar corpo para explicar causa raiz quando relevante.

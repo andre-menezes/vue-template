@@ -10,14 +10,14 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 
 ## Pré-requisitos
 
-- Node.js **24.22.2** (versão de referência em `.nvmrc`/`.tool-versions`; o `npm install` aceita qualquer 24.x a partir dela — ver o CONTRIBUTING)
-- npm
+- Node.js **24.22.2** (versão de referência em `.nvmrc`/`.tool-versions`; o `pnpm install` aceita qualquer 24.x a partir dela — ver o CONTRIBUTING)
+- pnpm 10 (`corepack enable` uma vez por máquina; ver o CONTRIBUTING)
 - Variáveis de ambiente: opcionais (para sobrescrever os padrões, copie `.env.example` para `.env.development.local`)
 - Extensões recomendadas instaladas (veja `.vscode/extensions.json`)
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 ---
@@ -230,9 +230,9 @@ test.describe('Página Clientes', () => {
 Antes de commitar, garanta que tudo passa:
 
 ```bash
-npm run lint          # sem erros de lint
-npm run build         # typecheck + build sem erros
-npm run test          # testes unitários passando
+pnpm lint             # sem erros de lint
+pnpm build            # typecheck + build sem erros
+pnpm test             # testes unitários passando
 ```
 
 ---
@@ -247,9 +247,9 @@ npm run test          # testes unitários passando
 - [ ] Componentes apresentacionais com props tipadas
 - [ ] Teste unitário cobrindo o service
 - [ ] Teste E2E cobrindo o fluxo principal
-- [ ] `npm run lint` sem erros
-- [ ] `npm run build` sem erros
-- [ ] `npm run test` passando
+- [ ] `pnpm lint` sem erros
+- [ ] `pnpm build` sem erros
+- [ ] `pnpm test` passando
 - [ ] Commit seguindo [COMMIT-CONVENTIONS.md](COMMIT-CONVENTIONS.md)
 
 ---

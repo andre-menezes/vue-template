@@ -173,7 +173,7 @@ const message = computed(() => t('auth.error.default'));
 
 - Nenhum texto de UI fixo no arquivo migrado (exceto snippets de código).
 - Chaves adicionadas ao `pt-BR.json` seguindo a convenção.
-- `npm run lint`, `npm run build` e `npm run test` verdes.
+- `pnpm lint`, `pnpm build` e `pnpm test` verdes.
 - Sem regressão visual (conferir a tela no navegador).
 
 ## Fora de escopo (por ora)

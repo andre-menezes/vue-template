@@ -5,10 +5,11 @@
   "type": "module",
   "engines": {
     "node": ">=24.22.2 <25",
-    "npm": ">=10"
+    "pnpm": ">=10"
   },
+  "packageManager": "pnpm@10.28.0",
   "scripts": {
-    "start": "npm run dev",
+    "start": "pnpm dev",
     "dev": "vite --open",
     "stg": "vite --mode staging",
     "typecheck": "vue-tsc -b",
@@ -24,7 +25,7 @@
     "test:e2e": "playwright test",
     "test:e2e:open": "playwright test --ui",
     "test:e2e:install": "playwright install chromium",
-    "test:all": "npm run test && npm run test:e2e",
+    "test:all": "pnpm test && pnpm test:e2e",
     "prepare": "husky"
   },
   "dependencies": {
@@ -75,7 +76,10 @@
       "prettier --write"
     ]
   },
-  "allowScripts": {
-    "@parcel/watcher@2.6.0": true
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild"
+    ]
   }
 }
