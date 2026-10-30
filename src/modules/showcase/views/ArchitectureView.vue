@@ -347,7 +347,6 @@ const aliases = [
   { name: '@shared', target: 'src/shared/' },
   { name: '@typings', target: 'src/types/' },
   { name: '@test', target: 'src/test/' },
-  { name: '@root', target: './ (raiz)' },
 ];
 
 const languageRules = computed(() => [

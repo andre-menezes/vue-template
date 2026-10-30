@@ -59,7 +59,6 @@ export default defineConfig(({ mode }) => ({
   },
   resolve: {
     alias: {
-      '@root': fileURLToPath(new URL('./', import.meta.url)),
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@app': fileURLToPath(new URL('./src/app', import.meta.url)),
       '@core': fileURLToPath(new URL('./src/core', import.meta.url)),
