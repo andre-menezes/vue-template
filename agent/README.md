@@ -30,7 +30,8 @@ agent/
 │   └── PROCEDURE.md       # Fases do workflow (entrada → implementação → entrega)
 ├── skills/
 │   ├── vue-vuetify-dev/   # Conhecimento Vue 3 + Vuetify + TS deste projeto
-│   └── testing/           # Conhecimento de testes (Vitest + Playwright)
+│   ├── testing/           # Conhecimento de testes (Vitest + Playwright)
+│   └── documentation/     # Convenções de documentação, ADR e CHANGELOG
 ├── workflows/
 │   ├── create-feature.workflow.md
 │   ├── fix-bug.workflow.md
@@ -55,6 +56,7 @@ Eles referenciam o núcleo em `agent/` como fonte de verdade.
 | Kiro       | `.kiro/skills/fix-bug.md`         |
 | Cursor     | `.cursorrules`                    |
 | Claude     | `CLAUDE.md`                       |
+| Claude     | `.claude/skills/*/SKILL.md`       |
 | Copilot    | `.github/copilot-instructions.md` |
 
 ## Como usar

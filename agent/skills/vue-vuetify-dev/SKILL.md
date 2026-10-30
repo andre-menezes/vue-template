@@ -181,6 +181,17 @@ export function useSession() {
   Sem o sufixo/classe, o ícone é exibido em contorno (outline).
 - Eventos em camelCase nos emits, kebab-case nos templates (Vue converte).
 
+## Textos de UI (i18n)
+
+- Todo texto visível vem do `vue-i18n`: `$t('namespace.chave')` no template,
+  `const { t } = useI18n()` no script.
+- Mensagens em `src/app/locales/pt-BR.json`, agrupadas pelo namespace do
+  módulo (`home`, `architecture`...) ou `common` para textos globais.
+- Arrays traduzidos são montados na view com `computed<T[]>(() => [...])`
+  chamando `t()`; componentes apresentacionais recebem o texto pronto.
+- Snippets de código, nomes de camada, ícones e ids não são traduzidos.
+- Detalhes e decisões: `docs/I18N-MIGRATION-PLAN.md`.
+
 ## Não fazer
 
 - Não usar `any` em contratos de domínio.
