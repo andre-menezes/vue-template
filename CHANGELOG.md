@@ -25,6 +25,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Pipeline do GitLab (`.gitlab-ci.yml`), templates de merge request/issue e deploy no GitLab Pages (ADR-0022).
 - `.env.test`: as variáveis de ambiente têm valores padrão e nenhum arquivo `.env` é obrigatório.
 - `package-lock.json` e o campo `allowScripts` do `package.json`, substituídos pelo `pnpm-lock.yaml` e por `pnpm.onlyBuiltDependencies` (ADR-0024).
+- Page view do Google Analytics no router e tipos de `src/types/analytics`: nenhum script do gtag era carregado (ADR-0028).
 
 ### Alterado
 
@@ -44,9 +45,18 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Os exemplos de view da documentação passam a ler dados com `useQuery` num composable do módulo, em vez de `ref` + `onMounted`.
 - Menu lateral montado a partir do `meta.nav` das rotas (`titleKey`, `icon`, `order`); criar um módulo não exige mais editar o `TheNavigationMenu`.
 - Gerenciador de pacotes migrado do npm para o pnpm: `pnpm-lock.yaml`, `packageManager` no `package.json`, CI com `pnpm install --frozen-lockfile` e documentação com comandos `pnpm` (ADR-0024).
+- Lint com informação de tipos (`recommendedTypeChecked` do typescript-eslint) em `src` e `e2e`.
+- `mountWithPlugins` usa as factories do app (`createAppVuetify`, `createAppI18n`), com o mesmo tema, ícones e locale.
+- Textos coloridos usam os tons `<cor>-text` do tema, com contraste AA; a opacidade de média ênfase do tema claro subiu para 0,7 (ADR-0029).
+- `CLAUDE.md` reduzido a um ponteiro para o núcleo `agent/` e os comandos do projeto.
+- Piso de cobertura elevado para linhas 38, funções 27, branches 59 e statements 37.
+- Menu lateral sem `role=list` sobre links, e bloco de código com `<pre>` focável e tooltip com nome acessível (WCAG, apontados pelo axe).
 
 ### Adicionado
 
+- Tratamento global de erros em `@app/providers/errors`: `app.config.errorHandler` e `unhandledrejection` enviam a um `ErrorReporter` trocável (ADR-0028).
+- Checagem de acessibilidade WCAG 2.1 A/AA no E2E com `@axe-core/playwright` (`expectNoA11yViolations`) (ADR-0029).
+- Testes do `App.vue` (escolha de layout e tema).
 - TanStack Query (`@tanstack/vue-query`) para dados do servidor: `QueryClient` em `@app/providers/query`, registrado no bootstrap e no `mountWithPlugins` (ADR-0027).
 - Telas de documentação interativa (Vue/Vuetify): Home como hub de navegação, Arquitetura, Onboarding, Componentes & UI, Convenções e Decisões (ADRs).
 - Tela de exemplo autenticado (`/exemplo-protegido`), única rota protegida, exibindo os dados do usuário e explicando o guard.
