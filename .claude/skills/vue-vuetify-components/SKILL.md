@@ -140,8 +140,8 @@ const emit = defineEmits<{ select: [id: number] }>();
 ## 6. Rotas (quando criar uma view nova)
 
 `src/modules/<módulo>/routes.ts` exporta `default` um `RouteRecordRaw[]`, com
-`component: () => import('./views/XView.vue')` e `meta` (`requiresAuth`,
-`layout: 'empty'`). É auto-descoberto; não registre manualmente. Se a tela
+`component: () => import('./views/XView.vue')` e `meta` quando preciso
+(ex.: `layout: 'empty'`; campos aceitos em `src/types/router`). É auto-descoberto; não registre manualmente. Se a tela
 precisar aparecer no menu, adicione o item em `TheNavigationMenu.vue`.
 
 ## 7. Fechamento

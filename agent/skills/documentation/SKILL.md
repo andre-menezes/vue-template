@@ -11,7 +11,7 @@ sem divergir do código.
 | Documento                                                                                       | Conteúdo                                     | Quando mexer                         |
 | ----------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------------------------ |
 | `README.md`                                                                                     | Visão geral e primeiros passos               | Setup ou comandos mudaram            |
-| `CONTRIBUTING.md`                                                                               | Fluxo, branches, commits, hooks, MR          | Processo de contribuição mudou       |
+| `CONTRIBUTING.md`                                                                               | Fluxo, branches, commits, hooks, PR          | Processo de contribuição mudou       |
 | `CHANGELOG.md`                                                                                  | Mudanças por versão (Keep a Changelog)       | Toda mudança relevante               |
 | `docs/ARCHITECTURE-GUIDE.md`                                                                    | Índice central: camadas, fluxos, convenções  | Regra arquitetural ou fluxo mudou    |
 | `docs/ONBOARDING.md`                                                                            | Passo a passo de criação de feature          | Ordem/forma de criar feature mudou   |

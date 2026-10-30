@@ -1,6 +1,6 @@
 ---
 name: write-tests
-description: Escreve ou corrige testes deste template — unitários/integração com Vitest + Vue Test Utils (mountWithPlugins, Pinia real) e E2E com Playwright (data-cy, mockUserSession). Use ao cobrir regra nova, bug corrigido ou componente.
+description: Escreve ou corrige testes deste template — unitários/integração com Vitest + Vue Test Utils (mountWithPlugins, Pinia real) e E2E com Playwright (data-cy, page.route). Use ao cobrir regra nova, bug corrigido ou componente.
 ---
 
 # Testes (Vitest + Playwright)
@@ -69,8 +69,8 @@ vi.mocked(httpClient.get).mockResolvedValue(mockCustomers);
 expect(httpClient.get).toHaveBeenCalledWith('/customers');
 ```
 
-- Store/guard que usa service: mock do service
-  (`vi.mock('@shared/api/services/auth.service', ...)`), Pinia real.
+- Store/composable que usa service: mock do service
+  (`vi.mock('@shared/api/services/<nome>.service', ...)`), Pinia real.
 - APIs de browser sem suporte no happy-dom: stub pontual
   (ver `stubClipboard` em `CodeBlock.spec.ts`). `matchMedia` e `localStorage`
   já estão em `src/test/setup.ts`.
@@ -107,17 +107,18 @@ describe('CustomerCard', () => {
 
 ```ts
 import { expect, test } from '@playwright/test';
-import { mockUserSession } from './support/session';
 
 test.describe('Página Clientes', () => {
-  test.describe('com usuário autenticado', () => {
+  test.describe('com clientes cadastrados', () => {
     test.beforeEach(async ({ page }) => {
-      await mockUserSession(page);
+      await page.route('**/customers', (route) =>
+        route.fulfill({ json: [{ id: 1, name: 'Maria' }] })
+      );
       await page.goto('/clientes');
     });
 
     test('lista os clientes retornados pela API', async ({ page }) => {
-      await expect(page.getByTestId('customers-page')).toBeVisible();
+      await expect(page.getByTestId('customer-1')).toBeVisible();
     });
   });
 });
@@ -129,9 +130,9 @@ test.describe('Página Clientes', () => {
   principal.
 - Caminhos relativos em `page.goto` (a `baseURL` já está configurada).
 - Asserções com espera automática (`await expect(locator)...`); nunca `waitForTimeout`.
-- Rota com `meta.requiresAuth`: `mockUserSession(page, overrides?)` **antes** do `goto`.
-- Backend: intercepte só endpoints HTTP com `page.route`; não mocke stores.
-- O `webServer` sobe o Vite sozinho (porta 9091, modo `test`, auth mock).
+- Backend: intercepte só endpoints HTTP com `page.route` **antes** do `goto`;
+  não mocke stores.
+- O `webServer` do `playwright.config.ts` sobe o Vite sozinho (modo `test`).
   Primeira execução: `npm run test:e2e:install`.
 
 ## 6. Rodar e validar

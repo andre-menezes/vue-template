@@ -61,16 +61,16 @@ Itens ⚠️ bloqueiam o merge; 💡 são sugestões.
 - ⚠️ Regra de negócio nova tem teste; ⚠️ todo `it` tem `expect`; ⚠️ suíte verde.
 - Bug corrigido tem teste de regressão.
 - Pinia real, mock só de fronteira (instância HTTP/service).
-- Fluxo crítico (auth) com E2E; seletores `data-cy`.
+- Fluxo principal de página nova com E2E; seletores `data-cy`.
 - Cobertura não caiu; se subiu, `coverage.thresholds` foi elevado (ADR-0016).
 
 **Segurança**
 
 - ⚠️ Nenhum token/segredo/dado pessoal em código, log, template ou URL.
-- ⚠️ Nada sensível em `localStorage`; sessão é cookie `HttpOnly` (ADR-0014).
+- ⚠️ Nada sensível (tokens, dados pessoais) em `localStorage`.
 - ⚠️ Input validado antes de ir ao backend.
-- Requisições pela instância HTTP (`credentials: 'include'`), nunca `ofetch` direto.
-- Autenticação continua fail-closed (ADR-0017); `v-html` sanitizado.
+- Requisições pela instância HTTP compartilhada, nunca `ofetch` direto.
+- `v-html` só com conteúdo sanitizado.
 
 **UI, i18n e acessibilidade**
 
