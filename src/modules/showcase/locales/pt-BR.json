@@ -161,7 +161,7 @@
       }
     },
     "stores": {
-      "app": "Estado global de UX (tema, loading)."
+      "app": "Estado global de UX (tema persistido)."
     },
     "languageRules": {
       "docs": {

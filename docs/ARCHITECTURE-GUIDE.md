@@ -236,9 +236,9 @@ Documentação detalhada: [src/shared/api/README.md](../src/shared/api/README.md
 
 Stores Pinia ficam em `shared/stores/`. Cada store tem responsabilidade única.
 
-| Store       | Responsabilidade                               |
-| ----------- | ---------------------------------------------- |
-| `app.store` | Estado global de UX (tema persistido, loading) |
+| Store       | Responsabilidade                      |
+| ----------- | ------------------------------------- |
+| `app.store` | Estado global de UX (tema persistido) |
 
 **Regra de uso:**
 
@@ -361,7 +361,6 @@ lines 29%, functions 19%, branches 51%, statements 28%.
 | `@shared`  | `src/shared/`  |
 | `@typings` | `src/types/`   |
 | `@test`    | `src/test/`    |
-| `@root`    | `./` (raiz)    |
 
 **Regra**: sempre usar o alias mais próximo do destino. Nunca usar `@/shared/`
 quando `@shared/` está disponível.

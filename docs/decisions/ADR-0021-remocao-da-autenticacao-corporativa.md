@@ -76,6 +76,7 @@ autenticação existir.
 ### Neutras
 
 - `shared/utils/cookie.ts` permanece como utilitário genérico.
+  (Nota de 2026-10-30: removido depois, por não ter nenhum consumidor.)
 
 ## Referências
 
