@@ -10,15 +10,10 @@ function readPersistedTheme(): ThemeName {
 
 export const useAppStore = defineStore('app', {
   state: (): AppState => ({
-    loading: false,
     theme: readPersistedTheme(),
   }),
 
   actions: {
-    setLoading(value: boolean): void {
-      this.loading = value;
-    },
-
     switchTheme(): void {
       this.theme = this.theme === 'light' ? 'dark' : 'light';
       localStorage.setItem(STORAGE_KEYS.THEME, this.theme);
