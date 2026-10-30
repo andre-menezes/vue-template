@@ -17,11 +17,11 @@ export function getCookie(name: string): string | null {
     return null;
   }
 
-  const prefixo = `${name}=`;
-  for (const parte of document.cookie.split(';')) {
-    const cookie = parte.trim();
-    if (cookie.startsWith(prefixo)) {
-      return decodeURIComponent(cookie.slice(prefixo.length));
+  const prefix = `${name}=`;
+  for (const part of document.cookie.split(';')) {
+    const cookie = part.trim();
+    if (cookie.startsWith(prefix)) {
+      return decodeURIComponent(cookie.slice(prefix.length));
     }
   }
 

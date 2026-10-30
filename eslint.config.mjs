@@ -33,7 +33,7 @@ const aliasPatterns = [
 ];
 
 /** Monta a regra para uma camada proibindo os grupos informados. */
-function forbidLayers(layerName, forbidden) {
+function forbidLayers(layerName, forbidden, extraPatterns = []) {
   return {
     'no-restricted-imports': [
       'error',
@@ -44,6 +44,7 @@ function forbidLayers(layerName, forbidden) {
             group,
             message: `A camada ${layerName} não pode importar de ${target} (ADR-0018).`,
           })),
+          ...extraPatterns,
         ],
       },
     ],
@@ -56,6 +57,31 @@ const SHARED = { group: ['@shared/*', '**/shared/**'], target: 'shared' };
 const CORE = { group: ['@core/*', '**/core/**'], target: 'core' };
 const TEST = { group: ['@test/*', '**/test/**'], target: 'test' };
 
+/**
+ * Import relativo que sobe até `src/modules/` alcança outro módulo. Os padrões
+ * casam com o texto do import, não com o caminho resolvido, então a regra
+ * depende da profundidade do arquivo: em `src/modules/<m>/arquivo.ts` o limite
+ * é `../`; em `src/modules/<m>/views/arquivo.ts`, `../../`; e assim por diante.
+ */
+const MODULE_MAX_DEPTH = 6;
+const moduleDepthRules = Array.from({ length: MODULE_MAX_DEPTH }, (_, index) => {
+  const depth = index + 1;
+  return {
+    files: [`src/modules/*/${'*/'.repeat(depth - 1)}*.{ts,vue}`],
+    rules: forbidLayers(
+      'modules',
+      [APP, MODULES, TEST],
+      [
+        {
+          group: [`${'../'.repeat(depth)}*`],
+          message:
+            'Um módulo não pode importar de outro módulo, nem por caminho relativo (ADR-0018).',
+        },
+      ]
+    ),
+  };
+});
+
 const layerRules = [
   { files: ['src/**/*.{ts,vue}'], rules: forbidLayers('src', []) },
   { files: ['src/app/**/*.{ts,vue}'], rules: forbidLayers('app', [MODULES, TEST]) },
@@ -64,6 +90,7 @@ const layerRules = [
     files: ['src/modules/**/*.{ts,vue}'],
     rules: forbidLayers('modules', [APP, MODULES, TEST]),
   },
+  ...moduleDepthRules,
   { files: ['src/shared/**/*.{ts,vue}'], rules: forbidLayers('shared', [APP, MODULES, TEST]) },
   {
     files: ['src/core/**/*.{ts,vue}'],
@@ -80,7 +107,12 @@ export default [
     files: ['**/*.{js,mjs,cjs,ts,vue}'],
     languageOptions: {
       sourceType: 'module',
-      globals: { ...globals.browser, ...globals.node },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        // Injetado pelo `define` do `vite.config.ts` (declarado em `src/env.d.ts`).
+        __APP_META__: 'readonly',
+      },
     },
   },
   pluginJs.configs.recommended,

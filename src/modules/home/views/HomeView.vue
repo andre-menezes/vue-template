@@ -44,15 +44,13 @@ import { useI18n } from 'vue-i18n';
 import MetricCard from '../components/MetricCard.vue';
 import NavigationCard from '../components/NavigationCard.vue';
 import WorkFlow from '../components/WorkFlow.vue';
-import packageJson from '@root/package.json';
 import type { Activity, Metric } from '@typings/home';
 import type { NavCard } from '@typings/docs';
 
 const { t } = useI18n();
 
-const runtimeDependencies = Object.entries(packageJson.dependencies);
-const toolingDependencies = Object.entries(packageJson.devDependencies);
-const totalDependencies = runtimeDependencies.length + toolingDependencies.length;
+const { runtimeDependencies, toolingDependencies } = __APP_META__;
+const totalDependencies = runtimeDependencies + toolingDependencies;
 
 const metrics = computed<Metric[]>(() => [
   {
@@ -64,14 +62,14 @@ const metrics = computed<Metric[]>(() => [
   },
   {
     label: t('home.metrics.runtime.label'),
-    value: runtimeDependencies.length,
+    value: runtimeDependencies,
     detail: t('home.metrics.runtime.detail'),
     icon: 'rocket_launch-fill',
     color: 'accent',
   },
   {
     label: t('home.metrics.tooling.label'),
-    value: toolingDependencies.length,
+    value: toolingDependencies,
     detail: t('home.metrics.tooling.detail'),
     icon: 'build',
     color: 'info',

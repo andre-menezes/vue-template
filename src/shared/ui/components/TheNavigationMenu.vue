@@ -30,8 +30,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useDisplay } from 'vuetify';
-import { version } from '@root/package.json';
 import type { MenuItem } from '@typings/components';
+
+const { version } = __APP_META__;
 
 const props = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>();

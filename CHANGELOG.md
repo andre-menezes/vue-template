@@ -30,6 +30,10 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - CI migrado para o GitHub Actions (`.github/workflows/ci.yml`), com templates de issue e PR e labels em `.github/labels.md` (ADR-0022).
 - `LICENSE.md` com Andre Menezes como titular.
 - Piso de cobertura rebaixado uma única vez após a remoção da autenticação (ADR-0021).
+- `engines.node` aceita a linha 24 a partir da `24.22.2` (`>=24.22.2 <25`); a versão exata continua em `.nvmrc` e `.tool-versions` (nota na ADR-0019).
+- Regras de camada também bloqueiam import relativo entre módulos (`../../outro-modulo`), com teste em `src/test/architecture` (ADR-0018).
+- Versão e contagem de dependências chegam à UI por `define` (`__APP_META__`), e o `package.json` deixou de ir para o bundle.
+- Variáveis `VITE_*` tipadas em `src/env.d.ts`; removidos `shims-vue.d.ts` e `.vue` de `resolve.extensions`.
 
 ### Adicionado
 

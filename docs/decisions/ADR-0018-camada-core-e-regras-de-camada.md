@@ -9,6 +9,12 @@
 > `user.store` e o handler de 401 (`auth-error.ts`) foram removidos junto com a
 > autenticação corporativa. A camada `core` e as regras de dependência seguem
 > vigentes.
+>
+> Nota (2026-10-30): os padrões casavam só com `@modules/*` e `**/modules/**`,
+> então `import x from '../../outro-modulo/...'` passava no lint. O
+> `eslint.config.mjs` agora proíbe, conforme a profundidade do arquivo, todo
+> import relativo que sobe até `src/modules/`. O teste
+> `src/test/architecture/layerRules.spec.ts` garante o bloqueio.
 
 ## Contexto e problema
 
