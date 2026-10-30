@@ -8,7 +8,7 @@ test.describe('Página Onboarding', () => {
     await page.goto('/onboarding');
   });
 
-  test('carrega a página sem exigir autenticação', async ({ page }) => {
+  test('carrega a página', async ({ page }) => {
     await expect(page.getByTestId('onboarding-page')).toBeVisible();
     await expect(page.getByTestId('onboarding-title')).toContainText(
       'Primeiros passos e como criar uma feature'

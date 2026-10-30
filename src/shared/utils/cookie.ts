@@ -1,9 +1,9 @@
 /**
  * Leitura de cookies legíveis por JavaScript.
  *
- * Usado apenas para cookies NÃO-HttpOnly, como o `XSRF-TOKEN_<modulo>` do
- * double-submit (RF-FE-03). O cookie de sessão (`SID_<modulo>`) é `HttpOnly` e,
- * por definição, não é acessível por aqui.
+ * Funciona apenas para cookies NÃO-HttpOnly (ex.: um token CSRF de
+ * double-submit). Cookies `HttpOnly` (ex.: o de sessão) não são, por
+ * definição, acessíveis por aqui.
  */
 
 /**
