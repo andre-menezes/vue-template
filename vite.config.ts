@@ -3,6 +3,7 @@
 // Plugins
 import vue from '@vitejs/plugin-vue';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 
 import { defineConfig } from 'vitest/config';
 import { fileURLToPath, URL } from 'node:url';
@@ -35,9 +36,27 @@ export default defineConfig(({ mode }) => ({
     // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       autoImport: true,
+      // Compila só o CSS dos componentes usados, já com as variáveis do projeto.
+      styles: { configFile: 'src/app/styles/settings.scss' },
+    }),
+    // Pré-compila as mensagens de `src/app/locales` em build e usa o build
+    // runtime-only do vue-i18n, sem o compilador de mensagens no bundle.
+    VueI18nPlugin({
+      include: [fileURLToPath(new URL('./src/app/locales/**', import.meta.url))],
+      // Algumas mensagens das telas de documentação contêm HTML (renderizado
+      // com `v-html`); sem isto o plugin recusa essas mensagens.
+      strictMessage: false,
+      // Todas as mensagens chegam pré-compiladas, então o compilador sai do bundle.
+      dropMessageCompiler: true,
     }),
     ...(mode === 'development' ? [vueDevTools()] : []),
   ],
+  optimizeDeps: {
+    // O `vite-plugin-vuetify` importa os componentes sob demanda, então o Vite
+    // só os descobre ao abrir cada rota e recarrega a página no meio do uso
+    // (e dos testes E2E). Pré-otimizar todos na partida evita esses reloads.
+    include: ['vuetify/components/*'],
+  },
   resolve: {
     alias: {
       '@root': fileURLToPath(new URL('./', import.meta.url)),

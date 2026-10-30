@@ -4,6 +4,7 @@ import tseslint from 'typescript-eslint';
 import pluginVue from 'eslint-plugin-vue';
 import pluginPrettier from 'eslint-plugin-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import pluginVueI18n from '@intlify/eslint-plugin-vue-i18n';
 
 // ---------------------------------------------------------------------------
 // Regras de dependência entre camadas (ADR-0018), aplicadas com a regra nativa
@@ -155,4 +156,28 @@ export default [
     },
   },
   ...layerRules,
+  // i18n: chaves usadas precisam existir em `pt-BR.json`, e o JSON não guarda
+  // chaves órfãs. Texto fixo no template vira aviso para não bloquear trechos
+  // técnicos (snippets, nomes de camada), que não são traduzidos.
+  ...pluginVueI18n.configs['flat/recommended'],
+  {
+    files: ['src/**/*.{ts,vue}', 'src/app/locales/*.json'],
+    settings: {
+      'vue-i18n': {
+        localeDir: './src/app/locales/*.json',
+        messageSyntaxVersion: '^11.0.0',
+      },
+    },
+    rules: {
+      '@intlify/vue-i18n/no-missing-keys': 'error',
+      '@intlify/vue-i18n/no-unused-keys': [
+        'error',
+        // `nav.*` chega ao `$t` por variável (`item.titleKey` no menu), que a
+        // regra não consegue rastrear.
+        { extensions: ['.ts', '.vue'], ignores: ['/^nav\\./'] },
+      ],
+      '@intlify/vue-i18n/no-raw-text': 'warn',
+      '@intlify/vue-i18n/no-v-html': 'off',
+    },
+  },
 ];

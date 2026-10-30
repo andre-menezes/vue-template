@@ -33,7 +33,7 @@
       >
         <v-icon :icon="copied ? 'check' : 'content_copy'" />
         <v-tooltip activator="parent" location="top" color="surface" theme="dark">
-          {{ copied ? 'Copiado!' : 'Copiar código' }}
+          {{ copied ? $t('common.copied') : copyLabel }}
         </v-tooltip>
       </v-btn>
     </v-sheet>
@@ -42,12 +42,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import type { CodeBlockProps } from '@typings/docs';
 
 const { code, language, filename } = defineProps<CodeBlockProps>();
 
+const { t } = useI18n();
 const copied = ref(false);
-const copyLabel = 'Copiar código';
+const copyLabel = t('common.copyCode');
 
 let resetTimer: ReturnType<typeof setTimeout> | undefined;
 

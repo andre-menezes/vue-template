@@ -34,6 +34,10 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Regras de camada também bloqueiam import relativo entre módulos (`../../outro-modulo`), com teste em `src/test/architecture` (ADR-0018).
 - Versão e contagem de dependências chegam à UI por `define` (`__APP_META__`), e o `package.json` deixou de ir para o bundle.
 - Variáveis `VITE_*` tipadas em `src/env.d.ts`; removidos `shims-vue.d.ts` e `.vue` de `resolve.extensions`.
+- Fonte de ícones gerada com só o eixo FILL variável (`scripts/build-icon-font.sh`): de 3,96 MB para 458 KB, com todos os ícones (ADR-0023).
+- Inter auto-hospedada via `@fontsource-variable/inter`, sem requisição ao Google Fonts (ADR-0023).
+- Mensagens de i18n pré-compiladas com `@intlify/unplugin-vue-i18n`, sem o compilador no bundle; regras de lint do vue-i18n ativadas (ADR-0023).
+- Variáveis SASS do Vuetify em `src/app/styles/settings.scss` (`styles.configFile`).
 
 ### Adicionado
 

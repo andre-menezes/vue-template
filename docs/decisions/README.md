@@ -77,3 +77,4 @@ substitui a anterior e atualize o status da antiga.
 | [ADR-0020](ADR-0020-e2e-com-playwright.md)                  | Testes E2E com Playwright (substitui o Cypress)             | Aceita        |
 | [ADR-0021](ADR-0021-remocao-da-autenticacao-corporativa.md) | Remoção da autenticação corporativa e páginas públicas      | Aceita        |
 | [ADR-0022](ADR-0022-github-como-hospedagem-e-ci.md)         | GitHub como hospedagem e CI com GitHub Actions              | Aceita        |
+| [ADR-0023](ADR-0023-otimizacao-de-fontes-e-i18n.md)         | Fontes auto-hospedadas e mensagens de i18n pré-compiladas   | Aceita        |
