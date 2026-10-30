@@ -190,11 +190,12 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useTheme } from 'vuetify';
 import DocSection from '../components/DocSection.vue';
 import ShowcaseCard from '../components/ShowcaseCard.vue';
 import CodeBlock from '../components/CodeBlock.vue';
-import { getErrorMessage } from '@shared/utils/http-error';
+import { useErrorMessage } from '@shared/composables';
 import type { ProblemDetails } from '@typings/http';
 
 const theme = useTheme();
@@ -215,19 +216,25 @@ const problem: ProblemDetails = {
 };
 
 // A mensagem exibida no alerta é derivada pelo mesmo helper usado em produção.
-const apiErrorMessage = getErrorMessage({ status: problem.status, data: problem });
+const errorMessage = useErrorMessage();
+const apiErrorMessage = computed(() => errorMessage({ status: problem.status, data: problem }));
 
 const problemJson = JSON.stringify(problem, null, 2);
 
-const apiErrorCode = `import { getErrorMessage } from '@shared/utils/http-error';
+const apiErrorCode = `import { useI18n } from 'vue-i18n';
+import { useErrorMessage } from '@shared/composables';
 import { transferRequest } from '@shared/api/services/account.service';
+
+const { t } = useI18n();
+const errorMessage = useErrorMessage();
 
 async function transfer(): Promise<void> {
   try {
     await transferRequest(params);
   } catch (error) {
-    // Extrai detail/title do corpo application/problem+json (RFC 9457)
-    alertMessage.value = getErrorMessage(error, 'Falha na transferência.');
+    // Extrai detail/title do corpo application/problem+json (RFC 9457);
+    // sem eles, usa o texto traduzido informado (ou os padrões errors.*).
+    alertMessage.value = errorMessage(error, { unexpected: t('transfer.failed') });
   }
 }`;
 
