@@ -188,27 +188,27 @@ export function useUsers() {
 ```
 
 Por que é ruim: viola separation of concerns. O fetch direto no composable
-acopla a camada de apresentação ao HTTP. O correto é chamar um service e o
-composable orquestra stores:
+acopla a camada de apresentação ao HTTP, e o `ref` com `load()` refaz à mão o
+que o TanStack Query já oferece (cache, loading, erro, cancelamento). O correto
+é chamar um service dentro de uma query (ADR-0027). Este composable fica em
+`shared/` porque mais de um módulo o usa; se fosse de um módulo só, ficaria no
+módulo (ADR-0025):
 
 ```ts
 // shared/api/services/user.service.ts
-export function getUsersRequest() {
-  return httpClient.get<User[]>('/users');
+export function getUsersRequest(options: { signal?: AbortSignal } = {}) {
+  return httpClient.get<User[]>('/users', { signal: options.signal });
 }
 
-// shared/composables/useUsers.ts
-import { ref } from 'vue';
+// shared/composables/useUsersQuery.ts
+import { useQuery } from '@tanstack/vue-query';
 import { getUsersRequest } from '@shared/api/services/user.service';
 
-export function useUsers() {
-  const users = ref<User[]>([]);
-
-  async function load() {
-    users.value = await getUsersRequest();
-  }
-
-  return { users, load };
+export function useUsersQuery() {
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: ({ signal }) => getUsersRequest({ signal }),
+  });
 }
 ```
 

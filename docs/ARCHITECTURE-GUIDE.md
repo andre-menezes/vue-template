@@ -223,7 +223,11 @@ Documentação detalhada: [src/shared/api/README.md](../src/shared/api/README.md
   `download`, todos com `(url, { query?, body?, headers?, signal? })` e
   tipagem genérica, sem casts.
 - Instância pré-configurada: `httpClient` (API da aplicação, `VITE_API_BASE_URL`).
-- Services em `shared/api/services/` expõem funções com nome de negócio.
+- Services expõem funções com nome de negócio. Ficam em `modules/<x>/api/`
+  quando um módulo só os usa, e em `shared/api/services/` quando são
+  compartilhados (ADR-0025).
+- As views leem dados por queries do TanStack Query que chamam os services
+  (ADR-0027).
 - Componentes/views nunca chamam endpoints diretamente.
 
 ---
