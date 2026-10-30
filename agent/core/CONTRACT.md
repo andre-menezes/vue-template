@@ -74,7 +74,7 @@ A tarefa só está pronta quando:
 - [ ] Spec lida e compreendida (sem `[PENDENTE]` bloqueante).
 - [ ] Branch criada com nome correto.
 - [ ] Código implementado seguindo a arquitetura.
-- [ ] Tipos centralizados em `src/types/`.
+- [ ] Tipos de um módulo só em `modules/<x>/types.ts`; compartilhados em `src/types/` (ADR-0025).
 - [ ] Testes unitários cobrindo regras de negócio.
 - [ ] Teste E2E cobrindo fluxo principal (quando aplicável).
 - [ ] `pnpm lint` sem erros.

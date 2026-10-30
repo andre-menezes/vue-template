@@ -20,7 +20,7 @@ src/
 ├── modules/   → features por domínio (independentes entre si)
 ├── shared/    → infraestrutura transversal (nunca importa modules/app)
 ├── core/      → config/env e constantes (importa só types)
-├── types/     → contratos centralizados (sem imports de camadas)
+├── types/     → contratos compartilhados (sem imports de camadas)
 └── test/      → testes (pode importar todas as camadas)
 ```
 
@@ -36,7 +36,7 @@ src/
 </template>
 
 <script setup lang="ts">
-import type { Metric } from '@typings/home';
+import type { Metric } from '../types';
 
 defineProps<{ metric: Metric }>();
 </script>
@@ -56,7 +56,7 @@ defineProps<{ metric: Metric }>();
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getMetricsRequest } from '@shared/api/services/metrics.service';
-import type { Metric } from '@typings/home';
+import type { Metric } from '../types';
 import MetricCard from '../components/MetricCard.vue';
 
 const metric = ref<Metric | null>(null);

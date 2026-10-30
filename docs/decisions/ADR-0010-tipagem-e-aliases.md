@@ -5,6 +5,10 @@
 - **Decisores:** Time de frontend
 - **Relacionadas:** ADR-0001
 
+> Nota (ADR-0025): tipos usados por um módulo só ficam em `modules/<x>/types.ts`.
+> `src/types/` guarda os contratos compartilhados por dois ou mais módulos ou
+> camadas.
+
 ## Contexto e problema
 
 Contratos TypeScript repetidos inline pelo código dificultam a evolução junto ao

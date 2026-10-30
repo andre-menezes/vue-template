@@ -39,10 +39,15 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Inter auto-hospedada via `@fontsource-variable/inter`, sem requisição ao Google Fonts (ADR-0023).
 - Mensagens de i18n pré-compiladas com `@intlify/unplugin-vue-i18n`, sem o compilador no bundle; regras de lint do vue-i18n ativadas (ADR-0023).
 - Variáveis SASS do Vuetify em `src/app/styles/settings.scss` (`styles.configFile`).
+- Telas de documentação reunidas no módulo `src/modules/showcase`, com locale próprio e removíveis por `pnpm template:clean`; o hub passou de `/` para `/docs` e `/` virou a página inicial do projeto (ADR-0026).
+- Tipos, services, stores e composables usados por um módulo só ficam no próprio módulo (ADR-0025).
+- Os exemplos de view da documentação passam a ler dados com `useQuery` num composable do módulo, em vez de `ref` + `onMounted`.
+- Menu lateral montado a partir do `meta.nav` das rotas (`titleKey`, `icon`, `order`); criar um módulo não exige mais editar o `TheNavigationMenu`.
 - Gerenciador de pacotes migrado do npm para o pnpm: `pnpm-lock.yaml`, `packageManager` no `package.json`, CI com `pnpm install --frozen-lockfile` e documentação com comandos `pnpm` (ADR-0024).
 
 ### Adicionado
 
+- TanStack Query (`@tanstack/vue-query`) para dados do servidor: `QueryClient` em `@app/providers/query`, registrado no bootstrap e no `mountWithPlugins` (ADR-0027).
 - Telas de documentação interativa (Vue/Vuetify): Home como hub de navegação, Arquitetura, Onboarding, Componentes & UI, Convenções e Decisões (ADRs).
 - Tela de exemplo autenticado (`/exemplo-protegido`), única rota protegida, exibindo os dados do usuário e explicando o guard.
 - Rota e tela de erro de autenticação (`/erro-autenticacao`) exibindo a mensagem do parâmetro `msg`.

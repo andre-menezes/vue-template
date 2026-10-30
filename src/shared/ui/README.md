@@ -65,7 +65,7 @@ um módulo, ele pertence ao módulo (não ao shared).
 </template>
 
 <script setup lang="ts">
-import type { Metric } from '@typings/home';
+import type { Metric } from '@typings/metric';
 
 defineProps<{ metric: Metric }>();
 </script>
@@ -116,21 +116,17 @@ em outro contexto sem arrastar toda essa lógica.
 ```vue
 <!-- View container (modules/users/views/UsersView.vue) -->
 <template>
-  <UserList :users="users" :loading="loading" />
+  <UserList :users="data ?? []" :loading="isPending" />
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { getUsersRequest } from '@shared/api/services/user.service';
+import { useQuery } from '@tanstack/vue-query';
+import { getUsersRequest } from '../api/user.service';
 import UserList from '../components/UserList.vue';
 
-const users = ref([]);
-const loading = ref(false);
-
-onMounted(async () => {
-  loading.value = true;
-  users.value = await getUsersRequest();
-  loading.value = false;
+const { data, isPending } = useQuery({
+  queryKey: ['users'],
+  queryFn: ({ signal }) => getUsersRequest({ signal }),
 });
 </script>
 ```

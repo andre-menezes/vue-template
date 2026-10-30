@@ -161,10 +161,10 @@ export default [
   // técnicos (snippets, nomes de camada), que não são traduzidos.
   ...pluginVueI18n.configs['flat/recommended'],
   {
-    files: ['src/**/*.{ts,vue}', 'src/app/locales/*.json'],
+    files: ['src/**/*.{ts,vue}', 'src/**/locales/*.json'],
     settings: {
       'vue-i18n': {
-        localeDir: './src/app/locales/*.json',
+        localeDir: './src/**/locales/*.json',
         messageSyntaxVersion: '^11.0.0',
       },
     },

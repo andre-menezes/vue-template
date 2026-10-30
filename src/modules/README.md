@@ -3,6 +3,12 @@
 Camada de funcionalidades de domínio. Cada pasta representa um contexto
 funcional isolado.
 
+Módulos do template:
+
+- `home`: página inicial do projeto (`/`).
+- `showcase`: telas de documentação do template (hub em `/docs`). Removido por
+  `pnpm template:clean` ao iniciar um projeto novo (ADR-0026).
+
 Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITECTURE-GUIDE.md)
 
 ## Estrutura esperada por módulo
@@ -12,8 +18,14 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 ├── routes.ts          # rotas do módulo (auto-descobertas pelo router)
 ├── views/             # views container (orquestram dados)
 ├── components/        # componentes apresentacionais do módulo
-└── types/ (opcional)  # tipos locais (quando não fazem sentido em src/types)
+├── types.ts           # tipos do módulo (ou types/ quando crescer)
+├── api/               # services do módulo (opcional)
+├── stores/            # stores usadas só por este módulo (opcional)
+└── composables/       # composables usados só por este módulo (opcional)
 ```
+
+Tudo que só este módulo usa fica aqui (ADR-0025). Quando um segundo módulo
+precisar de algo, promova: tipos para `src/types/`, o resto para `shared/`.
 
 ## Como as rotas são carregadas
 
@@ -37,9 +49,10 @@ sem nenhuma configuração manual adicional.
 
 ## Meta fields disponíveis
 
-| Meta     | Tipo     | Efeito                                      |
-| -------- | -------- | ------------------------------------------- |
-| `layout` | `string` | Define o layout (`'empty'` para sem chrome) |
+| Meta     | Tipo       | Efeito                                                    |
+| -------- | ---------- | --------------------------------------------------------- |
+| `layout` | `string`   | Define o layout (`'empty'` para sem chrome)               |
+| `nav`    | `RouteNav` | Item no menu lateral: `titleKey` (i18n), `icon` e `order` |
 
 ## Exemplo — bom código (módulo completo)
 
@@ -54,6 +67,7 @@ const routes: RouteRecordRaw[] = [
     path: '/customers',
     name: 'Customers',
     component: () => import('./views/CustomersView.vue'),
+    meta: { nav: { titleKey: 'nav.customers', icon: 'group', order: 70 } },
   },
   {
     path: '/customers/:id',
@@ -68,6 +82,25 @@ export default routes;
 Por que é bom: rotas tipadas com `RouteRecordRaw[]`, lazy loading via
 `import()`, meta fields declarados, nome semântico.
 
+### Query do módulo
+
+```ts
+// src/modules/customers/composables/useCustomersQuery.ts
+import { useQuery } from '@tanstack/vue-query';
+import { getCustomersRequest } from '../api/customer.service';
+
+export function useCustomersQuery() {
+  return useQuery({
+    queryKey: ['customers'],
+    queryFn: ({ signal }) => getCustomersRequest({ signal }),
+  });
+}
+```
+
+Por que é bom: dados do servidor ficam no TanStack Query (ADR-0027), que cuida
+de cache, loading, erro e cancelamento. A chave da query é o único contrato a
+invalidar depois de uma gravação.
+
 ### View container
 
 ```vue
@@ -75,29 +108,22 @@ Por que é bom: rotas tipadas com `RouteRecordRaw[]`, lazy loading via
 <template>
   <section class="py-6">
     <h1 class="text-h4 font-weight-bold mb-4">Clientes</h1>
-    <CustomerList :customers="customers" :loading="loading" />
+    <v-alert v-if="error" type="error" :text="error.message" />
+    <CustomerList v-else :customers="data ?? []" :loading="isPending" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { getCustomersRequest } from '@shared/api/services/customer.service';
-import type { Customer } from '@typings/customer';
 import CustomerList from '../components/CustomerList.vue';
+import { useCustomersQuery } from '../composables/useCustomersQuery';
 
-const customers = ref<Customer[]>([]);
-const loading = ref(false);
-
-onMounted(async () => {
-  loading.value = true;
-  customers.value = await getCustomersRequest();
-  loading.value = false;
-});
+const { data, error, isPending } = useCustomersQuery();
 </script>
 ```
 
-Por que é bom: view orquestra dados (chama service, controla loading), passa
-resultado para componente apresentacional, sem lógica de template complexa.
+Por que é bom: a view orquestra dados (consome a query, trata loading e erro),
+passa o resultado para o componente apresentacional e não tem lógica de
+template complexa.
 
 ### Componente apresentacional
 
@@ -113,7 +139,7 @@ resultado para componente apresentacional, sem lógica de template complexa.
 </template>
 
 <script setup lang="ts">
-import type { Customer } from '@typings/customer';
+import type { Customer } from '../types';
 
 defineProps<{
   customers: Customer[];
@@ -159,7 +185,8 @@ onMounted(async () => {
 
 Por que é ruim:
 
-- Fetch direto na view (viola separation of concerns — use service).
+- Fetch direto na view (viola separation of concerns — use service e query).
+- Loading controlado à mão e sem `try/finally`: um erro deixa a tela carregando para sempre (o `useQuery` resolve).
 - Base URL e timeout fixos na view (viola DRY — a instância `httpClient` já centraliza a configuração de transporte).
 - Configuração de transporte no componente (viola encapsulamento — use a instância/service).
 - Lógica de negócio no template (`c.active && c.balance > 1000`).
@@ -183,6 +210,7 @@ Por que é ruim: viola a regra de independência entre módulos. Se
 2. Criar `routes.ts` com array tipado `RouteRecordRaw[]`.
 3. Criar `views/` com ao menos uma view container.
 4. Criar `components/` para componentes apresentacionais.
-5. Criar types em `src/types/<nome>/` se houver contratos específicos.
-6. Criar service em `shared/api/services/` se houver integração com backend.
-7. Verificar que o lint e type-check passam (`pnpm lint && pnpm build`).
+5. Criar `types.ts` no módulo se houver contratos específicos.
+6. Criar service em `api/` no módulo se houver integração com backend.
+7. Ler dados do servidor com `useQuery` num composable em `composables/` (ADR-0027).
+8. Verificar que o lint e type-check passam (`pnpm lint && pnpm build`).

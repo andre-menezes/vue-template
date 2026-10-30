@@ -36,7 +36,7 @@ Corrija seguindo o workflow de correção de bug.
 Bug: erro no console ao abrir a tela de Decisões.
 
 Erro: TypeError: Cannot read properties of null (reading 'status')
-Arquivo: src/modules/decisions/views/DecisionsView.vue:42
+Arquivo: src/modules/showcase/views/DecisionsView.vue:42
 
 O componente tenta acessar adr.status sem verificar null.
 Corrija e adicione teste de regressão.

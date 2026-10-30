@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import type { MenuItem } from '@typings/components';
 
@@ -45,22 +46,13 @@ const drawer = computed({
 const { mdAndUp } = useDisplay();
 const rail = computed(() => !drawer.value && mdAndUp.value);
 
-// Itens de navegação. Cada tela de documentação é adicionada aqui conforme é
-// implementada (por entrega), evitando links para rotas ainda inexistentes.
-const menuItems: MenuItem[] = [
-  { titleKey: 'nav.home', route: '/', icon: 'dashboard' },
-  {
-    titleKey: 'nav.architecture',
-    route: '/arquitetura',
-    icon: 'account_tree',
-  },
-  {
-    titleKey: 'nav.onboarding',
-    route: '/onboarding',
-    icon: 'rocket_launch-fill',
-  },
-  { titleKey: 'nav.components', route: '/componentes', icon: 'palette' },
-  { titleKey: 'nav.conventions', route: '/convencoes', icon: 'checklist' },
-  { titleKey: 'nav.decisions', route: '/decisoes', icon: 'gavel' },
-];
+// Itens de navegação: toda rota com `meta.nav` entra no menu, na ordem de
+// `meta.nav.order`. Um módulo novo aparece aqui sem editar este componente.
+const router = useRouter();
+const menuItems = computed<MenuItem[]>(() =>
+  router
+    .getRoutes()
+    .flatMap(({ path, meta }) => (meta.nav ? [{ ...meta.nav, route: path }] : []))
+    .sort((a, b) => a.order - b.order)
+);
 </script>

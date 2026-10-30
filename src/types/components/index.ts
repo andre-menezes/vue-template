@@ -1,6 +1,6 @@
-export interface MenuItem {
-  /** Chave i18n do rótulo do item (ex.: `nav.home`). */
-  titleKey: string;
+import type { RouteNav } from '@typings/router';
+
+/** Item do menu lateral, montado a partir do `meta.nav` das rotas. */
+export interface MenuItem extends RouteNav {
   route: string;
-  icon: string;
 }
