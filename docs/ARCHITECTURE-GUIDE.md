@@ -107,8 +107,8 @@ expõe um ponto de registro e o `app` injeta a implementação no bootstrap.
 │   ├── core/                      # Base sem UI (não importa app/modules/shared)
 │   │   └── config/                # Constantes e variáveis de ambiente
 │   ├── modules/                   # Features por domínio
-│   │   ├── home/                  # Hub de documentação (público)
-│   │   └── architecture/ …        # Demais telas de documentação do template
+│   │   ├── home/                  # Página inicial do projeto (/)
+│   │   └── showcase/              # Documentação do template (removível, ADR-0026)
 │   ├── shared/                    # Infraestrutura transversal
 │   │   ├── api/                   # Instâncias HTTP e services
 │   │   ├── composables/           # Lógica reativa compartilhada (useXxx)

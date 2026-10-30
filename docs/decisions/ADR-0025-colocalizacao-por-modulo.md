@@ -49,9 +49,8 @@ src/modules/<x>/
   compartilhar.
 - `shared/` e `src/types/` continuam com o que já é transversal (cliente HTTP,
   tema, componentes de UI comuns, `ProblemDetails`, `RouteMeta`).
-- Os tipos exclusivos das telas de documentação (`architecture`,
-  `conventions`, `decisions`, `home`, `onboarding`) saíram de `src/types/` e
-  foram para `src/modules/<x>/types.ts`.
+- Os tipos exclusivos das telas de documentação saíram de `src/types/` e foram
+  para o módulo `showcase` (ADR-0026).
 
 ## Consequências
 

@@ -80,3 +80,4 @@ substitui a anterior e atualize o status da antiga.
 | [ADR-0023](ADR-0023-otimizacao-de-fontes-e-i18n.md)         | Fontes auto-hospedadas e mensagens de i18n pré-compiladas   | Aceita        |
 | [ADR-0024](ADR-0024-pnpm-como-gerenciador-de-pacotes.md)    | pnpm como gerenciador de pacotes                            | Aceita        |
 | [ADR-0025](ADR-0025-colocalizacao-por-modulo.md)            | Colocalização do código de cada feature no próprio módulo   | Aceita        |
+| [ADR-0026](ADR-0026-vitrine-em-modulo-removivel.md)         | Vitrine de documentação num módulo removível                | Aceita        |

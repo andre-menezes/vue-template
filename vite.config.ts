@@ -39,10 +39,10 @@ export default defineConfig(({ mode }) => ({
       // Compila só o CSS dos componentes usados, já com as variáveis do projeto.
       styles: { configFile: 'src/app/styles/settings.scss' },
     }),
-    // Pré-compila as mensagens de `src/app/locales` em build e usa o build
+    // Pré-compila as mensagens de `src/**/locales` em build e usa o build
     // runtime-only do vue-i18n, sem o compilador de mensagens no bundle.
     VueI18nPlugin({
-      include: [fileURLToPath(new URL('./src/app/locales/**', import.meta.url))],
+      include: [fileURLToPath(new URL('./src/**/locales/**', import.meta.url))],
       // Algumas mensagens das telas de documentação contêm HTML (renderizado
       // com `v-html`); sem isto o plugin recusa essas mensagens.
       strictMessage: false,

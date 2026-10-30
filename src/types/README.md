@@ -21,7 +21,6 @@ só ficam em `src/modules/<x>/types.ts` (ADR-0025).
 - `components`: contratos de props de componentes compartilhados
 - `theme`: contratos de tema do Vuetify
 - `router`: augmentation de `RouteMeta` (`layout`)
-- `docs`: props dos componentes de documentação (`CodeBlock`, `FlowSteps`...)
 - `http`: corpo de erro RFC 9457 (`ProblemDetails`)
 
 > `types` não importa de nenhuma camada (verificado pelo ESLint). O schema de

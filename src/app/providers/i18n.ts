@@ -20,14 +20,9 @@ import {
   SUPPORTED_LOCALES,
   type SupportedLocale,
 } from '@core/config';
-import ptBR from '@app/locales/pt-BR.json';
+import { ptBRMessages, type MessageSchema } from './messages';
 
-/**
- * Schema das mensagens, derivado do locale base. Fica junto do provider (e não
- * em `types/`) porque depende do JSON da camada `app` — `types` não importa
- * de nenhuma camada (ADR-0018).
- */
-export type MessageSchema = typeof ptBR;
+export type { MessageSchema };
 
 /** Resolves the initial locale in priority order:
  *  1. User's persisted preference (localStorage)
@@ -50,7 +45,7 @@ const i18n = createI18n<[MessageSchema], SupportedLocale>({
   locale: initialLocale,
   fallbackLocale: 'pt-BR',
   messages: {
-    'pt-BR': ptBR,
+    'pt-BR': ptBRMessages,
   },
   // Silence missing-key warnings in production using import.meta.env.DEV
   missingWarn: import.meta.env.DEV,

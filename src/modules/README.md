@@ -3,6 +3,12 @@
 Camada de funcionalidades de domínio. Cada pasta representa um contexto
 funcional isolado.
 
+Módulos do template:
+
+- `home`: página inicial do projeto (`/`).
+- `showcase`: telas de documentação do template (hub em `/docs`). Removido por
+  `pnpm template:clean` ao iniciar um projeto novo (ADR-0026).
+
 Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITECTURE-GUIDE.md)
 
 ## Estrutura esperada por módulo

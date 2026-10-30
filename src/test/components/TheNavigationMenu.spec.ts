@@ -14,7 +14,8 @@ function createTestRouter() {
       {
         path: '/decisoes',
         component: Empty,
-        meta: { nav: { titleKey: 'nav.decisions', icon: 'gavel', order: 60 } },
+        // Chaves do locale base, que continuam existindo após o `template:clean`.
+        meta: { nav: { titleKey: 'notFound.title', icon: 'gavel', order: 60 } },
       },
       {
         path: '/',
@@ -39,6 +40,6 @@ describe('TheNavigationMenu', () => {
 
     const titles = wrapper.findAll('.v-list-item-title').map((item) => item.text());
 
-    expect(titles).toEqual(['Início', 'Decisões']);
+    expect(titles).toEqual(['Início', 'Página não encontrada']);
   });
 });

@@ -3,7 +3,7 @@ import { mount, type ComponentMountingOptions } from '@vue/test-utils';
 import { createVuetify } from 'vuetify';
 import { createI18n } from 'vue-i18n';
 import { aliases, ms } from '@app/providers/icons';
-import ptBR from '@app/locales/pt-BR.json';
+import { ptBRMessages } from '@app/providers/messages';
 
 const vuetify = createVuetify({
   icons: {
@@ -17,7 +17,7 @@ const i18n = createI18n({
   legacy: false,
   locale: 'pt-BR',
   fallbackLocale: 'pt-BR',
-  messages: { 'pt-BR': ptBR },
+  messages: { 'pt-BR': ptBRMessages },
 });
 
 export function mountWithPlugins<T>(component: T, options: ComponentMountingOptions<T> = {}) {

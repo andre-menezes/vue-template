@@ -19,18 +19,19 @@ Guia central: [../docs/ARCHITECTURE-GUIDE.md](../docs/ARCHITECTURE-GUIDE.md)
 ## Regras gerais
 
 - Views de módulo orquestram fluxo, não infraestrutura.
-- Acesso a backend acontece por services (`shared/api/services/`).
+- Acesso a backend acontece por services, no módulo (`modules/<x>/api/`) ou em
+  `shared/api/services/` quando compartilhados (ADR-0025).
 - Estado global/transversal acontece via stores (`shared/stores/`).
-- Tipagem centralizada em `types/` — nunca inline.
+- Tipos do módulo em `modules/<x>/types.ts`; compartilhados em `types/`.
 - Lógica pura em `utils/`, com efeito lateral em `helpers/`, reativa em `composables/`.
 
 ## Exemplo de fluxo
 
 ```text
-modules/home/views/HomeView.vue
-  → chama service em shared/api/services
-  → atualiza store em shared/stores quando necessário
-  → renderiza componentes em modules/home/components
+modules/customers/views/CustomersView.vue
+  → busca dados pelo service em modules/customers/api
+  → usa store em modules/customers/stores (ou shared/stores, se compartilhada)
+  → renderiza componentes em modules/customers/components
 ```
 
 ## Documentação local

@@ -48,6 +48,19 @@ Nenhuma variável de ambiente é obrigatória: os valores padrão ficam em
 (ADR-0021). A integração contínua roda no GitHub Actions
 (`.github/workflows/ci.yml`).
 
+## Começando um projeto a partir do template
+
+As telas de documentação do template (hub em `/docs`, arquitetura, onboarding,
+componentes, convenções e decisões) ficam no módulo `src/modules/showcase`. Ao
+criar um projeto novo, remova-as com:
+
+```bash
+pnpm template:clean
+```
+
+O comando apaga o módulo e os testes dele e mantém a página inicial
+(`src/modules/home`), a infraestrutura e a pasta `docs/` (ADR-0026).
+
 ## Qualidade e validação
 
 ```bash
