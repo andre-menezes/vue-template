@@ -80,6 +80,11 @@ const wrapper = mountWithPlugins(MyComponent, {
 });
 ```
 
+Ele registra Vuetify, i18n, Pinia, router e TanStack Query. Cada montagem recebe
+um `QueryClient` novo e sem retentativas, para que o cache não vaze entre testes
+e um erro mockado apareça na primeira tentativa. O padrão de teste de uma query
+está em `src/test/api/query.spec.ts`.
+
 ## Exemplo — bom código (teste focado com mock isolado)
 
 ```ts

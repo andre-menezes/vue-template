@@ -1,4 +1,5 @@
 import { createPinia } from 'pinia';
+import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
 import { mount, type ComponentMountingOptions } from '@vue/test-utils';
 import { createVuetify } from 'vuetify';
 import { createI18n } from 'vue-i18n';
@@ -20,12 +21,23 @@ const i18n = createI18n({
   messages: { 'pt-BR': ptBRMessages },
 });
 
+/** Cliente novo a cada montagem: sem cache entre testes e sem nova tentativa. */
+function createTestQueryClient(): QueryClient {
+  return new QueryClient({ defaultOptions: { queries: { retry: false } } });
+}
+
 export function mountWithPlugins<T>(component: T, options: ComponentMountingOptions<T> = {}) {
   return mount(component, {
     ...options,
     global: {
       ...options.global,
-      plugins: [createPinia(), vuetify, i18n, ...(options.global?.plugins ?? [])],
+      plugins: [
+        createPinia(),
+        [VueQueryPlugin, { queryClient: createTestQueryClient() }],
+        vuetify,
+        i18n,
+        ...(options.global?.plugins ?? []),
+      ],
     },
   });
 }
