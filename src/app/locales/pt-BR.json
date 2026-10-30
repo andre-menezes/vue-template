@@ -24,5 +24,8 @@
   "pageTitle": {
     "home": "Início",
     "notFound": "Página não encontrada"
+  },
+  "a11y": {
+    "skipToContent": "Pular para o conteúdo"
   }
 }
