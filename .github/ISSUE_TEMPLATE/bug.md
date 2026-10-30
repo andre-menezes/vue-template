@@ -1,3 +1,10 @@
+---
+name: Bug
+about: Reportar um comportamento incorreto
+title: 'fix(escopo): '
+labels: ['tipo: bug', 'status: backlog']
+---
+
 <!-- Título sugerido: fix(escopo): descrição curta do problema -->
 
 ## Descrição do bug
@@ -40,5 +47,3 @@
 - [ ] Alto — funcionalidade importante afetada
 - [ ] Médio — contornável
 - [ ] Baixo — cosmético
-
-/label ~"tipo::bug" ~"status::backlog"

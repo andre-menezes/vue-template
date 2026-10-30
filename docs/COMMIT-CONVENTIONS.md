@@ -40,7 +40,7 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 | `ci`       | Alteração de pipeline CI/CD                                     |
 | `revert`   | Reversão de commit anterior                                     |
 | `build`    | Sistema de build e dependências (Vite, scripts, tsconfig)       |
-| `wip`      | Progresso parcial em branch de trabalho; reescrever antes do MR |
+| `wip`      | Progresso parcial em branch de trabalho; reescrever antes do PR |
 
 A lista acima é a mesma aceita pelo hook `commit-msg`
 (`scripts/verify-commit-msg.mjs`), que é a fonte de verdade.

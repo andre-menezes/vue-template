@@ -1,3 +1,10 @@
+---
+name: Feature
+about: Propor uma nova funcionalidade
+title: 'feat(escopo): '
+labels: ['tipo: feature', 'status: backlog']
+---
+
 <!-- Título sugerido: feat(escopo): descrição curta -->
 
 ## Contexto
@@ -37,5 +44,3 @@
 
 <!-- Para specs completas, use o template em agent/templates/feature-spec.md
      e registre em docs/specs/FEAT-XXX-<slug>.md. -->
-
-/label ~"tipo::feature" ~"status::backlog"

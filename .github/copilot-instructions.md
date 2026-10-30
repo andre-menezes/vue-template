@@ -12,6 +12,6 @@ Consulte antes de gerar código ou sugestões:
 - `agent/skills/testing/SKILL.md` — estratégia de testes
 - `agent/workflows/` — create-feature, fix-bug e validate-code
 - `docs/ARCHITECTURE-GUIDE.md` — camadas e regras de dependência (verificadas pelo ESLint)
-- `docs/COMMIT-CONVENTIONS.md` e `CONTRIBUTING.md` — commits, branches e MR
+- `docs/COMMIT-CONVENTIONS.md` e `CONTRIBUTING.md` — commits, branches e PR
 - `docs/decisions/README.md` — decisões arquiteturais (ADR)
 - `src/*/README.md` — regras locais por camada

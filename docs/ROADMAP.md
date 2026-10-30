@@ -19,7 +19,7 @@ Consolidado na `develop` (ver `CHANGELOG.md`):
   e sessão em cookie `HttpOnly` (ADR-0014); tela de erro de autenticação.
 - Camada HTTP (factory `createApiInstance` + ofetch), erros no padrão RFC 9457,
   download de arquivos binários (service + helper + utils).
-- Qualidade: ESLint/Prettier, Husky, Vitest, Playwright, CI (GitLab), ADRs 0001–0020.
+- Qualidade: ESLint/Prettier, Husky, Vitest, Playwright, CI (GitHub Actions), ADRs 0001–0020.
 - i18n **configurado e migrado** (`vue-i18n`, locale único `pt-BR`): todo texto
   de UI consolidado em `pt-BR.json` (ver `I18N-MIGRATION-PLAN.md`).
 
