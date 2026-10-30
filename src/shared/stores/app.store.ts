@@ -3,15 +3,22 @@ import { STORAGE_KEYS } from '@core/config';
 import type { AppState } from '@typings/store';
 import type { ThemeName } from '@typings/theme';
 
-function readPersistedTheme(): ThemeName {
+/**
+ * Tema inicial: a escolha salva pelo usuário prevalece; sem ela, segue a
+ * preferência do sistema (`prefers-color-scheme`).
+ */
+function resolveInitialTheme(): ThemeName {
   const persisted = localStorage.getItem(STORAGE_KEYS.THEME);
-  return persisted === 'dark' ? 'dark' : 'light';
+  if (persisted === 'dark' || persisted === 'light') {
+    return persisted;
+  }
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 export const useAppStore = defineStore('app', {
   state: (): AppState => ({
     loading: false,
-    theme: readPersistedTheme(),
+    theme: resolveInitialTheme(),
   }),
 
   actions: {
