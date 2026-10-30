@@ -72,24 +72,33 @@ const darkTheme: AppThemeDefinition = {
   },
 };
 
-// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-export default createVuetify({
-  icons: {
-    defaultSet: 'ms',
-    aliases,
-    sets: {
-      ms,
+/**
+ * Cria a instância do Vuetify da aplicação. Exportada para que os testes
+ * montem componentes com o mesmo tema, ícones e locale.
+ *
+ * https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
+ */
+export function createAppVuetify() {
+  return createVuetify({
+    icons: {
+      defaultSet: 'ms',
+      aliases,
+      sets: {
+        ms,
+      },
     },
-  },
-  theme: {
-    defaultTheme: 'light',
-    themes: {
-      light: lightTheme,
-      dark: darkTheme,
+    theme: {
+      defaultTheme: 'light',
+      themes: {
+        light: lightTheme,
+        dark: darkTheme,
+      },
     },
-  },
-  locale: {
-    locale: 'pt',
-    messages: { pt },
-  },
-});
+    locale: {
+      locale: 'pt',
+      messages: { pt },
+    },
+  });
+}
+
+export default createAppVuetify();

@@ -39,18 +39,26 @@ function resolveInitialLocale(): SupportedLocale {
 
 const initialLocale = resolveInitialLocale();
 
-const i18n = createI18n<[MessageSchema], SupportedLocale>({
-  legacy: false,
-  globalInjection: true,
-  locale: initialLocale,
-  fallbackLocale: 'pt-BR',
-  messages: {
-    'pt-BR': ptBRMessages,
-  },
-  // Silence missing-key warnings in production using import.meta.env.DEV
-  missingWarn: import.meta.env.DEV,
-  fallbackWarn: import.meta.env.DEV,
-});
+/**
+ * Creates the app's i18n instance. Exported so tests mount components with
+ * the same messages and options as the app.
+ */
+export function createAppI18n(locale: SupportedLocale = 'pt-BR') {
+  return createI18n<[MessageSchema], SupportedLocale>({
+    legacy: false,
+    globalInjection: true,
+    locale,
+    fallbackLocale: 'pt-BR',
+    messages: {
+      'pt-BR': ptBRMessages,
+    },
+    // Silence missing-key warnings in production using import.meta.env.DEV
+    missingWarn: import.meta.env.DEV,
+    fallbackWarn: import.meta.env.DEV,
+  });
+}
+
+const i18n = createAppI18n(initialLocale);
 
 document.documentElement.setAttribute('lang', initialLocale);
 
