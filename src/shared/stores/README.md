@@ -6,9 +6,9 @@ Voltar para o guia geral: [../../../docs/ARCHITECTURE-GUIDE.md](../../../docs/AR
 
 ## Stores existentes
 
-| Store       | Responsabilidade                                               |
-| ----------- | -------------------------------------------------------------- |
-| `app.store` | Estado de UX global (tema persistido em localStorage, loading) |
+| Store       | Responsabilidade                                      |
+| ----------- | ----------------------------------------------------- |
+| `app.store` | Estado de UX global (tema persistido em localStorage) |
 
 ## Quando criar uma store
 
@@ -16,7 +16,7 @@ Crie store apenas quando o estado for:
 
 - **Transversal** — usado por dois ou mais módulos/componentes desconectados.
 - **Persistente** — precisa sobreviver a navegação entre rotas.
-- **Infraestrutural** — necessário para a mecânica da app (tema, loading).
+- **Infraestrutural** — necessário para a mecânica da app (tema).
 
 Se o estado é **local de tela** (modal aberto, valor de formulário, scroll
 position), use `ref`/`reactive` no próprio componente.
@@ -135,7 +135,6 @@ actions: {
 // RUIM: componente muta state diretamente
 const appStore = useAppStore();
 appStore.theme = 'dark'; // mutação direta sem action (e sem persistir)
-appStore.loading = true;
 ```
 
 Por que é ruim: dificulta rastreamento de mudanças (devtools não logam),
@@ -145,7 +144,6 @@ e quebra a previsibilidade do fluxo unidirecional.
 ```ts
 // BOM: usar action para mutar
 appStore.switchTheme();
-appStore.setLoading(true);
 ```
 
 ## Resumo

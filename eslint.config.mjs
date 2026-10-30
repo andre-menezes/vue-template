@@ -21,15 +21,11 @@ import pluginVueI18n from '@intlify/eslint-plugin-vue-i18n';
 // todo bloco inclui também as restrições comuns de alias.
 // ---------------------------------------------------------------------------
 
-/** Alias mais curto obrigatório: `@shared/x` em vez de `@/shared/x` ou `@root/src/...`. */
+/** Alias mais curto obrigatório: `@shared/x` em vez de `@/shared/x`. */
 const aliasPatterns = [
   {
     group: ['@/app/*', '@/core/*', '@/modules/*', '@/shared/*', '@/types/*', '@/test/*'],
     message: 'Use o alias da camada (@app, @core, @modules, @shared, @typings, @test).',
-  },
-  {
-    group: ['@root/src/*'],
-    message: 'Use o alias da camada em vez de @root/src.',
   },
 ];
 

@@ -11,6 +11,10 @@
 >
 > Nota (ADR-0024): o gerenciador de pacotes passou a ser o pnpm. O CI usa
 > `pnpm install --frozen-lockfile` e o pre-commit, `pnpm exec lint-staged`.
+>
+> Nota (2026-10-30): o hook `commit-msg` passou a validar também a linha em
+> branco após o título e o corpo em 72 colunas, regras que já estavam no
+> `docs/COMMIT-CONVENTIONS.md` mas não eram verificadas.
 
 ## Contexto e problema
 

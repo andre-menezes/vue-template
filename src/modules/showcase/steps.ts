@@ -26,6 +26,7 @@ const routes: RouteRecordRaw[] = [
     path: '/customers',
     name: 'Customers',
     component: () => import('./views/CustomersView.vue'),
+    meta: { nav: { titleKey: 'nav.customers', icon: 'group', order: 70 } },
   },
 ];
 
@@ -35,7 +36,7 @@ export default routes;`,
       title: t('onboarding.steps.types.title'),
       description: t('onboarding.steps.types.description'),
       language: 'ts',
-      filename: 'src/types/customer/index.ts',
+      filename: 'src/modules/customers/types.ts',
       reference: 'src/types/README.md',
       code: `export interface Customer {
   id: number;
@@ -53,17 +54,33 @@ export interface CreateCustomerParams {
       title: t('onboarding.steps.service.title'),
       description: t('onboarding.steps.service.description'),
       language: 'ts',
-      filename: 'src/shared/api/services/customer.service.ts',
+      filename: 'src/modules/customers/api/customer.service.ts',
       reference: 'src/shared/api/README.md',
       code: `import { httpClient } from '@shared/api/instances';
-import type { Customer, CreateCustomerParams } from '@typings/customer';
+import type { CreateCustomerParams, Customer } from '../types';
 
-export function getCustomersRequest(): Promise<Customer[]> {
-  return httpClient.get<Customer[]>('/customers');
+export function getCustomersRequest(options: { signal?: AbortSignal } = {}): Promise<Customer[]> {
+  return httpClient.get<Customer[]>('/customers', { signal: options.signal });
 }
 
 export function createCustomerRequest(params: CreateCustomerParams): Promise<Customer> {
   return httpClient.post<Customer>('/customers', { body: params });
+}`,
+    },
+    {
+      title: t('onboarding.steps.query.title'),
+      description: t('onboarding.steps.query.description'),
+      language: 'ts',
+      filename: 'src/modules/customers/composables/useCustomersQuery.ts',
+      reference: 'src/modules/README.md',
+      code: `import { useQuery } from '@tanstack/vue-query';
+import { getCustomersRequest } from '../api/customer.service';
+
+export function useCustomersQuery() {
+  return useQuery({
+    queryKey: ['customers'],
+    queryFn: ({ signal }) => getCustomersRequest({ signal }),
+  });
 }`,
     },
     {
@@ -73,20 +90,19 @@ export function createCustomerRequest(params: CreateCustomerParams): Promise<Cus
       filename: 'src/modules/customers/views/CustomersView.vue',
       reference: 'src/shared/ui/README.md',
       code: [
+        '<template>',
+        '  <section class="py-6">',
+        '    <h1 class="text-h4 font-weight-bold mb-4">Clientes</h1>',
+        '    <v-alert v-if="error" type="error" :text="error.message" />',
+        '    <CustomerList v-else :customers="data ?? []" :loading="isPending" />',
+        '  </section>',
+        '</template>',
+        '',
         '<script setup lang="ts">',
-        "import { ref, onMounted } from 'vue';",
-        "import { getCustomersRequest } from '@shared/api/services/customer.service';",
-        "import type { Customer } from '@typings/customer';",
         "import CustomerList from '../components/CustomerList.vue';",
+        "import { useCustomersQuery } from '../composables/useCustomersQuery';",
         '',
-        'const customers = ref<Customer[]>([]);',
-        'const loading = ref(false);',
-        '',
-        'onMounted(async () => {',
-        '  loading.value = true;',
-        '  customers.value = await getCustomersRequest();',
-        '  loading.value = false;',
-        '});',
+        'const { data, error, isPending } = useCustomersQuery();',
         '</' + 'script>',
       ].join('\n'),
     },
@@ -97,7 +113,7 @@ export function createCustomerRequest(params: CreateCustomerParams): Promise<Cus
       filename: 'src/modules/customers/components/CustomerList.vue',
       code: [
         '<script setup lang="ts">',
-        "import type { Customer } from '@typings/customer';",
+        "import type { Customer } from '../types';",
         '',
         'defineProps<{',
         '  customers: Customer[];',
@@ -110,23 +126,30 @@ export function createCustomerRequest(params: CreateCustomerParams): Promise<Cus
       title: t('onboarding.steps.tests.title'),
       description: t('onboarding.steps.tests.description'),
       language: 'ts',
-      filename: 'src/test/services/customer.spec.ts',
+      filename: 'src/test/customers/customer.service.spec.ts',
       reference: 'src/test/README.md',
-      code: `import { describe, expect, it, vi } from 'vitest';
-import { getCustomersRequest } from '@shared/api/services/customer.service';
+      code: `import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { getCustomersRequest } from '@/modules/customers/api/customer.service';
 import { httpClient } from '@shared/api/instances';
 
 vi.mock('@shared/api/instances', () => ({
   httpClient: { get: vi.fn() },
 }));
 
-it('retorna lista de clientes', async () => {
-  const mock = [{ id: 1, name: 'Empresa A', email: 'a@a.com', active: true }];
-  vi.mocked(httpClient.get).mockResolvedValue(mock);
+describe('customer service', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-  const result = await getCustomersRequest();
+  it('retorna lista de clientes', async () => {
+    const mock = [{ id: 1, name: 'Empresa A', email: 'a@a.com', active: true }];
+    vi.mocked(httpClient.get).mockResolvedValue(mock);
 
-  expect(result).toEqual(mock);
+    const result = await getCustomersRequest();
+
+    expect(result).toEqual(mock);
+    expect(httpClient.get).toHaveBeenCalledWith('/customers', { signal: undefined });
+  });
 });`,
     },
     {
@@ -146,6 +169,7 @@ export function buildOnboardingChecklist(t: ComposerTranslation): string[] {
     t('onboarding.checklist.routes'),
     t('onboarding.checklist.types'),
     t('onboarding.checklist.service'),
+    t('onboarding.checklist.query'),
     t('onboarding.checklist.view'),
     t('onboarding.checklist.components'),
     t('onboarding.checklist.unitTest'),
