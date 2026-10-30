@@ -66,9 +66,9 @@ node -v                         # confirme: v24.22.2
 > recomendação do vfox é a padrão do time, mas não é obrigatória.
 
 > **Importante:** o projeto usa `engine-strict=true` no `.npmrc`. Se a versão
-> ativa do Node não for exatamente **24.22.2**, o `npm install` falha com
-> `EBADENGINE`. Ative a versão do projeto (`vfox use nodejs`) antes de instalar
-> as dependências.
+> ativa do Node estiver fora da linha 24 (a partir da **24.22.2**), o
+> `npm install` falha com `EBADENGINE`. Ative a versão do projeto
+> (`vfox use nodejs`) antes de instalar as dependências.
 
 ---
 

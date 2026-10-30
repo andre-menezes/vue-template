@@ -6,13 +6,26 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 
 import { defineConfig } from 'vitest/config';
 import { fileURLToPath, URL } from 'node:url';
+import { readFileSync } from 'node:fs';
 import dns from 'dns';
 import vueDevTools from 'vite-plugin-vue-devtools';
 
 dns.setDefaultResultOrder('verbatim');
 
+// Só os dados do `package.json` que a UI exibe. Importar o arquivo no código
+// colocaria a lista inteira de dependências no bundle.
+const packageJson = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf-8'));
+const appMeta = {
+  version: packageJson.version,
+  runtimeDependencies: Object.keys(packageJson.dependencies ?? {}).length,
+  toolingDependencies: Object.keys(packageJson.devDependencies ?? {}).length,
+};
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  define: {
+    __APP_META__: JSON.stringify(appMeta),
+  },
   plugins: [
     vue({
       template: {
@@ -36,7 +49,6 @@ export default defineConfig(({ mode }) => ({
       '@typings': fileURLToPath(new URL('./src/types', import.meta.url)),
       '@test': fileURLToPath(new URL('./src/test', import.meta.url)),
     },
-    extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
   },
   build: {
     rollupOptions: {

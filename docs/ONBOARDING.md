@@ -10,7 +10,7 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 
 ## Pré-requisitos
 
-- Node.js **24.22.2** (versão exata — ver `.nvmrc`/`.tool-versions` e o CONTRIBUTING)
+- Node.js **24.22.2** (versão de referência em `.nvmrc`/`.tool-versions`; o `npm install` aceita qualquer 24.x a partir dela — ver o CONTRIBUTING)
 - npm
 - Variáveis de ambiente: opcionais (para sobrescrever os padrões, copie `.env.example` para `.env.development.local`)
 - Extensões recomendadas instaladas (veja `.vscode/extensions.json`)
