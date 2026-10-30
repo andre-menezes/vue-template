@@ -20,7 +20,7 @@
     </v-card-text>
 
     <v-card-actions class="px-4 pb-3 mt-auto text-primary">
-      <span class="text-body-2 font-weight-medium">Acessar</span>
+      <span class="text-body-2 font-weight-medium">{{ $t('common.open') }}</span>
       <v-icon end size="18" icon="arrow_forward" />
     </v-card-actions>
   </v-card>

@@ -1,7 +1,10 @@
 {
   "common": {
     "backToHome": "Voltar para o início",
-    "currentVersion": "Versão atual"
+    "currentVersion": "Versão atual",
+    "open": "Acessar",
+    "copyCode": "Copiar código",
+    "copied": "Copiado!"
   },
   "nav": {
     "home": "Início",
@@ -9,8 +12,7 @@
     "onboarding": "Onboarding",
     "components": "Componentes",
     "conventions": "Convenções",
-    "decisions": "Decisões",
-    "blockedAccess": "Acesso bloqueado"
+    "decisions": "Decisões"
   },
   "header": {
     "activateLightTheme": "Ativar tema claro",

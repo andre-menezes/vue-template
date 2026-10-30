@@ -5,7 +5,9 @@
  */
 
 // Styles
-import 'material-symbols/outlined.css';
+import '@fontsource-variable/inter';
+import 'vuetify/styles';
+import '@app/styles/icons.scss';
 import '@app/styles/main.scss';
 
 import { createVuetify } from 'vuetify';
