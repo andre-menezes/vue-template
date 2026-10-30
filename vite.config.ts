@@ -119,10 +119,10 @@ export default defineConfig(({ mode }) => ({
       // Rebaixado uma única vez pela ADR-0021: a remoção da autenticação corporativa
       // tirou código bem testado do denominador (não houve perda de testes).
       thresholds: {
-        lines: 29,
-        functions: 19,
-        branches: 51,
-        statements: 28,
+        lines: 38,
+        functions: 27,
+        branches: 59,
+        statements: 37,
       },
     },
   },
