@@ -112,13 +112,14 @@ export default defineConfig(({ mode }) => ({
       ],
       // Piso de cobertura (ratchet — ADR-0016): reflete a cobertura real atual
       // e só pode subir. Ao aumentar a cobertura, atualize estes valores.
-      // Rebaixado uma única vez pela ADR-0021: a remoção da autenticação corporativa
-      // tirou código bem testado do denominador (não houve perda de testes).
+      // Rebaixado pela ADR-0021 (remoção da autenticação corporativa) e depois
+      // pela remoção do `cookie.ts` sem uso (nota na ADR-0016): nos dois casos
+      // saiu do denominador código testado, sem perda de teste de comportamento.
       thresholds: {
-        lines: 38,
+        lines: 37,
         functions: 27,
         branches: 59,
-        statements: 37,
+        statements: 36,
       },
     },
   },
