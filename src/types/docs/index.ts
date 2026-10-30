@@ -54,8 +54,6 @@ export interface NavCard {
   color: string;
   /** Rota de destino. */
   route: string;
-  /** Indica se a rota exige autenticação (exibe selo de cadeado). */
-  requiresAuth?: boolean;
 }
 
 /** Um passo de um fluxo (inicialização, autenticação, rotas) — usado por `FlowSteps`. */

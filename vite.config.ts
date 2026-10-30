@@ -85,11 +85,13 @@ export default defineConfig(({ mode }) => ({
       ],
       // Piso de cobertura (ratchet — ADR-0016): reflete a cobertura real atual
       // e só pode subir. Ao aumentar a cobertura, atualize estes valores.
+      // Rebaixado uma única vez pela ADR-0021: a remoção da autenticação SegID
+      // tirou código bem testado do denominador (não houve perda de testes).
       thresholds: {
-        lines: 45,
-        functions: 29,
-        branches: 57,
-        statements: 43,
+        lines: 29,
+        functions: 19,
+        branches: 51,
+        statements: 28,
       },
     },
   },

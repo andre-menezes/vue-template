@@ -53,15 +53,6 @@
     </DocSection>
 
     <DocSection
-      :title="$t('architecture.sections.auth.title')"
-      :description="$t('architecture.sections.auth.description')"
-      icon="lock"
-      anchor="autenticacao"
-    >
-      <FlowSteps :steps="authFlow" />
-    </DocSection>
-
-    <DocSection
       :title="$t('architecture.sections.routes.title')"
       :description="$t('architecture.sections.routes.description')"
       icon="alt_route"
@@ -77,7 +68,6 @@
         language="ts"
       >
         <template #preview>
-          <v-chip color="primary" variant="tonal" prepend-icon="alt_route">requiresAuth</v-chip>
           <v-chip color="secondary" variant="tonal" prepend-icon="dashboard">layout: empty</v-chip>
         </template>
       </ShowcaseCard>
@@ -261,18 +251,17 @@ const dependencyRules = computed<DependencyRule[]>(() => [
 
 const folderStructure = `src/
 ├── app/          # bootstrap, providers, rotas base, locales
-│   ├── providers/  # Pinia, i18n, Router (guard), Vuetify
-│   └── views/      # views globais (token callback, erro, 404)
-├── core/         # base sem UI: config/env e cliente OAuth
-│   ├── auth/       # URLs de login/logout do SSC e state (nonce)
+│   ├── providers/  # Pinia, i18n, Router, Vuetify
+│   └── views/      # views globais (404)
+├── core/         # base sem UI: config/env
 │   └── config/     # constantes e variáveis de ambiente
 ├── modules/      # features por domínio
 │   ├── home/
-│   └── protected-example/
+│   └── architecture/ …
 ├── shared/       # infraestrutura transversal
 │   ├── api/        # instâncias HTTP e services
 │   ├── composables/
-│   ├── helpers/    # efeitos (ex.: startLogin/endSession)
+│   ├── helpers/    # efeitos (ex.: downloadAndSave)
 │   ├── stores/     # estado global (Pinia)
 │   ├── ui/         # layouts, componentes globais, ícones
 │   └── utils/      # funções puras
@@ -286,7 +275,7 @@ const routes: RouteRecordRaw[] = [
     path: '/clientes',
     name: 'Clientes',
     component: () => import('./views/ClientesView.vue'),
-    meta: { requiresAuth: true, layout: 'empty' },
+    meta: { layout: 'empty' },
   },
 ];
 
@@ -322,46 +311,12 @@ const initFlow = computed<FlowStep[]>(() => [
     order: 4,
     title: t('architecture.initFlow.step4.title'),
     description: t('architecture.initFlow.step4.description'),
-    icon: 'shield',
-  },
-  {
-    order: 5,
-    title: t('architecture.initFlow.step5.title'),
-    description: t('architecture.initFlow.step5.description'),
     icon: 'check_circle',
-  },
-]);
-
-const authFlow = computed<FlowStep[]>(() => [
-  {
-    order: 1,
-    title: t('architecture.authFlow.step1.title'),
-    description: t('architecture.authFlow.step1.description'),
-    icon: 'login',
-  },
-  {
-    order: 2,
-    title: t('architecture.authFlow.step2.title'),
-    description: t('architecture.authFlow.step2.description'),
-    icon: 'lock',
-  },
-  {
-    order: 3,
-    title: t('architecture.authFlow.step3.title'),
-    description: t('architecture.authFlow.step3.description'),
-    icon: 'key',
-  },
-  {
-    order: 4,
-    title: t('architecture.authFlow.step4.title'),
-    description: t('architecture.authFlow.step4.description'),
-    icon: 'person',
   },
 ]);
 
 const stores = computed(() => [
   { name: 'app.store', responsibility: t('architecture.stores.app') },
-  { name: 'user.store', responsibility: t('architecture.stores.user') },
 ]);
 
 const aliases = [

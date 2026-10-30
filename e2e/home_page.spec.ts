@@ -8,7 +8,7 @@ test.describe('Página Home (hub)', () => {
     await page.goto('/');
   });
 
-  test('carrega o hub sem exigir autenticação', async ({ page }) => {
+  test('carrega o hub', async ({ page }) => {
     await expect(page.getByTestId('home-page')).toBeVisible();
     await expect(page.getByTestId('home-title')).toContainText('Vue 3 Template');
     await expect(page).toHaveURL('/');
@@ -20,12 +20,6 @@ test.describe('Página Home (hub)', () => {
     expect(await cards.count()).toBeGreaterThan(3);
     await expect(page.getByText('Arquitetura').first()).toBeVisible();
     await expect(page.getByText('Onboarding').first()).toBeVisible();
-  });
-
-  test('sinaliza a seção autenticada com o selo correspondente', async ({ page }) => {
-    await expect(
-      page.locator('[data-cy=nav-card][data-cy-route="/exemplo-protegido"]')
-    ).toContainText('Autenticada');
   });
 
   test('exibe o fluxo de trabalho', async ({ page }) => {

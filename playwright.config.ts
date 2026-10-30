@@ -26,13 +26,11 @@ export default defineConfig({
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   // Sobe o Vite no modo `test` (variáveis fictícias do `.env.test`), sem
-  // depender do `.env.development.local` de cada máquina. O mock de auth é
-  // ligado aqui: o modo `test` não é `production`, então ele é permitido.
+  // depender do `.env.development.local` de cada máquina.
   webServer: {
     command: `npx vite --mode test --port ${PORT} --strictPort`,
     url: baseURL,
     reuseExistingServer: !isCI,
     timeout: 120_000,
-    env: { VITE_AUTH_MOCK: 'true' },
   },
 });

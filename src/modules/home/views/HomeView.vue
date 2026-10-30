@@ -121,14 +121,6 @@ const navCards = computed<NavCard[]>(() => [
     color: 'secondary',
     route: '/decisoes',
   },
-  {
-    title: t('home.cards.protectedExample.title'),
-    description: t('home.cards.protectedExample.description'),
-    icon: 'lock',
-    color: 'warning',
-    route: '/exemplo-protegido',
-    requiresAuth: true,
-  },
 ]);
 
 const activity = computed<Activity[]>(() => [
