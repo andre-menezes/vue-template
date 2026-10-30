@@ -49,6 +49,7 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 - [ ] ⚠️ Testes passam (`pnpm test`)
 - [ ] Mocks isolados — preferir Pinia real a mock do módulo inteiro
 - [ ] Fluxos críticos (auth, pagamento) têm teste E2E correspondente
+- [ ] ⚠️ Página nova tem E2E com `expectNoA11yViolations` (WCAG A/AA)
 - [ ] 💡 Nomes de `it` descrevem o comportamento em português
 
 ---
