@@ -1,7 +1,7 @@
 <template>
   <section class="conventions-page py-6 py-md-8" data-cy="conventions-page">
     <div class="mb-8">
-      <p class="text-overline text-primary font-weight-bold mb-2">
+      <p class="text-overline text-primary-text font-weight-bold mb-2">
         {{ $t('conventions.eyebrow') }}
       </p>
       <h1 class="text-h4 text-md-h3 font-weight-bold mb-2" data-cy="conventions-title">
@@ -127,7 +127,7 @@
           v-for="scope in commitScopes"
           :key="scope.scope"
           variant="outlined"
-          color="secondary"
+          color="secondary-text"
         >
           <span class="font-weight-bold mr-1">{{ scope.scope }}</span>
           <span class="text-medium-emphasis">— {{ scope.usage }}</span>
@@ -220,7 +220,7 @@
         <v-col v-for="principle in principles" :key="principle.name" cols="12" sm="6" md="4">
           <v-card variant="outlined" class="h-100">
             <v-card-item>
-              <v-card-title class="text-subtitle-1 font-weight-bold text-primary">
+              <v-card-title class="text-subtitle-1 font-weight-bold text-primary-text">
                 {{ principle.name }}
               </v-card-title>
             </v-card-item>

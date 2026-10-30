@@ -16,7 +16,7 @@
 
       <v-spacer />
 
-      <v-chip v-if="filename && language" size="x-small" variant="text" color="secondary">
+      <v-chip v-if="filename && language" size="x-small" variant="text" color="secondary-text">
         {{ language }}
       </v-chip>
     </v-toolbar>

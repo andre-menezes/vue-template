@@ -4,7 +4,7 @@
     :class="$vuetify.theme.current.dark ? 'gradient-dark' : 'gradient-light'"
   >
     <v-card-title class="pa-4 pb-0">
-      <v-card-subtitle opacity="1" class="font-weight-bold text-primary px-0">
+      <v-card-subtitle opacity="1" class="font-weight-bold text-primary-text px-0">
         {{ $t('docsHome.workflow.eyebrow') }}
       </v-card-subtitle>
 

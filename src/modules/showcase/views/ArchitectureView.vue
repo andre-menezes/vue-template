@@ -1,7 +1,7 @@
 <template>
   <section class="architecture-page py-6 py-md-8" data-cy="architecture-page">
     <div class="mb-8">
-      <p class="text-overline text-primary font-weight-bold mb-2">
+      <p class="text-overline text-primary-text font-weight-bold mb-2">
         {{ $t('architecture.eyebrow') }}
       </p>
       <h1 class="text-h4 text-md-h3 font-weight-bold mb-2" data-cy="architecture-title">
