@@ -499,5 +499,13 @@
       "columnStatus": "Status",
       "footer": "Arquivos completos em {path}. Novas decisões seguem a numeração sequencial (ex.: {example})."
     }
+  },
+  "pageTitle": {
+    "docs": "Documentação",
+    "architecture": "Arquitetura",
+    "onboarding": "Onboarding",
+    "components": "Componentes & UI",
+    "conventions": "Convenções",
+    "decisions": "Decisões arquiteturais"
   }
 }

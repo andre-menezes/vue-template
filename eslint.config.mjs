@@ -200,9 +200,11 @@ export default [
       '@intlify/vue-i18n/no-missing-keys': 'error',
       '@intlify/vue-i18n/no-unused-keys': [
         'error',
-        // `nav.*` chega ao `$t` por variável (`item.titleKey` no menu), que a
-        // regra não consegue rastrear.
-        { extensions: ['.ts', '.vue'], ignores: ['/^nav\\./'] },
+        // `nav.*` e `pageTitle.*` chegam ao `$t` por variável (`item.titleKey`
+        // no menu, `meta.titleKey` no título da página), que a regra não
+        // consegue rastrear. Um teste garante que toda rota aponta para uma
+        // chave existente.
+        { extensions: ['.ts', '.vue'], ignores: ['/^nav\\./', '/^pageTitle\\./'] },
       ],
       '@intlify/vue-i18n/no-raw-text': 'warn',
       '@intlify/vue-i18n/no-v-html': 'off',

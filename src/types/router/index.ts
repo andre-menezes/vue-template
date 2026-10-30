@@ -1,6 +1,6 @@
 /**
  * Meta fields de rota suportados pelo template (augmentation do vue-router).
- * Com isso, `route.meta.layout` é tipado em todo o projeto e valores inválidos
+ * Com isso, `route.meta.layout` (e os demais campos) é tipado em todo o projeto e valores inválidos
  * (ex.: `layout: 'vazio'`) falham no typecheck.
  */
 import 'vue-router';
@@ -20,6 +20,11 @@ declare module 'vue-router' {
   interface RouteMeta {
     /** Layout da rota; ausente = `default` (header + navegação). */
     layout?: RouteLayout;
+    /**
+     * Chave i18n do título da página (ex.: `pageTitle.home`). Vira
+     * `document.title` como "<título> · <APP_NAME>"; ausente = só `APP_NAME`.
+     */
+    titleKey?: string;
     nav?: RouteNav;
   }
 }
