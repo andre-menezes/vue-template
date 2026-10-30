@@ -29,6 +29,9 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Alterado
 
+- Sem tema salvo, o tema inicial segue o `prefers-color-scheme` do sistema; a escolha salva continua prevalecendo.
+- `getErrorMessage` recebe os fallbacks traduzidos por parâmetro (`ErrorMessageFallbacks`); `useErrorMessage()` usa os textos de `errors.*` (ADR-0037).
+- `no-raw-text` do vue-i18n passa a erro, com exceções técnicas estreitas; o `pnpm lint` termina sem avisos (ADR-0037).
 - CI migrado para o GitHub Actions (`.github/workflows/ci.yml`), com templates de issue e PR e labels em `.github/labels.md` (ADR-0022).
 - `LICENSE.md` com Andre Menezes como titular.
 - Piso de cobertura rebaixado uma única vez após a remoção da autenticação (ADR-0021).
@@ -54,6 +57,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- Título da aba por rota (`meta.titleKey`, traduzido, `"<título> · <APP_NAME>"`), foco no `<main>` após navegar e link "Pular para o conteúdo" (ADR-0036).
 - Tratamento global de erros em `@app/providers/errors`: `app.config.errorHandler` e `unhandledrejection` enviam a um `ErrorReporter` trocável (ADR-0028).
 - Checagem de acessibilidade WCAG 2.1 A/AA no E2E com `@axe-core/playwright` (`expectNoA11yViolations`) (ADR-0029).
 - Testes do `App.vue` (escolha de layout e tema).

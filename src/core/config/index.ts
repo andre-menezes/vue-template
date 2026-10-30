@@ -29,6 +29,12 @@ export const STORAGE_KEYS = {
   THEME: 'app_theme',
 } as const;
 
+/**
+ * `id` do `<main>` dos layouts: alvo do link "Pular para o conteúdo" e do
+ * foco movido após cada navegação (ADR-0036).
+ */
+export const MAIN_CONTENT_ID = 'main-content';
+
 /** Pagination defaults */
 export const DEFAULT_PAGE_SIZE = 10;
 export const MAX_PAGE_SIZE = 100;

@@ -22,3 +22,14 @@ export interface ProblemDetails {
   /** Campos de extensão adicionais definidos pela API. */
   [extension: string]: unknown;
 }
+
+/**
+ * Textos usados por `getErrorMessage` quando o erro não traz mensagem
+ * própria. Vêm do i18n (ver `useErrorMessage`), nunca fixos no código.
+ */
+export interface ErrorMessageFallbacks {
+  /** Erro sem corpo Problem Details, sem status e sem mensagem. */
+  unexpected: string;
+  /** Erro HTTP sem `statusText` (o status é anexado: "<texto> (HTTP 500)"). */
+  requestFailed: string;
+}

@@ -184,27 +184,46 @@ export default [
     },
   },
   ...layerRules,
-  // i18n: chaves usadas precisam existir em `pt-BR.json`, e o JSON não guarda
-  // chaves órfãs. Texto fixo no template vira aviso para não bloquear trechos
-  // técnicos (snippets, nomes de camada), que não são traduzidos.
+  // i18n: chaves usadas precisam existir em `pt-BR.json`, o JSON não guarda
+  // chaves órfãs e texto de interface fixo no template é erro (ADR-0037).
   ...pluginVueI18n.configs['flat/recommended'],
   {
-    files: ['src/**/*.{ts,vue}', 'src/**/locales/*.json'],
+    // Em todos os arquivos (não só em `src`): sem `localeDir`, as regras de
+    // mensagem do preset avisam em qualquer JSON, como o `e2e/tsconfig.json`.
+    // Com ele, ignoram o que não é locale.
     settings: {
       'vue-i18n': {
         localeDir: './src/**/locales/*.json',
         messageSyntaxVersion: '^11.0.0',
       },
     },
+  },
+  {
+    files: ['src/**/*.{ts,vue}', 'src/**/locales/*.json'],
     rules: {
       '@intlify/vue-i18n/no-missing-keys': 'error',
       '@intlify/vue-i18n/no-unused-keys': [
         'error',
-        // `nav.*` chega ao `$t` por variável (`item.titleKey` no menu), que a
-        // regra não consegue rastrear.
-        { extensions: ['.ts', '.vue'], ignores: ['/^nav\\./'] },
+        // `nav.*` e `pageTitle.*` chegam ao `$t` por variável (`item.titleKey`
+        // no menu, `meta.titleKey` no título da página), que a regra não
+        // consegue rastrear. Um teste garante que toda rota aponta para uma
+        // chave existente.
+        { extensions: ['.ts', '.vue'], ignores: ['/^nav\\./', '/^pageTitle\\./'] },
       ],
-      '@intlify/vue-i18n/no-raw-text': 'warn',
+      '@intlify/vue-i18n/no-raw-text': [
+        'error',
+        {
+          // Exceções estreitas, só para o que não se traduz (ADR-0037):
+          // - conteúdo de <code>: caminhos, arquivos e identificadores;
+          ignoreNodes: ['code'],
+          // - texto feito só de pontuação (":", ".", "—") entre trechos
+          //   traduzidos;
+          ignorePattern: '^[\\p{P}\\s]+$',
+          // - nomes técnicos exibidos como estão: branches do Git, um campo
+          //   de rota, uma versão de exemplo e o nome de uma RFC.
+          ignoreText: ['main', 'develop', 'layout: empty', 'v4.0.0', 'RFC 9457'],
+        },
+      ],
       '@intlify/vue-i18n/no-v-html': 'off',
     },
   },

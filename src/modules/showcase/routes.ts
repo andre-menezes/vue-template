@@ -9,37 +9,55 @@ const routes: RouteRecordRaw[] = [
     path: '/docs',
     name: 'DocsHome',
     component: () => import('./views/DocsHomeView.vue'),
-    meta: { nav: { titleKey: 'nav.docs', icon: 'menu_book', order: 100 } },
+    meta: {
+      titleKey: 'pageTitle.docs',
+      nav: { titleKey: 'nav.docs', icon: 'menu_book', order: 100 },
+    },
   },
   {
     path: '/arquitetura',
     name: 'Architecture',
     component: () => import('./views/ArchitectureView.vue'),
-    meta: { nav: { titleKey: 'nav.architecture', icon: 'account_tree', order: 110 } },
+    meta: {
+      titleKey: 'pageTitle.architecture',
+      nav: { titleKey: 'nav.architecture', icon: 'account_tree', order: 110 },
+    },
   },
   {
     path: '/onboarding',
     name: 'Onboarding',
     component: () => import('./views/OnboardingView.vue'),
-    meta: { nav: { titleKey: 'nav.onboarding', icon: 'rocket_launch-fill', order: 120 } },
+    meta: {
+      titleKey: 'pageTitle.onboarding',
+      nav: { titleKey: 'nav.onboarding', icon: 'rocket_launch-fill', order: 120 },
+    },
   },
   {
     path: '/componentes',
     name: 'Components',
     component: () => import('./views/ComponentsView.vue'),
-    meta: { nav: { titleKey: 'nav.components', icon: 'palette', order: 130 } },
+    meta: {
+      titleKey: 'pageTitle.components',
+      nav: { titleKey: 'nav.components', icon: 'palette', order: 130 },
+    },
   },
   {
     path: '/convencoes',
     name: 'Conventions',
     component: () => import('./views/ConventionsView.vue'),
-    meta: { nav: { titleKey: 'nav.conventions', icon: 'checklist', order: 140 } },
+    meta: {
+      titleKey: 'pageTitle.conventions',
+      nav: { titleKey: 'nav.conventions', icon: 'checklist', order: 140 },
+    },
   },
   {
     path: '/decisoes',
     name: 'Decisions',
     component: () => import('./views/DecisionsView.vue'),
-    meta: { nav: { titleKey: 'nav.decisions', icon: 'gavel', order: 150 } },
+    meta: {
+      titleKey: 'pageTitle.decisions',
+      nav: { titleKey: 'nav.decisions', icon: 'gavel', order: 150 },
+    },
   },
 ];
 

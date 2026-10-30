@@ -20,5 +20,16 @@
     "title": "Bem-vindo ao {appName}",
     "description": "Projeto criado a partir do Vue Template. Comece criando um módulo em src/modules/.",
     "docsLink": "Ver a documentação do template"
+  },
+  "pageTitle": {
+    "home": "Início",
+    "notFound": "Página não encontrada"
+  },
+  "a11y": {
+    "skipToContent": "Pular para o conteúdo"
+  },
+  "errors": {
+    "unexpected": "Erro inesperado.",
+    "requestFailed": "Erro na requisição"
   }
 }
