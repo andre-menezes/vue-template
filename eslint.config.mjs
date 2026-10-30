@@ -129,6 +129,34 @@ export default [
       },
     },
   },
+  // Lint tipado: regras que dependem do type checker (promises soltas, `await`
+  // em não-promise, acesso inseguro a `any`). Restrito ao código da aplicação
+  // e do E2E, que têm tsconfig próprio; configs na raiz ficam só no lint base.
+  // Só as regras: o parser já vem do bloco base (TS) e do eslint-plugin-vue
+  // (vue-eslint-parser delegando ao TS), e não pode ser sobrescrito aqui.
+  ...tseslint.configs.recommendedTypeChecked.map(({ languageOptions: _ignored, ...config }) => ({
+    ...config,
+    files: ['src/**/*.{ts,vue}', 'e2e/**/*.ts'],
+  })),
+  {
+    files: ['src/**/*.{ts,vue}', 'e2e/**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+        extraFileExtensions: ['.vue'],
+      },
+    },
+  },
+  {
+    // `expect(obj.metodo).toHaveBeenCalled()` passa o método solto de propósito,
+    // e testes montam componentes inline para isolar o comportamento.
+    files: ['src/test/**/*.ts'],
+    rules: {
+      '@typescript-eslint/unbound-method': 'off',
+      'vue/one-component-per-file': 'off',
+    },
+  },
   eslintConfigPrettier,
   // Prettier: registramos o plugin manualmente em vez de usar
   // `pluginPrettier.configs.recommended`, pois esse preset ainda usa a chave
