@@ -30,12 +30,12 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 ## Comandos
 
 ```bash
-npm run test              # unitários (single run)
-npm run test:watch        # unitários (watch mode)
-npm run test:coverage     # cobertura com relatório
-npm run test:e2e          # E2E headless (Playwright)
-npm run test:e2e:open     # E2E interativo (Playwright UI)
-npm run test:all          # unitários + E2E
+pnpm test                 # unitários (single run)
+pnpm test:watch           # unitários (watch mode)
+pnpm test:coverage        # cobertura com relatório
+pnpm test:e2e             # E2E headless (Playwright)
+pnpm test:e2e:open        # E2E interativo (Playwright UI)
+pnpm test:all             # unitários + E2E
 ```
 
 ## Thresholds de cobertura
@@ -178,17 +178,17 @@ para manter o teste determinístico sem depender do backend.
 Na primeira vez (e a cada atualização do `@playwright/test`), baixe o Chromium:
 
 ```bash
-npm run test:e2e:install
+pnpm test:e2e:install
 ```
 
 O Playwright **sobe o servidor sozinho** (`webServer` em `playwright.config.ts`):
 o Vite roda na porta **9091**, no modo `test`, com os valores padrão das
-variáveis de ambiente. Não é preciso rodar `npm run dev` antes, e o
+variáveis de ambiente. Não é preciso rodar `pnpm dev` antes, e o
 `.env.development.local` da máquina não interfere.
 
 ```bash
-npm run test:e2e         # headless
-npm run test:e2e:open    # interativo (Playwright UI)
+pnpm test:e2e            # headless
+pnpm test:e2e:open       # interativo (Playwright UI)
 ```
 
 Fora do CI, se já houver um servidor na 9091 ele é reaproveitado. Em falhas,

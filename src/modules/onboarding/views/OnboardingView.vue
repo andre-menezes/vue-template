@@ -148,14 +148,14 @@ const { t } = useI18n();
 const setupClone = `git clone https://github.com/andre-menezes/vue-template.git seu-projeto
 cd seu-projeto`;
 
-const setupInstall = 'npm install';
+const setupInstall = 'pnpm install';
 
-const setupDev = `npm run dev
+const setupDev = `pnpm dev
 # acesse http://localhost:9081`;
 
-const setupTest = `npm run test        # testes unitários
-npm run test:e2e    # testes end-to-end
-npm run lint        # verificação de estilo`;
+const setupTest = `pnpm test           # testes unitários
+pnpm test:e2e       # testes end-to-end
+pnpm lint           # verificação de estilo`;
 
 const currentStep = ref(1);
 

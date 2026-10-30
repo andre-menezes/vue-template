@@ -77,8 +77,8 @@ vi.mocked(httpClient.get).mockResolvedValue(mockData);
 ## Padrões — Teste E2E (Playwright)
 
 O `webServer` do `playwright.config.ts` sobe o Vite (porta 9091, modo `test`);
-não é preciso rodar `npm run dev` antes. Na primeira
-execução, instale o navegador com `npm run test:e2e:install`.
+não é preciso rodar `pnpm dev` antes. Na primeira
+execução, instale o navegador com `pnpm test:e2e:install`.
 
 ### Navegando para uma página
 
@@ -156,12 +156,12 @@ cobertura aumentar. A fonte de verdade é o `coverage.thresholds` do
 ## Comandos
 
 ```bash
-npm run test              # unitários (single run)
-npm run test:watch        # unitários (watch mode)
-npm run test:coverage     # cobertura com relatório
-npm run test:e2e          # E2E headless
-npm run test:e2e:open     # E2E interativo
-npm run test:all          # unitários + E2E
+pnpm test                 # unitários (single run)
+pnpm test:watch           # unitários (watch mode)
+pnpm test:coverage        # cobertura com relatório
+pnpm test:e2e             # E2E headless
+pnpm test:e2e:open        # E2E interativo
+pnpm test:all             # unitários + E2E
 ```
 
 ## Não fazer

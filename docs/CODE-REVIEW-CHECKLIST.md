@@ -46,7 +46,7 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 
 - [ ] ⚠️ Toda regra de negócio nova tem teste unitário
 - [ ] ⚠️ Testes possuem assertions (sem `it` vazio)
-- [ ] ⚠️ Testes passam (`npm run test`)
+- [ ] ⚠️ Testes passam (`pnpm test`)
 - [ ] Mocks isolados — preferir Pinia real a mock do módulo inteiro
 - [ ] Fluxos críticos (auth, pagamento) têm teste E2E correspondente
 - [ ] 💡 Nomes de `it` descrevem o comportamento em português
@@ -84,8 +84,8 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 
 ## Estilo e formatação
 
-- [ ] ⚠️ Lint passa sem erros (`npm run lint`)
-- [ ] ⚠️ Build passa sem erros (`npm run build`)
+- [ ] ⚠️ Lint passa sem erros (`pnpm lint`)
+- [ ] ⚠️ Build passa sem erros (`pnpm build`)
 - [ ] Ordem dos blocos: `<template>` → `<script>` → `<style>`
 - [ ] Imports usam alias mais curto (`@shared/`, `@app/`, `@typings/`)
 - [ ] Eventos customizados em camelCase

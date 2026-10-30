@@ -185,4 +185,4 @@ Por que é ruim: viola a regra de independência entre módulos. Se
 4. Criar `components/` para componentes apresentacionais.
 5. Criar types em `src/types/<nome>/` se houver contratos específicos.
 6. Criar service em `shared/api/services/` se houver integração com backend.
-7. Verificar que o lint e type-check passam (`npm run lint && npm run build`).
+7. Verificar que o lint e type-check passam (`pnpm lint && pnpm build`).

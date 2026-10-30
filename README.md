@@ -38,8 +38,8 @@ Template frontend baseado em Vue 3 + TypeScript + Vite, com foco em:
 ## Como executar
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Nenhuma variável de ambiente é obrigatória: os valores padrão ficam em
@@ -52,25 +52,25 @@ Nenhuma variável de ambiente é obrigatória: os valores padrão ficam em
 
 ```bash
 # Lint
-npm run lint
+pnpm lint
 
 # Typecheck + build
-npm run build
+pnpm build
 
 # Testes unitários/integração
-npm run test
+pnpm test
 
 # Cobertura
-npm run test:coverage
+pnpm test:coverage
 
 # E2E (headless)
-npm run test:e2e
+pnpm test:e2e
 
 # E2E (interativo)
-npm run test:e2e:open
+pnpm test:e2e:open
 
 # Tudo (unitários + E2E)
-npm run test:all
+pnpm test:all
 ```
 
 ## Estrutura de alto nível

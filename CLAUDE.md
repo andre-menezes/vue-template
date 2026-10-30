@@ -49,7 +49,7 @@ O núcleo de conhecimento do agente está em `agent/`. Leia antes de agir:
 2. Perguntar se algo não estiver claro.
 3. Criar branch a partir de develop (`feat/FEAT-XXX-slug` ou `fix/BUG-XXX-slug`).
 4. Implementar seguindo camadas (types → service → store (se necessário) → view → components).
-5. Validar: `npm run lint && npm run build && npm run test`.
+5. Validar: `pnpm lint && pnpm build && pnpm test`.
 6. Commitar seguindo COMMIT-CONVENTIONS.md.
 7. Push e abrir PR.
 
@@ -58,11 +58,11 @@ Para detalhes completos, sempre consulte os arquivos em `agent/`.
 ## Comandos úteis
 
 ```bash
-npm run dev           # servidor de desenvolvimento (porta 9081)
-npm run lint          # verificar lint
-npm run lint:fix      # corrigir lint automaticamente
-npm run build         # typecheck + build de produção
-npm run test          # testes unitários
-npm run test:e2e      # testes E2E (Playwright headless)
-npm run test:e2e:open # testes E2E (Playwright UI)
+pnpm dev              # servidor de desenvolvimento (porta 9081)
+pnpm lint             # verificar lint
+pnpm lint:fix         # corrigir lint automaticamente
+pnpm build            # typecheck + build de produção
+pnpm test             # testes unitários
+pnpm test:e2e         # testes E2E (Playwright headless)
+pnpm test:e2e:open # testes E2E (Playwright UI)
 ```

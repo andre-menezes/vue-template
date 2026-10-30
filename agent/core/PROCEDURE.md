@@ -75,9 +75,9 @@ Seguir a ordem de camadas (de baixo para cima):
 Executar e garantir zero erros:
 
 ```bash
-npm run lint
-npm run build
-npm run test
+pnpm lint
+pnpm build
+pnpm test
 ```
 
 Se falhar:

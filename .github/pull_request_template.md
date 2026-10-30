@@ -35,9 +35,9 @@ Closes #
 - [ ] Código na camada correta; regras de dependência respeitadas.
 - [ ] Sem `any` em contratos de domínio; props/emits tipados.
 - [ ] Testes cobrindo as regras de negócio novas (ou regressão do bug).
-- [ ] `npm run lint` sem erros.
-- [ ] `npm run build` sem erros.
-- [ ] `npm run test` passando.
+- [ ] `pnpm lint` sem erros.
+- [ ] `pnpm build` sem erros.
+- [ ] `pnpm test` passando.
 - [ ] Commits seguem Conventional Commits (docs/COMMIT-CONVENTIONS.md).
 - [ ] CHANGELOG atualizado (seção `[Não lançado]`), quando aplicável.
 

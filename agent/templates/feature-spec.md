@@ -94,8 +94,8 @@ Informações adicionais, limitações conhecidas ou decisões técnicas pendent
 - [ ] Componentes apresentacionais implementados
 - [ ] Testes unitários criados e passando
 - [ ] Teste E2E criado e passando
-- [ ] `npm run lint` sem erros
-- [ ] `npm run build` sem erros
-- [ ] `npm run test` passando
+- [ ] `pnpm lint` sem erros
+- [ ] `pnpm build` sem erros
+- [ ] `pnpm test` passando
 - [ ] Commits seguindo COMMIT-CONVENTIONS.md
 - [ ] PR aberto com descrição completa

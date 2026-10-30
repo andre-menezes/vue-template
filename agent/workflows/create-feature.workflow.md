@@ -31,7 +31,7 @@ Ler antes de executar:
 10. Criar componentes apresentacionais em `src/modules/<nome>/components/`. Props tipadas, sem fetch/store. Adicionar `data-cy`.
 11. Criar testes unitários em `src/test/`. Cobrir service e regras de negócio.
 12. Criar teste E2E (Playwright) em `e2e/`. Cobrir fluxo principal com seletores `data-cy` (`getByTestId`).
-13. Validar: `npm run lint && npm run build && npm run test`.
+13. Validar: `pnpm lint && pnpm build && pnpm test`.
 14. Corrigir se necessário. Revalidar até zero erros.
 15. Se a feature envolveu uma decisão arquitetural (nova lib, novo padrão, mudança de camada, escolha entre abordagens válidas), criar/atualizar a ADR em `docs/decisions/` (template em `agent/templates/adr.md`).
 16. Commitar: commits atômicos seguindo `docs/COMMIT-CONVENTIONS.md`.

@@ -6,7 +6,7 @@
 2. **Nunca inventar.** Não crie soluções por achismo. Se falta informação, pergunte ao desenvolvedor.
 3. **Classificar confiança.** Toda decisão deve ser `CONFIRMADO` (na spec/docs), `INFERIDO` (derivado de evidência) ou `PENDENTE` (precisa de validação).
 4. **Não alterar configuração.** Não modifique build, lint, tsconfig ou dependências sem aprovação explícita.
-5. **Não instalar dependências.** Nenhum `npm install` sem aprovação do desenvolvedor.
+5. **Não instalar dependências.** Nenhum `pnpm install` sem aprovação do desenvolvedor.
 6. **Não push para main/develop.** Sempre criar branch própria.
 7. **Não incluir segredos.** Tokens, senhas, chaves e dados pessoais nunca entram no código.
 8. **Código em inglês, docs em português.** Variáveis, funções e arquivos em inglês; documentação e commits em português.
@@ -77,9 +77,9 @@ A tarefa só está pronta quando:
 - [ ] Tipos centralizados em `src/types/`.
 - [ ] Testes unitários cobrindo regras de negócio.
 - [ ] Teste E2E cobrindo fluxo principal (quando aplicável).
-- [ ] `npm run lint` sem erros.
-- [ ] `npm run build` sem erros.
-- [ ] `npm run test` passando.
+- [ ] `pnpm lint` sem erros.
+- [ ] `pnpm build` sem erros.
+- [ ] `pnpm test` passando.
 - [ ] Commits atômicos seguindo COMMIT-CONVENTIONS.md.
 - [ ] Decisão arquitetural relevante registrada como ADR (quando aplicável).
 - [ ] PR aberto com título e descrição claros.

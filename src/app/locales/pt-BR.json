@@ -248,9 +248,9 @@
       "components": "Componentes apresentacionais com props tipadas",
       "unitTest": "Teste unitário cobrindo o service",
       "e2eTest": "Teste E2E cobrindo o fluxo principal",
-      "lint": "npm run lint sem erros",
-      "build": "npm run build sem erros",
-      "test": "npm run test passando",
+      "lint": "pnpm lint sem erros",
+      "build": "pnpm build sem erros",
+      "test": "pnpm test passando",
       "commit": "Commit seguindo as convenções"
     },
     "faqSection": {
@@ -428,7 +428,7 @@
           "items": {
             "unit": "Toda regra de negócio nova tem teste unitário",
             "assertions": "Testes possuem assertions (sem it vazio)",
-            "pass": "Testes passam (npm run test)",
+            "pass": "Testes passam (pnpm test)",
             "e2e": "Fluxos críticos (auth, pagamento) têm teste E2E"
           }
         },
@@ -444,8 +444,8 @@
         "style": {
           "title": "Estilo e formatação",
           "items": {
-            "lint": "Lint passa sem erros (npm run lint)",
-            "build": "Build passa sem erros (npm run build)",
+            "lint": "Lint passa sem erros (pnpm lint)",
+            "build": "Build passa sem erros (pnpm build)",
             "blockOrder": "Ordem dos blocos: template → script → style",
             "alias": "Imports usam o alias mais curto"
           }

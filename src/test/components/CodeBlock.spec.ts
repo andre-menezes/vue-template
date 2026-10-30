@@ -16,10 +16,10 @@ describe('CodeBlock', () => {
   it('renderiza o código informado', () => {
     stubClipboard();
     const wrapper = mountWithPlugins(CodeBlock, {
-      props: { code: 'npm install' },
+      props: { code: 'pnpm install' },
     });
 
-    expect(wrapper.text()).toContain('npm install');
+    expect(wrapper.text()).toContain('pnpm install');
   });
 
   it('exibe o nome do arquivo e a linguagem no cabeçalho quando informados', () => {
@@ -36,11 +36,11 @@ describe('CodeBlock', () => {
     const writeText = stubClipboard();
 
     const wrapper = mountWithPlugins(CodeBlock, {
-      props: { code: 'npm run build' },
+      props: { code: 'pnpm build' },
     });
 
     await wrapper.get('[data-cy=code-block-copy]').trigger('click');
 
-    expect(writeText).toHaveBeenCalledWith('npm run build');
+    expect(writeText).toHaveBeenCalledWith('pnpm build');
   });
 });

@@ -34,7 +34,10 @@ abrir seu primeiro Pull Request (PR).
 - **Node.js**: versão exata fixada em [`.tool-versions`](.tool-versions) e
   [`.nvmrc`](.nvmrc) (**24.22.2**, linha LTS). Recomendamos o **vfox** para
   gerenciá-la (veja abaixo).
-- **npm**: versão 10 ou superior (acompanha o Node instalado pelo vfox).
+- **pnpm**: versão 10 ou superior. O campo `packageManager` do `package.json`
+  fixa a versão; com o Corepack (que acompanha o Node), basta rodar
+  `corepack enable` uma vez por máquina. Não use `npm install`: o projeto não
+  tem `package-lock.json` e o lockfile é o `pnpm-lock.yaml` (ADR-0024).
 - Variáveis de ambiente: opcionais. Para sobrescrever os padrões, copie
   `.env.example` para `.env.development.local`.
 
@@ -67,7 +70,7 @@ node -v                         # confirme: v24.22.2
 
 > **Importante:** o projeto usa `engine-strict=true` no `.npmrc`. Se a versão
 > ativa do Node estiver fora da linha 24 (a partir da **24.22.2**), o
-> `npm install` falha com `EBADENGINE`. Ative a versão do projeto
+> `pnpm install` falha com `ERR_PNPM_UNSUPPORTED_ENGINE`. Ative a versão do projeto
 > (`vfox use nodejs`) antes de instalar as dependências.
 
 ---
@@ -76,13 +79,13 @@ node -v                         # confirme: v24.22.2
 
 ```bash
 vfox use nodejs    # ativa a versão do Node do projeto (ver .tool-versions)
-npm install        # instala dependências e configura os git hooks (Husky)
-npm run dev        # sobe o servidor de desenvolvimento (porta 9081)
+pnpm install       # instala dependências e configura os git hooks (Husky)
+pnpm dev           # sobe o servidor de desenvolvimento (porta 9081)
 ```
 
 > Se preferir usar `nvm`, substitua a primeira linha por `nvm use`.
 
-O `npm install` executa o script `prepare`, que ativa o Husky automaticamente.
+O `pnpm install` executa o script `prepare`, que ativa o Husky automaticamente.
 Não é necessário nenhum passo manual adicional para habilitar os hooks.
 
 ---
@@ -93,7 +96,7 @@ Não é necessário nenhum passo manual adicional para habilitar os hooks.
 2. Crie uma branch a partir da `develop` (nunca de `main`).
 3. Implemente seguindo a arquitetura em camadas (types → service → store (se necessário) → view → components). Detalhes em [docs/ONBOARDING.md](docs/ONBOARDING.md).
 4. Escreva testes cobrindo as regras de negócio.
-5. Valide localmente: `npm run lint && npm run build && npm run test`.
+5. Valide localmente: `pnpm lint && pnpm build && pnpm test`.
 6. Commite seguindo as convenções (os hooks validam automaticamente).
 7. Faça push e abra um Pull Request para a `develop`.
 
@@ -144,7 +147,7 @@ O hook `commit-msg` rejeita mensagens fora do padrão.
 ## Git hooks (Husky)
 
 Os hooks são gerenciados pelo [Husky](https://typicode.github.io/husky/) e
-ativados no `npm install`.
+ativados no `pnpm install`.
 
 | Hook         | O que faz                                                            |
 | ------------ | -------------------------------------------------------------------- |
@@ -178,7 +181,7 @@ Referência completa: [docs/ARCHITECTURE-GUIDE.md](docs/ARCHITECTURE-GUIDE.md).
 
 - **Unitários/integração**: Vitest + Vue Test Utils (`src/test/**/*.spec.ts`).
 - **End-to-end**: Playwright (`e2e/**/*.spec.ts`). Na primeira vez, rode
-  `npm run test:e2e:install` para baixar o Chromium; o `npm run test:e2e` sobe
+  `pnpm test:e2e:install` para baixar o Chromium; o `pnpm test:e2e` sobe
   o servidor sozinho.
 - Toda regra de negócio nova precisa de teste; bug corrigido precisa de teste
   de regressão.
@@ -207,12 +210,12 @@ cobertura aumentar. A fonte de verdade é o `coverage.thresholds` do
 Garanta que os três comandos passam sem erros:
 
 ```bash
-npm run lint       # análise estática
-npm run build      # type-check + build de produção
-npm run test       # testes unitários
+pnpm lint          # análise estática
+pnpm build         # type-check + build de produção
+pnpm test          # testes unitários
 ```
 
-Para conferir cobertura: `npm run test:coverage`.
+Para conferir cobertura: `pnpm test:coverage`.
 
 ---
 

@@ -24,6 +24,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Variáveis de ambiente do provedor de identidade, do BFF e do CSRF; a URL da API passa a ser `VITE_API_BASE_URL`.
 - Pipeline do GitLab (`.gitlab-ci.yml`), templates de merge request/issue e deploy no GitLab Pages (ADR-0022).
 - `.env.test`: as variáveis de ambiente têm valores padrão e nenhum arquivo `.env` é obrigatório.
+- `package-lock.json` e o campo `allowScripts` do `package.json`, substituídos pelo `pnpm-lock.yaml` e por `pnpm.onlyBuiltDependencies` (ADR-0024).
 
 ### Alterado
 
@@ -38,6 +39,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Inter auto-hospedada via `@fontsource-variable/inter`, sem requisição ao Google Fonts (ADR-0023).
 - Mensagens de i18n pré-compiladas com `@intlify/unplugin-vue-i18n`, sem o compilador no bundle; regras de lint do vue-i18n ativadas (ADR-0023).
 - Variáveis SASS do Vuetify em `src/app/styles/settings.scss` (`styles.configFile`).
+- Gerenciador de pacotes migrado do npm para o pnpm: `pnpm-lock.yaml`, `packageManager` no `package.json`, CI com `pnpm install --frozen-lockfile` e documentação com comandos `pnpm` (ADR-0024).
 
 ### Adicionado
 
