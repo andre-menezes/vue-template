@@ -95,7 +95,9 @@ export default defineConfig(({ mode }) => ({
       },
     },
     setupFiles: ['src/test/setup.ts'],
-    include: ['src/test/**/*.spec.ts'],
+    // Os testes de `scripts/` cobrem os scripts de Node do repositório (ex.: o
+    // validador do hook commit-msg); a cobertura continua medindo só `src/`.
+    include: ['src/test/**/*.spec.ts', 'scripts/**/*.spec.mjs'],
     coverage: {
       provider: 'v8' as const,
       reporter: ['text', 'lcov', 'cobertura'],
