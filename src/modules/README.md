@@ -1,0 +1,191 @@
+# modules
+
+Camada de funcionalidades de domínio. Cada pasta representa um contexto
+funcional isolado.
+
+Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITECTURE-GUIDE.md)
+
+## Estrutura esperada por módulo
+
+```text
+<módulo>/
+├── routes.ts          # rotas do módulo (auto-descobertas pelo router)
+├── views/             # views container (orquestram dados)
+├── components/        # componentes apresentacionais do módulo
+└── types/ (opcional)  # tipos locais (quando não fazem sentido em src/types)
+```
+
+## Como as rotas são carregadas
+
+O router carrega automaticamente todos os `routes.ts` via glob:
+
+```ts
+const modules = import.meta.glob('@/**/routes.ts', { eager: true });
+```
+
+Basta criar um `routes.ts` exportando um array default — a rota é registrada
+sem nenhuma configuração manual adicional.
+
+## Regras
+
+- `routes.ts` deve exportar `default` com array tipado `RouteRecordRaw[]`.
+- Views funcionam como container/orquestrador (buscam dados, passam props).
+- Components priorizam responsabilidade apresentacional (props + emits).
+- Regra de negócio reutilizável deve ir para `shared/` (service, store, util).
+- Um módulo **nunca** importa de outro módulo (módulos são independentes).
+- Um módulo pode importar de `shared/` e `types/`.
+
+## Meta fields disponíveis
+
+| Meta           | Tipo      | Efeito                                      |
+| -------------- | --------- | ------------------------------------------- |
+| `requiresAuth` | `boolean` | Ativa guard de autenticação na rota         |
+| `layout`       | `string`  | Define o layout (`'empty'` para sem chrome) |
+
+## Exemplo — bom código (módulo completo)
+
+### routes.ts
+
+```ts
+// src/modules/customers/routes.ts
+import type { RouteRecordRaw } from 'vue-router';
+
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/customers',
+    name: 'Customers',
+    component: () => import('./views/CustomersView.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/customers/:id',
+    name: 'CustomerDetail',
+    component: () => import('./views/CustomerDetailView.vue'),
+    meta: { requiresAuth: true },
+  },
+];
+
+export default routes;
+```
+
+Por que é bom: rotas tipadas com `RouteRecordRaw[]`, lazy loading via
+`import()`, meta fields declarados, nome semântico.
+
+### View container
+
+```vue
+<!-- src/modules/customers/views/CustomersView.vue -->
+<template>
+  <section class="py-6">
+    <h1 class="text-h4 font-weight-bold mb-4">Clientes</h1>
+    <CustomerList :customers="customers" :loading="loading" />
+  </section>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { getCustomersRequest } from '@shared/api/services/customer.service';
+import type { Customer } from '@typings/customer';
+import CustomerList from '../components/CustomerList.vue';
+
+const customers = ref<Customer[]>([]);
+const loading = ref(false);
+
+onMounted(async () => {
+  loading.value = true;
+  customers.value = await getCustomersRequest();
+  loading.value = false;
+});
+</script>
+```
+
+Por que é bom: view orquestra dados (chama service, controla loading), passa
+resultado para componente apresentacional, sem lógica de template complexa.
+
+### Componente apresentacional
+
+```vue
+<!-- src/modules/customers/components/CustomerList.vue -->
+<template>
+  <v-progress-linear v-if="loading" indeterminate color="primary" />
+  <v-list v-else>
+    <v-list-item v-for="customer in customers" :key="customer.id">
+      <v-list-item-title>{{ customer.name }}</v-list-item-title>
+    </v-list-item>
+  </v-list>
+</template>
+
+<script setup lang="ts">
+import type { Customer } from '@typings/customer';
+
+defineProps<{
+  customers: Customer[];
+  loading: boolean;
+}>();
+</script>
+```
+
+Por que é bom: componente puro, sem fetch, sem store, testável em isolamento.
+
+## Exemplo — mau código (view fazendo tudo inline)
+
+```vue
+<!-- RUIM: view com fetch, lógica de negócio e apresentação misturados -->
+<template>
+  <div>
+    <p v-if="loading">Carregando...</p>
+    <div v-for="c in customers" :key="c.id">
+      <span>{{ c.name }}</span>
+      <span v-if="c.active && c.balance > 1000" class="text-success">VIP</span>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { ofetch } from 'ofetch';
+
+const customers = ref<any[]>([]);
+const loading = ref(false);
+
+onMounted(async () => {
+  loading.value = true;
+  // RUIM: monta credencial na mão. A sessão é um cookie HttpOnly — nem é
+  // legível por JS — e a instância já a envia via `credentials: 'include'`.
+  customers.value = await ofetch('/api/customers', {
+    credentials: 'include',
+  });
+  loading.value = false;
+});
+</script>
+```
+
+Por que é ruim:
+
+- Fetch direto na view (viola separation of concerns — use service).
+- Autenticação/credenciais manuais (viola DRY — a instância HTTP já envia o cookie de sessão via `credentials: 'include'`).
+- Manipular credenciais no componente (viola encapsulamento — use a instância/service).
+- Lógica de negócio no template (`c.active && c.balance > 1000`).
+- Tipo `any[]` (viola type safety).
+- Sem separação view/componente (SRP violado).
+
+## Exemplo — mau código (módulo importando outro módulo)
+
+```ts
+// RUIM: módulo customers importa direto do módulo orders
+import { getOrdersByCustomer } from '@modules/orders/services/order.service';
+```
+
+Por que é ruim: viola a regra de independência entre módulos. Se
+`customers` precisa de dados de `orders`, a lógica deve ser movida para
+`shared/api/services/` onde ambos podem consumir.
+
+## Checklist para criar um novo módulo
+
+1. Criar pasta em `src/modules/<nome>/`.
+2. Criar `routes.ts` com array tipado `RouteRecordRaw[]`.
+3. Criar `views/` com ao menos uma view container.
+4. Criar `components/` para componentes apresentacionais.
+5. Criar types em `src/types/<nome>/` se houver contratos específicos.
+6. Criar service em `shared/api/services/` se houver integração com backend.
+7. Verificar que o lint e type-check passam (`npm run lint && npm run build`).
