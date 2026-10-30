@@ -35,7 +35,8 @@ abrir seu primeiro Pull Request (PR).
   [`.nvmrc`](.nvmrc) (**24.22.2**, linha LTS). Recomendamos o **vfox** para
   gerenciá-la (veja abaixo).
 - **npm**: versão 10 ou superior (acompanha o Node instalado pelo vfox).
-- Variáveis de ambiente: copie `.env.example` para `.env.development.local`.
+- Variáveis de ambiente: opcionais. Para sobrescrever os padrões, copie
+  `.env.example` para `.env.development.local`.
 
 ### Gerenciando a versão do Node com vfox
 
@@ -182,8 +183,8 @@ Referência completa: [docs/ARCHITECTURE-GUIDE.md](docs/ARCHITECTURE-GUIDE.md).
 - Toda regra de negócio nova precisa de teste; bug corrigido precisa de teste
   de regressão.
 
-Os testes unitários usam o `.env.test` versionado (valores fictícios), carregado
-automaticamente pelo Vitest — não é preciso configurar variáveis para rodá-los.
+As variáveis de ambiente têm valores padrão (`src/core/config/index.ts`), então
+não é preciso configurar nada para rodar os testes.
 
 Thresholds de cobertura (o CI reprova abaixo destes valores):
 

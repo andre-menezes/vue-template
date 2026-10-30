@@ -10,6 +10,10 @@
 > saiu do denominador). Depois disso, o ratchet volta a valer.
 >
 > Nota (ADR-0022): o CI passou do GitLab para o GitHub Actions.
+>
+> Nota (ADR-0021): o `.env.test` foi removido. As variáveis de ambiente
+> ganharam valores padrão em `@core/config`, então a suíte roda igual na
+> máquina do desenvolvedor e no CI sem nenhum arquivo `.env`.
 
 ## Contexto e problema
 

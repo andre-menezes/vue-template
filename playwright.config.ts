@@ -25,7 +25,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  // Sobe o Vite no modo `test` (variáveis fictícias do `.env.test`), sem
+  // Sobe o Vite no modo `test` (valores padrão de `@core/config`), sem
   // depender do `.env.development.local` de cada máquina.
   webServer: {
     command: `npx vite --mode test --port ${PORT} --strictPort`,

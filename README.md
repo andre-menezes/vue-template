@@ -38,12 +38,13 @@ Template frontend baseado em Vue 3 + TypeScript + Vite, com foco em:
 ## Como executar
 
 ```bash
-cp .env.example .env.development.local   # ajuste VITE_API_BASE_URL
 npm install
 npm run dev
 ```
 
-Todas as páginas são públicas: o template ainda não tem autenticação
+Nenhuma variável de ambiente é obrigatória: os valores padrão ficam em
+`src/core/config/index.ts` e podem ser sobrescritos copiando `.env.example` para
+`.env.development.local`. Todas as páginas são públicas: o template ainda não tem autenticação
 (ADR-0021). A integração contínua roda no GitHub Actions
 (`.github/workflows/ci.yml`).
 

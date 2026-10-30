@@ -42,7 +42,10 @@ Removemos toda a autenticação do template:
   `credentials: 'include'`;
 - o meta field `requiresAuth` e as variáveis do provedor de identidade, `VITE_AUTH_*`,
   `VITE_APP_MODULO` e `VITE_CSRF_*`. A URL da API passa a ser
-  `VITE_API_BASE_URL`.
+  `VITE_API_BASE_URL`;
+- a obrigatoriedade das variáveis restantes: `VITE_APP_NAME`,
+  `VITE_APP_DEFAULT_LOCALE` e `VITE_API_BASE_URL` ganham valores padrão em
+  `@core/config` e o `.env.test` deixa de existir.
 
 As ADR-0003, ADR-0014, ADR-0015 e ADR-0017 passam a **Descontinuada**, com o
 conteúdo resumido. Excepcionalmente, o texto original delas foi retirado do
