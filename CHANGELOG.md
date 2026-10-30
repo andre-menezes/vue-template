@@ -51,12 +51,18 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - `CLAUDE.md` reduzido a um ponteiro para o núcleo `agent/` e os comandos do projeto.
 - Piso de cobertura elevado para linhas 38, funções 27, branches 59 e statements 37.
 - Menu lateral sem `role=list` sobre links, e bloco de código com `<pre>` focável e tooltip com nome acessível (WCAG, apontados pelo axe).
+- Chunks de vendor com `rolldownOptions.output.codeSplitting.groups` (o `manualChunks` está deprecado); o runtime `@vue/*` sai do `vendor-i18n` para o `vendor-vue` (ADR-0032).
+- `noUncheckedIndexedAccess` ativo nos tsconfig do app, testes, E2E e Node (ADR-0033).
+- CI com actions fixadas por SHA, setup em `.github/actions/setup` e `timeout-minutes` por job (ADR-0034).
+- Piso de cobertura elevado para linhas 45, funções 33, branches 67 e statements 44.
 
 ### Adicionado
 
 - Tratamento global de erros em `@app/providers/errors`: `app.config.errorHandler` e `unhandledrejection` enviam a um `ErrorReporter` trocável (ADR-0028).
 - Checagem de acessibilidade WCAG 2.1 A/AA no E2E com `@axe-core/playwright` (`expectNoA11yViolations`) (ADR-0029).
 - Testes do `App.vue` (escolha de layout e tema).
+- Testes do `scrollBehavior` do router, do `TheAppHeader`/`useTheme`, da `HomeView` (com e sem a rota da documentação) e da `NotFoundView`.
+- Dependabot semanal para npm e GitHub Actions, com minor e patch agrupados (ADR-0035).
 - TanStack Query (`@tanstack/vue-query`) para dados do servidor: `QueryClient` em `@app/providers/query`, registrado no bootstrap e no `mountWithPlugins` (ADR-0027).
 - Telas de documentação interativa (Vue/Vuetify): Home como hub de navegação, Arquitetura, Onboarding, Componentes & UI, Convenções e Decisões (ADRs).
 - Tela de exemplo autenticado (`/exemplo-protegido`), única rota protegida, exibindo os dados do usuário e explicando o guard.
