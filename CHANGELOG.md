@@ -23,6 +23,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Autenticação corporativa: cliente OAuth, guard de rotas, callback `/token`, tela `/erro-autenticacao`, `user.store`, `useSession`, menu de conta, mock de sessão, tratamento global de 401/CSRF, instância `authBackend` e o módulo `protected-example`. Todas as páginas passam a ser públicas (ADR-0021).
 - Variáveis de ambiente do provedor de identidade, do BFF e do CSRF; a URL da API passa a ser `VITE_API_BASE_URL`.
 - Pipeline do GitLab (`.gitlab-ci.yml`), templates de merge request/issue e deploy no GitLab Pages (ADR-0022).
+- `.env.test`: as variáveis de ambiente têm valores padrão e nenhum arquivo `.env` é obrigatório.
 
 ### Alterado
 

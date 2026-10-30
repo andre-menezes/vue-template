@@ -182,9 +182,9 @@ npm run test:e2e:install
 ```
 
 O Playwright **sobe o servidor sozinho** (`webServer` em `playwright.config.ts`):
-o Vite roda na porta **9091**, no modo `test` (variáveis fictícias do
-`.env.test`). Não é preciso rodar `npm run dev`
-antes, e o `.env.development.local` da máquina não interfere.
+o Vite roda na porta **9091**, no modo `test`, com os valores padrão das
+variáveis de ambiente. Não é preciso rodar `npm run dev` antes, e o
+`.env.development.local` da máquina não interfere.
 
 ```bash
 npm run test:e2e         # headless

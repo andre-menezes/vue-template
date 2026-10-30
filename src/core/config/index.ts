@@ -14,9 +14,10 @@ const getEnvVar = (key: string, defaultValue?: string): string => {
   return value;
 };
 
-export const API_BASE_URL = getEnvVar('VITE_API_BASE_URL');
-export const APP_NAME = getEnvVar('VITE_APP_NAME');
-export const DEFAULT_LOCALE = getEnvVar('VITE_APP_DEFAULT_LOCALE');
+// Todas têm valor padrão: a aplicação roda sem nenhum arquivo `.env`.
+export const API_BASE_URL = getEnvVar('VITE_API_BASE_URL', '/api');
+export const APP_NAME = getEnvVar('VITE_APP_NAME', 'Vue Template');
+export const DEFAULT_LOCALE = getEnvVar('VITE_APP_DEFAULT_LOCALE', 'pt-BR');
 
 /** Supported locales */
 export const SUPPORTED_LOCALES = ['pt-BR'] as const;

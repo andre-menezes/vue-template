@@ -41,7 +41,7 @@ export const APP_NAME = getEnvVar('VITE_APP_NAME');
 ### Exemplo — bom código (adicionar nova env var)
 
 ```ts
-// 1. Adicionar no .env.example (e no .env.test, com valor fictício)
+// 1. Documentar no .env.example (de preferência com valor padrão no config)
 // VITE_ANALYTICS_ID=UA-XXXXXXX
 
 // 2. Adicionar em core/config/index.ts
