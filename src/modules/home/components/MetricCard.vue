@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Metric } from '@typings/home';
+import type { Metric } from '../types';
 
 defineProps<{
   metric: Metric;

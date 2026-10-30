@@ -89,7 +89,7 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import DocSection from '@shared/ui/components/DocSection.vue';
-import type { AdrStatus, AdrStatusInfo } from '@typings/decisions';
+import type { AdrStatus, AdrStatusInfo } from '../types';
 import { adrIndex } from '../adr-index';
 
 const { t } = useI18n();

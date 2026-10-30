@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import type { DependencyRule } from '@typings/architecture';
+import type { DependencyRule } from '../types';
 
 defineProps<{
   rules: DependencyRule[];

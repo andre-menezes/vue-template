@@ -166,7 +166,7 @@ import ShowcaseCard from '@shared/ui/components/ShowcaseCard.vue';
 import LayerCard from '../components/LayerCard.vue';
 import DependencyRulesTable from '../components/DependencyRulesTable.vue';
 import FlowSteps from '@shared/ui/components/FlowSteps.vue';
-import type { ArchitectureLayer, DependencyRule } from '@typings/architecture';
+import type { ArchitectureLayer, DependencyRule } from '../types';
 import type { FlowStep } from '@typings/docs';
 
 const { t } = useI18n();

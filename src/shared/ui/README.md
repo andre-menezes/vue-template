@@ -65,7 +65,7 @@ um módulo, ele pertence ao módulo (não ao shared).
 </template>
 
 <script setup lang="ts">
-import type { Metric } from '@typings/home';
+import type { Metric } from '@typings/metric';
 
 defineProps<{ metric: Metric }>();
 </script>

@@ -237,13 +237,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import DocSection from '@shared/ui/components/DocSection.vue';
 import CodeBlock from '@shared/ui/components/CodeBlock.vue';
-import type {
-  BranchType,
-  ChecklistCategory,
-  CommitScope,
-  CommitType,
-  Principle,
-} from '@typings/conventions';
+import type { BranchType, ChecklistCategory, CommitScope, CommitType, Principle } from '../types';
 
 const { t } = useI18n();
 

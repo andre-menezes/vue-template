@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ArchitectureLayer } from '@typings/architecture';
+import type { ArchitectureLayer } from '../types';
 
 defineProps<{
   layer: ArchitectureLayer;

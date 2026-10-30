@@ -12,8 +12,14 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 ├── routes.ts          # rotas do módulo (auto-descobertas pelo router)
 ├── views/             # views container (orquestram dados)
 ├── components/        # componentes apresentacionais do módulo
-└── types/ (opcional)  # tipos locais (quando não fazem sentido em src/types)
+├── types.ts           # tipos do módulo (ou types/ quando crescer)
+├── api/               # services do módulo (opcional)
+├── stores/            # stores usadas só por este módulo (opcional)
+└── composables/       # composables usados só por este módulo (opcional)
 ```
+
+Tudo que só este módulo usa fica aqui (ADR-0025). Quando um segundo módulo
+precisar de algo, promova: tipos para `src/types/`, o resto para `shared/`.
 
 ## Como as rotas são carregadas
 
@@ -185,6 +191,6 @@ Por que é ruim: viola a regra de independência entre módulos. Se
 2. Criar `routes.ts` com array tipado `RouteRecordRaw[]`.
 3. Criar `views/` com ao menos uma view container.
 4. Criar `components/` para componentes apresentacionais.
-5. Criar types em `src/types/<nome>/` se houver contratos específicos.
-6. Criar service em `shared/api/services/` se houver integração com backend.
+5. Criar `types.ts` no módulo se houver contratos específicos.
+6. Criar service em `api/` no módulo se houver integração com backend.
 7. Verificar que o lint e type-check passam (`pnpm lint && pnpm build`).

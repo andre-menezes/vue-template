@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Activity } from '@typings/home';
+import type { Activity } from '../types';
 
 const { activity } = defineProps<{
   activity: Activity[];

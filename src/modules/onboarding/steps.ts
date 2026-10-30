@@ -1,5 +1,5 @@
 import type { ComposerTranslation } from 'vue-i18n';
-import type { OnboardingFaq, OnboardingStep } from '@typings/onboarding';
+import type { OnboardingFaq, OnboardingStep } from './types';
 
 /**
  * Passos, checklist e FAQ do guia de onboarding.

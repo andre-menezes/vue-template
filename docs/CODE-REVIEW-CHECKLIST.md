@@ -33,7 +33,7 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 
 - [ ] ⚠️ Sem uso de `any` em contratos de domínio (preferir `unknown` se necessário)
 - [ ] ⚠️ Props e emits tipados com `defineProps<T>()` e `defineEmits<T>()`
-- [ ] ⚠️ Tipos centralizados em `src/types/` (não inline repetido)
+- [ ] ⚠️ Tipos no módulo (`types.ts`) ou em `src/types/` quando compartilhados, nunca inline repetido (ADR-0025)
 - [ ] Interfaces sem prefixo `I`, PascalCase
 - [ ] Retorno de service tipado com generic (`httpClient.get<T>()`), sem `as unknown as`
 - [ ] Busca ou carga que pode ficar obsoleta repassa `signal` (`AbortController`) ao service

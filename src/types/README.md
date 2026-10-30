@@ -12,13 +12,13 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 
 ## Organização atual
 
-Cada subpasta representa um contexto. Toda tipagem exportada mora aqui e é
-consumida via alias `@typings/<contexto>`.
+Cada subpasta representa um contexto compartilhado por dois ou mais módulos ou
+camadas, consumido via alias `@typings/<contexto>`. Tipos usados por um módulo
+só ficam em `src/modules/<x>/types.ts` (ADR-0025).
 
 - `store`: modelos usados pelas stores e pela camada de UI
 - `services`: contratos genéricos da camada HTTP (query, body, options)
 - `components`: contratos de props de componentes compartilhados
-- `home`: contratos da feature Home
 - `theme`: contratos de tema do Vuetify
 - `router`: augmentation de `RouteMeta` (`layout`)
 - `docs`: props dos componentes de documentação (`CodeBlock`, `FlowSteps`...)

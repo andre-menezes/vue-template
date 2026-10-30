@@ -5,7 +5,7 @@
  * risco de a tela divergir da documentação. O conteúdo é carregado em build
  * (Vite `?raw`), apenas no chunk lazy da rota `/decisoes`.
  */
-import type { Adr, AdrStatus } from '@typings/decisions';
+import type { Adr, AdrStatus } from './types';
 
 const ADR_STATUSES: readonly AdrStatus[] = ['Aceita', 'Proposta', 'Substituída', 'Descontinuada'];
 

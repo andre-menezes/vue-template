@@ -44,7 +44,7 @@ import { useI18n } from 'vue-i18n';
 import MetricCard from '../components/MetricCard.vue';
 import NavigationCard from '../components/NavigationCard.vue';
 import WorkFlow from '../components/WorkFlow.vue';
-import type { Activity, Metric } from '@typings/home';
+import type { Activity, Metric } from '../types';
 import type { NavCard } from '@typings/docs';
 
 const { t } = useI18n();

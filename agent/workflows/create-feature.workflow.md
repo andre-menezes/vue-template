@@ -22,7 +22,7 @@ Ler antes de executar:
 1. Ler a spec completamente. Identificar requisitos, regras, critérios de aceite, endpoints e layout.
 2. Listar dúvidas. Se houver ambiguidade, **parar e perguntar**.
 3. Criar branch a partir de develop: `git checkout develop && git pull && git checkout -b feat/FEAT-XXX-<slug>`.
-4. Criar tipos em `src/types/<contexto>/index.ts`. Separar contrato API do contrato UI quando diferirem.
+4. Criar tipos em `src/modules/<x>/types.ts` (ou `src/types/<contexto>/` se já forem compartilhados por outro módulo; ADR-0025). Separar contrato API do contrato UI quando diferirem.
 5. Criar service em `src/shared/api/services/<contexto>.service.ts`. Tipar retorno com generics.
 6. Criar store em `src/shared/stores/` **somente** se o estado for transversal.
 7. Criar composable em `src/shared/composables/` **somente** se houver lógica reativa reutilizável.
