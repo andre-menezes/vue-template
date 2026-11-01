@@ -151,7 +151,6 @@ it('alterna o tema de claro para escuro e persiste a escolha', () => {
 // RUIM: mock intercepta todo o módulo, escondendo bugs reais
 vi.mock('@shared/stores', () => ({
   useAppStore: () => ({
-    loading: false,
     theme: 'light',
     switchTheme: vi.fn(),
   }),

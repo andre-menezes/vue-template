@@ -61,7 +61,7 @@ Comandos pré-formatados para iniciar o agente rapidamente:
 ### Adapters
 
 Traduzem o núcleo para o mecanismo de cada IDE. Ficam nos locais que cada
-ferramenta reconhece automaticamente (`CLAUDE.md`, `.cursorrules`, etc.).
+ferramenta reconhece automaticamente (`.kiro/`, `CLAUDE.md`, `.cursorrules`, etc.).
 Referenciam `agent/` como fonte de verdade.
 
 ## Fluxo de dados

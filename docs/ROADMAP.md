@@ -2,7 +2,8 @@
 
 Planejamento técnico dos próximos incrementos do template, na perspectiva de
 arquitetura. Cada item segue o fluxo de branches a partir da `develop` e as
-camadas do projeto (`types → service → store (se necessário) → view → components`; `utils` puro,
+camadas do projeto (no módulo: `types → api → query (useQuery) → view → components`,
+promovendo para `shared/`/`types/` só o que dois módulos usam; `utils` puro,
 `helpers` com efeito, `composables` reativo).
 
 Voltar para o índice: [README.md](README.md)
@@ -14,12 +15,18 @@ Voltar para o índice: [README.md](README.md)
 Consolidado na `develop` (ver `CHANGELOG.md`):
 
 - Telas de documentação: Home (hub), Arquitetura, Onboarding, Componentes & UI,
-  Convenções e Decisões (ADRs). Todas as páginas são públicas: a autenticação
-  corporativa foi removida (ADR-0021).
+  Convenções e Decisões (ADRs), reunidas no módulo removível `showcase`
+  (ADR-0026). Todas as páginas são públicas: a autenticação corporativa foi
+  removida (ADR-0021).
 - Hospedagem e CI no GitHub (GitHub Actions — ADR-0022).
 - Camada HTTP (factory `createApiInstance` + ofetch), erros no padrão RFC 9457,
   download de arquivos binários (service + helper + utils).
-- Qualidade: ESLint/Prettier, Husky, Vitest, Playwright, CI (GitHub Actions), ADRs 0001–0022.
+- Dados assíncronos com TanStack Query (ADR-0027) e código de cada feature
+  colocalizado no módulo (ADR-0025).
+- Tratamento global de erros (`errorHandler` + `unhandledrejection`, ADR-0028).
+- Qualidade: ESLint/Prettier, Husky, Vitest, Playwright com checagem de
+  acessibilidade (axe, ADR-0029), CI (GitHub Actions), pnpm (ADR-0024),
+  ADRs 0001–0029.
 - i18n **configurado e migrado** (`vue-i18n`, locale único `pt-BR`): todo texto
   de UI consolidado em `pt-BR.json` (ver `I18N-MIGRATION-PLAN.md`).
 
@@ -42,7 +49,7 @@ entregues e mergeados na `develop`.**
 | --- | --------------------------------------- | ------------------------------------------------------------- | ---------------------------------- | --------------------------- | ------------ |
 | 1.1 | **Migração i18n (pt-BR)**               | Executar o `I18N-MIGRATION-PLAN.md`, fatiado por tela         | `app/locales`, views, `types/i18n` | Médio (toca todas as telas) | ✅ Concluído |
 | 1.2 | **Cobertura de testes dos utils novos** | Specs para `file-download`, `http-error` e helpers            | `test/`                            | Baixo                       | ✅ Concluído |
-| 1.3 | **Teste do fluxo de download**          | Unit do service/helper + E2E opcional de um botão de download | `test/`, `cypress/`                | Baixo                       | ✅ Concluído |
+| 1.3 | **Teste do fluxo de download**          | Unit do service/helper (E2E fica para quando houver uma tela) | `test/`                            | Baixo                       | ✅ Concluído |
 
 > A regra de steering exige "sem código sem teste" — a Fase 1 quitou isso para o
 > que foi adicionado recentemente (download, RFC 9457) e consolidou o i18n.
@@ -57,24 +64,31 @@ Objetivo: o template demonstra camadas, mas não um fluxo de dados real de ponta
 a ponta. Um módulo de exemplo `customers` (ou similar) fecha essa lacuna e vira
 o "exemplo canônico" citado no Onboarding.
 
-| #   | Item                            | Entregável                                                              | Camadas                                        | Risco |
-| --- | ------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------- | ----- |
-| 2.1 | **Módulo CRUD de exemplo**      | Listagem com paginação + detalhe + criar/editar/excluir                 | `types → service → store? → view → components` | Médio |
-| 2.2 | **Padrão de paginação/filtros** | Tipos e util de paginação reutilizáveis (`DEFAULT_PAGE_SIZE` já existe) | `types/services`, `utils`                      | Baixo |
-| 2.3 | **Upload de arquivo**           | Service + helper + util simétricos ao download (multipart)              | `shared/api`, `helpers`, `utils`               | Médio |
-| 2.4 | **Estados de UI padronizados**  | Loading/empty/error como componentes compartilhados reutilizáveis       | `shared/ui`                                    | Baixo |
+| #   | Item                            | Entregável                                                              | Camadas                                                    | Risco | Status   |
+| --- | ------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------- | ----- | -------- |
+| 2.1 | **Módulo CRUD de exemplo**      | Listagem com paginação + detalhe + criar/editar/excluir                 | módulo: `types → api → query/mutation → view → components` | Médio | Pendente |
+| 2.2 | **Padrão de paginação/filtros** | Tipos e util de paginação reutilizáveis (`DEFAULT_PAGE_SIZE` já existe) | `types/services`, `utils`                                  | Baixo | Pendente |
+| 2.3 | **Upload de arquivo**           | Service + helper + util simétricos ao download (multipart)              | `shared/api`, `helpers`, `utils`                           | Médio | Pendente |
+| 2.4 | **Estados de UI padronizados**  | Loading/empty/error como componentes compartilhados reutilizáveis       | `shared/ui`                                                | Baixo | Pendente |
 
 ## Fase 3 — Experiência e robustez
 
 Objetivo: padronizar feedback ao usuário e endurecer o tratamento de erros.
 
-| #   | Item                               | Entregável                                                                                            | Camadas                               | Risco |
-| --- | ---------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------- | ----- |
-| 3.1 | **Notificações (snackbar/toast)**  | Store + composable `useNotify` + render global                                                        | `shared/stores`, `composables`, `app` | Baixo |
-| 3.2 | **Tratamento global de erro HTTP** | Interceptor/handler central mapeando RFC 9457 → notificação                                           | `shared/api`, `helpers`               | Médio |
-| 3.3 | **Formulários + validação**        | Padrão de form com validação (avaliar lib em ADR) e exemplo no CRUD                                   | `shared/ui`, `composables`            | Médio |
-| 3.4 | **Acessibilidade (a11y)**          | Auditoria das telas (foco, labels, contraste) + ajustes                                               | transversal                           | Baixo |
-| 3.5 | **Login próprio**                  | Tela de login, guard de rotas e sessão integrados ao backend de autenticação próprio (quando existir) | `app`, `shared`, `core`               | Alto  |
+| #   | Item                               | Entregável                                                                                            | Camadas                               | Risco | Status       |
+| --- | ---------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------- | ----- | ------------ |
+| 3.1 | **Notificações (snackbar/toast)**  | Store + composable `useNotify` + render global                                                        | `shared/stores`, `composables`, `app` | Baixo | Pendente     |
+| 3.2 | **Tratamento global de erro HTTP** | Interceptor/handler central mapeando RFC 9457 → notificação                                           | `shared/api`, `helpers`               | Médio | Parcial      |
+| 3.3 | **Formulários + validação**        | Padrão de form com validação (avaliar lib em ADR) e exemplo no CRUD                                   | `shared/ui`, `composables`            | Médio | Pendente     |
+| 3.4 | **Acessibilidade (a11y)**          | Auditoria das telas (foco, labels, contraste) + ajustes                                               | transversal                           | Baixo | ✅ Concluído |
+| 3.5 | **Login próprio**                  | Tela de login, guard de rotas e sessão integrados ao backend de autenticação próprio (quando existir) | `app`, `shared`, `core`               | Alto  | Pendente     |
+
+- **3.2 (parcial):** o `errorHandler` do Vue e o `unhandledrejection` já levam
+  os erros não tratados a um `ErrorReporter` trocável (ADR-0028), e
+  `getErrorMessage` extrai a mensagem de um corpo RFC 9457. Falta mapear os
+  erros HTTP para uma notificação ao usuário, o que depende da 3.1.
+- **3.4 (concluído, PR #8):** o E2E roda o axe (WCAG 2.1 A/AA) em todas as
+  páginas, e o tema ganhou tons de texto com contraste AA (ADR-0029).
 
 ## Fase 4 — Visão de longo prazo (multi-framework)
 
@@ -102,7 +116,8 @@ pelo módulo CRUD de exemplo (2.1) que vira o "exemplo canônico" do Onboarding.
 ## Itens que exigem ADR antes de executar
 
 - 2.3 Upload (se exigir lib de multipart específica).
-- 3.1/3.2 Padrão de notificação + handler global de erro.
+- 3.1/3.2 Padrão de notificação e mapeamento dos erros HTTP para ela (o
+  handler global de erros já está na ADR-0028).
 - 3.3 Biblioteca de formulários/validação.
 - 3.5 Fluxo de autenticação do login próprio.
 - 4.x Toda a estratégia multi-framework.

@@ -7,14 +7,16 @@ Voltar para o guia geral: [../../../docs/ARCHITECTURE-GUIDE.md](../../../docs/AR
 ## Estrutura
 
 - `instances/` — factory HTTP (`createApiInstance`) com interceptadores padrão
-- `services/` — funções semânticas por domínio/endpoint
+- `services/` — services usados por mais de um módulo. O service de um módulo
+  só fica no próprio módulo, em `modules/<x>/api/` (ADR-0025).
 
 ## Padrão de implementação
 
 - A factory (`instances/index.ts`) cuida da base URL, do timeout e do
   cancelamento (`signal`).
 - Services expõem métodos com nome de negócio técnico (ex: `downloadReportRequest`).
-- View/store consome service, nunca chama endpoint diretamente.
+- A view lê dados por uma query do TanStack Query que chama o service
+  (ADR-0027); nunca chama endpoint diretamente.
 
 ## Instâncias disponíveis
 
@@ -33,26 +35,26 @@ tratamento entra na factory.
 ## Exemplo de novo service
 
 ```ts
-// shared/api/services/customer.service.ts
+// modules/customers/api/customer.service.ts
 import { httpClient } from '@shared/api/instances';
+import type { CreateCustomerParams, Customer } from '../types';
 
-export interface Customer {
-  id: number;
-  name: string;
+export function getCustomersRequest(options: { signal?: AbortSignal } = {}): Promise<Customer[]> {
+  return httpClient.get<Customer[]>('/customers', { signal: options.signal });
 }
 
-export function getCustomersRequest(): Promise<Customer[]> {
-  return httpClient.get<Customer[]>('/customers');
-}
-
-export function createCustomerRequest(data: Omit<Customer, 'id'>): Promise<Customer> {
-  return httpClient.post<Customer>('/customers', { body: data });
+export function createCustomerRequest(params: CreateCustomerParams): Promise<Customer> {
+  return httpClient.post<Customer>('/customers', { body: params });
 }
 ```
 
+O service mora no módulo que o usa. Ele só é promovido para
+`shared/api/services/` (e os tipos para `src/types/`) quando um segundo módulo
+precisar dele (ADR-0025).
+
 Por que é bom: tipagem genérica no retorno, nome descritivo com sufixo
-`Request`, usa a instância compartilhada (DRY), separação clara entre
-serviço e componente (SRP).
+`Request`, usa a instância compartilhada (DRY), aceita `signal` para
+cancelamento e separa serviço e componente (SRP).
 
 ## Exemplo ruim — chamar endpoint na view
 
@@ -71,16 +73,23 @@ sem interceptar rede, e espalha chamadas HTTP pelo projeto.
 
 ## Exemplo de uso em view container
 
+A view não chama o service direto: um composable do módulo encapsula a query,
+que cuida de cache, loading, erro e cancelamento (ADR-0027).
+
 ```ts
-import { ref, onMounted } from 'vue';
-import { getCustomersRequest } from '@shared/api/services/customer.service';
-import type { Customer } from '@shared/api/services/customer.service';
+// modules/customers/composables/useCustomersQuery.ts
+import { useQuery } from '@tanstack/vue-query';
+import { getCustomersRequest } from '../api/customer.service';
 
-const customers = ref<Customer[]>([]);
+export function useCustomersQuery() {
+  return useQuery({
+    queryKey: ['customers'],
+    queryFn: ({ signal }) => getCustomersRequest({ signal }),
+  });
+}
 
-onMounted(async () => {
-  customers.value = await getCustomersRequest();
-});
+// modules/customers/views/CustomersView.vue (<script setup>)
+const { data, error, isPending } = useCustomersQuery();
 ```
 
 ## Assinatura dos métodos
@@ -128,8 +137,10 @@ httpClient.put<Item>('/items/1', {
 
 ## Cancelando uma requisição
 
-Use `AbortController` quando o resultado pode ficar obsoleto (busca enquanto o
-usuário digita, troca de tela):
+Numa query, o TanStack Query passa um `signal` ao `queryFn` e aborta a
+requisição quando ela deixa de ser necessária (troca de tela ou de chave). Para
+uma busca enquanto o usuário digita, coloque o termo na chave: a busca anterior
+é cancelada sozinha.
 
 ```ts
 // service
@@ -137,20 +148,16 @@ export function searchCustomersRequest(term: string, signal?: AbortSignal) {
   return httpClient.get<Customer[]>('/customers', { query: { term }, signal });
 }
 
-// view
-let controller: AbortController | undefined;
-
-async function onSearch(term: string) {
-  controller?.abort(); // cancela a busca anterior
-  controller = new AbortController();
-  try {
-    customers.value = await searchCustomersRequest(term, controller.signal);
-  } catch (error) {
-    // Busca cancelada não é erro para o usuário (isAbortError: @shared/utils/http-error).
-    if (isAbortError(error)) return;
-    throw error;
-  }
+// composable do módulo
+export function useCustomerSearchQuery(term: Ref<string>) {
+  return useQuery({
+    queryKey: ['customers', 'search', term],
+    queryFn: ({ signal }) => searchCustomersRequest(term.value, signal),
+  });
 }
-
-onBeforeUnmount(() => controller?.abort());
 ```
+
+Fora de uma query (um download disparado por clique, por exemplo), use um
+`AbortController` e chame `controller.abort()` no `onBeforeUnmount`. Uma
+requisição cancelada não é erro para o usuário: confira com `isAbortError`
+(`@shared/utils/http-error`).

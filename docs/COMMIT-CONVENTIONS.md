@@ -19,9 +19,32 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 ### Regras
 
 - **Descrição curta**: imperativo, máximo 72 caracteres, sem ponto final.
-- **Corpo**: opcional, explica motivação e contexto (quebre em 72 colunas).
+- **Linha em branco** entre o título e o corpo.
+- **Corpo**: opcional, explica motivação e contexto, com linhas de no máximo
+  72 colunas.
 - **Idioma**: português (descrição e corpo).
 - **Tipo e escopo**: em inglês (convenção técnica universal).
+
+### O que o hook `commit-msg` verifica
+
+O hook (`scripts/verify-commit-msg.mjs`, com testes em
+`scripts/verify-commit-msg.spec.mjs`) reprova o commit quando:
+
+- o título não segue `tipo(escopo): descrição`, passa de 72 caracteres ou
+  termina com ponto final;
+- a segunda linha não está em branco;
+- uma linha do corpo passa de 72 colunas.
+
+Ficam de fora da contagem:
+
+- linhas de comentário (`#`) e o diff abaixo da linha de corte do
+  `git commit --verbose`;
+- trailers do último parágrafo, como `Co-Authored-By:` e `Claude-Session:`;
+- uma URL sozinha na linha, que não tem onde quebrar (pode vir depois de um
+  marcador como `-`, `1.` ou `[1]:`).
+
+Mensagens de merge e revert geradas pelo Git (`Merge ...`, `Revert ...`) não
+são validadas.
 
 ---
 
