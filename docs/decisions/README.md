@@ -84,3 +84,7 @@ substitui a anterior e atualize o status da antiga.
 | [ADR-0027](ADR-0027-tanstack-query-para-dados-assincronos.md) | TanStack Query para dados assíncronos                       | Aceita        |
 | [ADR-0028](ADR-0028-tratamento-global-de-erros.md)            | Tratamento global de erros e remoção do analytics           | Aceita        |
 | [ADR-0029](ADR-0029-acessibilidade-verificada-no-e2e.md)      | Acessibilidade verificada no E2E e tons de texto no tema    | Aceita        |
+| [ADR-0032](ADR-0032-chunks-de-vendor.md)                      | Chunks de vendor com `codeSplitting.groups` do Rolldown     | Aceita        |
+| [ADR-0033](ADR-0033-no-unchecked-indexed-access.md)           | `noUncheckedIndexedAccess` ativo no TypeScript              | Aceita        |
+| [ADR-0034](ADR-0034-ci-com-actions-fixadas-por-sha.md)        | CI com actions fixadas por SHA, setup e timeout             | Aceita        |
+| [ADR-0035](ADR-0035-dependabot.md)                            | Dependabot para atualização de dependências                 | Aceita        |

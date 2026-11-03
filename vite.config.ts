@@ -66,13 +66,30 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    rollupOptions: {
+    // Chunks de vendor (ADR-0032). `codeSplitting.groups` substitui o
+    // `manualChunks`, deprecado no Rolldown. Cada grupo puxa as próprias
+    // dependências; a prioridade maior do vendor-vue garante que o runtime
+    // (`@vue/*`) fique nele, e não no primeiro grupo que o importar.
+    rolldownOptions: {
       output: {
-        manualChunks: (id) => {
-          if (['vue', 'vue-router', 'pinia'].some((m) => id.includes(`/node_modules/${m}/`)))
-            return 'vendor-vue';
-          if (id.includes('/node_modules/vuetify/')) return 'vendor-vuetify';
-          if (id.includes('/node_modules/vue-i18n/')) return 'vendor-i18n';
+        codeSplitting: {
+          groups: [
+            {
+              name: 'vendor-vue',
+              test: /[\\/]node_modules[\\/](?:vue|vue-router|pinia|@vue[\\/][^\\/]+)[\\/]/,
+              priority: 30,
+            },
+            {
+              name: 'vendor-vuetify',
+              test: /[\\/]node_modules[\\/]vuetify[\\/]/,
+              priority: 20,
+            },
+            {
+              name: 'vendor-i18n',
+              test: /[\\/]node_modules[\\/](?:vue-i18n|@intlify[\\/][^\\/]+)[\\/]/,
+              priority: 10,
+            },
+          ],
         },
       },
     },
@@ -118,10 +135,10 @@ export default defineConfig(({ mode }) => ({
       // pela remoção do `cookie.ts` sem uso (nota na ADR-0016): nos dois casos
       // saiu do denominador código testado, sem perda de teste de comportamento.
       thresholds: {
-        lines: 37,
-        functions: 27,
-        branches: 59,
-        statements: 36,
+        lines: 45,
+        functions: 33,
+        branches: 67,
+        statements: 44,
       },
     },
   },
