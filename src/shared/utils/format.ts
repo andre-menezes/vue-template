@@ -4,15 +4,28 @@
  */
 
 /**
- * Formata um valor numérico como moeda brasileira (BRL).
+ * Locale usado quando quem chama não informa um. Componentes passam o locale
+ * ativo (`useLocale().locale.value`); o padrão mantém o formato brasileiro.
+ */
+const DEFAULT_FORMAT_LOCALE = 'pt-BR';
+
+/**
+ * Formata um valor numérico como moeda, no formato do `locale`. A moeda não
+ * muda com o idioma: é um dado do valor (padrão BRL).
  *
  * @example
  * formatCurrency(1234.5) // 'R$ 1.234,50'
+ * formatCurrency(1234.5, 'en-US') // 'R$1,234.50'
+ * formatCurrency(1234.5, 'en-US', 'USD') // '$1,234.50'
  */
-export function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('pt-BR', {
+export function formatCurrency(
+  value: number,
+  locale: string = DEFAULT_FORMAT_LOCALE,
+  currency = 'BRL'
+): string {
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: 'BRL',
+    currency,
   }).format(value);
 }
 
@@ -20,7 +33,7 @@ export function formatCurrency(value: number): string {
 const DATE_ONLY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 /**
- * Formata uma data ISO em formato legível pt-BR.
+ * Formata uma data ISO no formato curto do `locale` (padrão pt-BR).
  *
  * Datas sem horário (`2025-03-15`) são tratadas como data local: o `Date`
  * as interpretaria como meia-noite UTC, exibindo o dia anterior em fusos
@@ -29,14 +42,15 @@ const DATE_ONLY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
  * @example
  * formatDate('2025-03-15') // '15/03/2025'
  * formatDate('2025-03-15T10:30:00Z') // '15/03/2025'
+ * formatDate('2025-03-15', 'en-US') // '3/15/2025'
  */
-export function formatDate(isoDate: string): string {
+export function formatDate(isoDate: string, locale: string = DEFAULT_FORMAT_LOCALE): string {
   const dateOnly = DATE_ONLY_PATTERN.exec(isoDate);
   const date = dateOnly
     ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
     : new Date(isoDate);
 
-  return new Intl.DateTimeFormat('pt-BR').format(date);
+  return new Intl.DateTimeFormat(locale).format(date);
 }
 
 /**
