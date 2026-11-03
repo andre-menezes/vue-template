@@ -1,14 +1,16 @@
 /**
- * Mensagens de i18n da aplicação: o locale base de `app/locales` mais os
- * `locales/pt-BR.json` de cada módulo, descobertos por glob. Um módulo traz e
- * leva as próprias traduções; remover a pasta remove as mensagens junto.
+ * Mensagens de i18n da aplicação, por locale suportado: o locale de
+ * `app/locales` mais os `locales/<locale>.json` de cada módulo, descobertos
+ * por glob e agrupados pelo nome do arquivo. Um módulo traz e leva as próprias
+ * traduções; remover a pasta remove as mensagens junto.
  */
 import ptBR from '@app/locales/pt-BR.json';
+import { isSupportedLocale, type SupportedLocale } from '@core/config';
 
 /**
- * Schema das mensagens, derivado do locale base. Fica junto do provider (e não
- * em `types/`) porque depende do JSON da camada `app` — `types` não importa
- * de nenhuma camada (ADR-0018).
+ * Schema das mensagens, derivado do locale base (pt-BR). Fica junto do
+ * provider (e não em `types/`) porque depende do JSON da camada `app` —
+ * `types` não importa de nenhuma camada (ADR-0018).
  */
 export type MessageSchema = typeof ptBR;
 
@@ -27,12 +29,44 @@ function mergeMessages(base: MessageTree, extra: MessageTree): MessageTree {
   return result;
 }
 
-const moduleMessages = import.meta.glob<MessageTree>('@/modules/*/locales/pt-BR.json', {
+/** Locale de um arquivo pelo nome: `.../locales/en-US.json` → `en-US`. */
+const LOCALE_FILE_PATTERN = /\/locales\/([^/]+)\.json$/;
+
+/**
+ * Mescla às mensagens do app as de cada arquivo de locale dos módulos,
+ * agrupadas pelo nome do arquivo. Um arquivo cujo nome não é um locale
+ * suportado fica de fora (o teste de paridade aponta esse caso). Exportada
+ * para teste.
+ */
+export function mergeModuleMessages(
+  appMessages: Record<SupportedLocale, MessageTree>,
+  moduleFiles: Record<string, MessageTree>
+): Record<SupportedLocale, MessageTree> {
+  const result = { ...appMessages };
+  for (const [path, messages] of Object.entries(moduleFiles)) {
+    const locale = LOCALE_FILE_PATTERN.exec(path)?.[1] ?? null;
+    if (isSupportedLocale(locale)) {
+      result[locale] = mergeMessages(result[locale], messages);
+    }
+  }
+  return result;
+}
+
+/**
+ * Mensagens do app por locale. Tipado contra o `MessageSchema`: um locale
+ * suportado sem arquivo aqui, ou com chave faltando, não compila.
+ */
+const appMessages: Record<SupportedLocale, MessageSchema> = {
+  'pt-BR': ptBR,
+};
+
+/** Arquivos de locale dos módulos, indexados pelo caminho. */
+const moduleLocaleFiles = import.meta.glob<MessageTree>('@/modules/*/locales/*.json', {
   eager: true,
   import: 'default',
 });
 
-export const ptBRMessages = Object.values(moduleMessages).reduce<MessageTree>(
-  mergeMessages,
-  ptBR
-) as MessageSchema;
+export const localeMessages = mergeModuleMessages(appMessages, moduleLocaleFiles) as Record<
+  SupportedLocale,
+  MessageSchema
+>;

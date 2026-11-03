@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { createI18n } from 'vue-i18n';
-import { ptBRMessages as ptBR } from '@app/providers/messages';
+import { localeMessages } from '@app/providers/messages';
+
+const ptBR = localeMessages['pt-BR'];
 
 /** Lista as chaves-folha do dicionário (ex.: `home.title`). */
 function leafKeys(node: unknown, prefix = ''): string[] {

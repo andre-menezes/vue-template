@@ -20,7 +20,7 @@ import {
   isSupportedLocale,
   type SupportedLocale,
 } from '@core/config';
-import { ptBRMessages, type MessageSchema } from './messages';
+import { localeMessages, type MessageSchema } from './messages';
 
 export type { MessageSchema };
 
@@ -46,9 +46,7 @@ export function createAppI18n(locale: SupportedLocale = 'pt-BR') {
     globalInjection: true,
     locale,
     fallbackLocale: 'pt-BR',
-    messages: {
-      'pt-BR': ptBRMessages,
-    },
+    messages: localeMessages,
     // Silence missing-key warnings in production using import.meta.env.DEV
     missingWarn: import.meta.env.DEV,
     fallbackWarn: import.meta.env.DEV,
