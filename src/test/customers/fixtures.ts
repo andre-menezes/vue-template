@@ -1,4 +1,5 @@
-import type { Customer, PaginatedResponse } from '@modules/customers/types';
+import type { Customer } from '@modules/customers/types';
+import type { PaginatedResponse } from '@typings/services';
 
 /** Cliente de exemplo dos testes do módulo `customers`. */
 export function buildCustomer(overrides: Partial<Customer> = {}): Customer {

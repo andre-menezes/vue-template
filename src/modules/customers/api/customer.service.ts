@@ -4,7 +4,8 @@
  * requisição (ADR-0027).
  */
 import { httpClient } from '@shared/api/instances';
-import type { Customer, CustomerListParams, CustomerParams, PaginatedResponse } from '../types';
+import type { PaginatedResponse } from '@typings/services';
+import type { Customer, CustomerListParams, CustomerParams } from '../types';
 
 interface ReadOptions {
   signal?: AbortSignal;

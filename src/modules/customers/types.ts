@@ -4,7 +4,10 @@
  * O payload da API e o modelo da UI têm o mesmo formato aqui, então um tipo
  * só serve aos dois. Quando divergirem, separe `CustomerResponse` (API) de
  * `Customer` (UI) e mapeie no service.
+ *
+ * A paginação usa os tipos compartilhados de `@typings/services`.
  */
+import type { PageParams } from '@typings/services';
 
 /** Cliente como a API devolve e a UI exibe. */
 export interface Customer {
@@ -26,23 +29,8 @@ export interface CustomerParams {
   active: boolean;
 }
 
-/**
- * Parâmetros de uma página da listagem. `page` começa em 1.
- *
- * Só este módulo pagina por enquanto; quando um segundo precisar, os tipos de
- * paginação vão para `src/types/services` (roadmap 2.2, ADR-0025).
- */
-export interface CustomerListParams {
-  page: number;
-  pageSize: number;
+/** Página e filtro da listagem de clientes. */
+export interface CustomerListParams extends PageParams {
   /** Filtro por nome ou e-mail; vazio lista todos. */
   search?: string;
-}
-
-/** Uma página de resultados e o total de itens que atendem ao filtro. */
-export interface PaginatedResponse<TItem> {
-  items: TItem[];
-  total: number;
-  page: number;
-  pageSize: number;
 }
