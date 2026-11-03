@@ -132,6 +132,8 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Favicon apontava para arquivo inexistente; `<html lang>` agora é `pt-BR` e segue o locale ativo.
 - Documentação divergente do código (módulo `about`, tokens no cliente, regra de camada invertida na skill, tipos de commit, ordem das camadas, endpoint de usuário no guia de testes).
 - Página de convenções (`/convencoes`) sem os tipos de commit `build` e `wip`, aceitos pelo hook `commit-msg`.
+- O router registrava qualquer `routes.ts` de `src/`, inclusive helpers de teste; agora carrega só os de `app/` e `modules/` (`@/{app,modules}/**/routes.ts`, nota na ADR-0004).
+- `VITE_APP_DEFAULT_LOCALE` fora de `SUPPORTED_LOCALES` subia o app com `<html lang>` errado; agora falha na inicialização, como uma variável obrigatória ausente.
 
 - `npm run build`/`typecheck` não verificavam nenhum arquivo (`vue-tsc --noEmit` sobre o tsconfig de solução); agora usam `vue-tsc -b` (ADR-0016).
 - Gate de cobertura inerte (`coverage.include` vazio): passa a medir `src/` com piso ratchet igual à cobertura real (ADR-0016).

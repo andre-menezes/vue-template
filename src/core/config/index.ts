@@ -21,11 +21,29 @@ export const getEnvVar = (key: keyof AppEnv, defaultValue?: string): string => {
 // Todas têm valor padrão: a aplicação roda sem nenhum arquivo `.env`.
 export const API_BASE_URL = getEnvVar('VITE_API_BASE_URL', '/api');
 export const APP_NAME = getEnvVar('VITE_APP_NAME', 'Vue Template');
-export const DEFAULT_LOCALE = getEnvVar('VITE_APP_DEFAULT_LOCALE', 'pt-BR');
 
 /** Supported locales */
 export const SUPPORTED_LOCALES = ['pt-BR'] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+
+export const isSupportedLocale = (value: string | null): value is SupportedLocale =>
+  SUPPORTED_LOCALES.some((locale) => locale === value);
+
+/**
+ * Valida o locale padrão contra `SUPPORTED_LOCALES`; um valor fora da lista
+ * falha na inicialização, como `getEnvVar` faz com variável ausente.
+ * Exportada para teste.
+ */
+export const parseDefaultLocale = (value: string): SupportedLocale => {
+  if (!isSupportedLocale(value)) {
+    throw new Error(
+      `[Config Error]: VITE_APP_DEFAULT_LOCALE="${value}" não está entre os locales suportados (${SUPPORTED_LOCALES.join(', ')}).`
+    );
+  }
+  return value;
+};
+
+export const DEFAULT_LOCALE = parseDefaultLocale(getEnvVar('VITE_APP_DEFAULT_LOCALE', 'pt-BR'));
 
 /** localStorage keys (apenas preferências de UX). */
 export const STORAGE_KEYS = {

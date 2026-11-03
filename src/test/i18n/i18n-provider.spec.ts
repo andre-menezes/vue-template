@@ -19,6 +19,7 @@ describe('provider de i18n', () => {
 
   afterEach(() => {
     vi.unstubAllEnvs();
+    vi.doUnmock('@core/config');
   });
 
   it('sem preferência salva, inicia no locale padrão da configuração', async () => {
@@ -29,13 +30,17 @@ describe('provider de i18n', () => {
   });
 
   it('a preferência salva prevalece sobre o locale padrão da configuração', async () => {
-    vi.stubEnv('VITE_APP_DEFAULT_LOCALE', 'en-US');
+    // O template só traz pt-BR; simula um segundo locale suportado para que
+    // o padrão e a preferência salva sejam diferentes.
+    vi.doMock('@core/config', async (importOriginal) => ({
+      ...(await importOriginal<typeof import('@core/config')>()),
+      DEFAULT_LOCALE: 'en-US',
+      isSupportedLocale: (value: string | null) => value === 'pt-BR' || value === 'en-US',
+    }));
     localStorage.setItem(STORAGE_KEYS.LOCALE, 'pt-BR');
 
     const { locale } = await loadProvider();
-    const { DEFAULT_LOCALE } = await import('@core/config');
 
-    expect(DEFAULT_LOCALE).toBe('en-US');
     expect(locale.value).toBe('pt-BR');
     expect(document.documentElement.getAttribute('lang')).toBe('pt-BR');
   });

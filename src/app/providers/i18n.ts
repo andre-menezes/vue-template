@@ -7,7 +7,7 @@
  * ─ `legacy: false`   — Use Composition API mode exclusively (t() via useI18n()).
  * ─ `globalInjection: true` — Makes $t available in templates without useI18n().
  * ─ Locale is restored from localStorage on boot (STORAGE_KEYS.LOCALE).
- * ─ Falls back to DEFAULT_LOCALE from app config, then to 'pt-BR'.
+ * ─ Falls back to DEFAULT_LOCALE from app config (validated at boot).
  * ─ The <html lang> attribute follows the active locale from boot.
  * ─ `missingWarn: false` in production to suppress console noise.
  *
@@ -17,7 +17,7 @@ import { createI18n } from 'vue-i18n';
 import {
   DEFAULT_LOCALE,
   STORAGE_KEYS,
-  SUPPORTED_LOCALES,
+  isSupportedLocale,
   type SupportedLocale,
 } from '@core/config';
 import { ptBRMessages, type MessageSchema } from './messages';
@@ -26,15 +26,12 @@ export type { MessageSchema };
 
 /** Resolves the initial locale in priority order:
  *  1. User's persisted preference (localStorage)
- *  2. App default from config (DEFAULT_LOCALE)
- *  3. Hard-coded fallback 'pt-BR'
+ *  2. App default from config (DEFAULT_LOCALE, already validated against
+ *     SUPPORTED_LOCALES in @core/config)
  */
 function resolveInitialLocale(): SupportedLocale {
-  const persisted = localStorage.getItem(STORAGE_KEYS.LOCALE) as SupportedLocale;
-  if (persisted && SUPPORTED_LOCALES.includes(persisted)) {
-    return persisted;
-  }
-  return (DEFAULT_LOCALE as SupportedLocale) || 'pt-BR';
+  const persisted = localStorage.getItem(STORAGE_KEYS.LOCALE);
+  return isSupportedLocale(persisted) ? persisted : DEFAULT_LOCALE;
 }
 
 const initialLocale = resolveInitialLocale();

@@ -29,10 +29,10 @@ precisar de algo, promova: tipos para `src/types/`, o resto para `shared/`.
 
 ## Como as rotas são carregadas
 
-O router carrega automaticamente todos os `routes.ts` via glob:
+O router carrega automaticamente os `routes.ts` de `app/` e `modules/` via glob:
 
 ```ts
-const modules = import.meta.glob('@/**/routes.ts', { eager: true });
+const modules = import.meta.glob('@/{app,modules}/**/routes.ts', { eager: true });
 ```
 
 Basta criar um `routes.ts` exportando um array default — a rota é registrada

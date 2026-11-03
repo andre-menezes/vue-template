@@ -103,8 +103,10 @@ import { loadRouteComponent } from '@test/utils/route-component';
 expect(await loadRouteComponent(routes[0])).toBe(HomeView);
 ```
 
-Não nomeie arquivos de teste ou helpers como `routes.ts`: o router do app
-importa todo `routes.ts` de `src/` (`import.meta.glob('@/**/routes.ts')`).
+O router do app importa só os `routes.ts` de `app/` e `modules/`
+(`import.meta.glob('@/{app,modules}/**/routes.ts')`), então um helper ou
+fixture com esse nome em `src/test/` não vira rota. O `router.spec.ts`
+verifica isso com a fixture `src/test/fixtures/stray-routes/routes.ts`.
 
 ## Exemplo — bom código (teste focado com mock isolado)
 

@@ -167,7 +167,7 @@ flowchart TD
 
 1. `main.ts` cria a instância Vue com `App.vue`.
 2. `registerPlugins` registra Pinia → i18n → Router → Vuetify.
-3. O Router carrega rotas automaticamente via `import.meta.glob('@/**/routes.ts')`.
+3. O Router carrega rotas automaticamente via `import.meta.glob('@/{app,modules}/**/routes.ts')`.
 4. A aplicação monta no elemento `#app`.
 
 ---
@@ -182,10 +182,10 @@ autenticação, com uma nova ADR definindo o fluxo.
 
 ## Composição de rotas
 
-O Router carrega automaticamente todos os `routes.ts` do projeto via glob:
+O Router carrega automaticamente os `routes.ts` de `app/` e `modules/` via glob:
 
 ```ts
-const modules = import.meta.glob('@/**/routes.ts', { eager: true });
+const modules = import.meta.glob('@/{app,modules}/**/routes.ts', { eager: true });
 ```
 
 **Padrão esperado por módulo:**
