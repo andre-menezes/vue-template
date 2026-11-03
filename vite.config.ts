@@ -135,10 +135,10 @@ export default defineConfig(({ mode }) => ({
       // pela remoção do `cookie.ts` sem uso (nota na ADR-0016): nos dois casos
       // saiu do denominador código testado, sem perda de teste de comportamento.
       thresholds: {
-        lines: 47,
-        functions: 34,
-        branches: 69,
-        statements: 46,
+        lines: 100,
+        functions: 100,
+        branches: 98,
+        statements: 100,
       },
     },
   },
