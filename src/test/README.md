@@ -18,6 +18,7 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 | Pasta           | Conteúdo                                                              |
 | --------------- | --------------------------------------------------------------------- |
 | `api/`          | Camada HTTP (instâncias)                                              |
+| `customers/`    | Módulo customers (removido junto com ele pelo `template:clean`)       |
 | `app/`          | `App.vue`, providers, rotas do app e dos módulos base                 |
 | `architecture/` | Regras de dependência entre camadas                                   |
 | `components/`   | Componentes e layouts de `shared/ui` (renderização, emits)            |

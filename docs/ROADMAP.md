@@ -66,12 +66,12 @@ Objetivo: o template demonstra camadas, mas não um fluxo de dados real de ponta
 a ponta. Um módulo de exemplo `customers` (ou similar) fecha essa lacuna e vira
 o "exemplo canônico" citado no Onboarding.
 
-| #   | Item                            | Entregável                                                              | Camadas                                                    | Risco | Status   |
-| --- | ------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------- | ----- | -------- |
-| 2.1 | **Módulo CRUD de exemplo**      | Listagem com paginação + detalhe + criar/editar/excluir                 | módulo: `types → api → query/mutation → view → components` | Médio | Pendente |
-| 2.2 | **Padrão de paginação/filtros** | Tipos e util de paginação reutilizáveis (`DEFAULT_PAGE_SIZE` já existe) | `types/services`, `utils`                                  | Baixo | Pendente |
-| 2.3 | **Upload de arquivo**           | Service + helper + util simétricos ao download (multipart)              | `shared/api`, `helpers`, `utils`                           | Médio | Pendente |
-| 2.4 | **Estados de UI padronizados**  | Loading/empty/error como componentes compartilhados reutilizáveis       | `shared/ui`                                                | Baixo | Pendente |
+| #   | Item                            | Entregável                                                              | Camadas                                                    | Risco | Status       |
+| --- | ------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------- | ----- | ------------ |
+| 2.1 | **Módulo CRUD de exemplo**      | Listagem com paginação + detalhe + criar/editar/excluir                 | módulo: `types → api → query/mutation → view → components` | Médio | ✅ Concluído |
+| 2.2 | **Padrão de paginação/filtros** | Tipos e util de paginação reutilizáveis (`DEFAULT_PAGE_SIZE` já existe) | `types/services`, `utils`                                  | Baixo | Pendente     |
+| 2.3 | **Upload de arquivo**           | Service + helper + util simétricos ao download (multipart)              | `shared/api`, `helpers`, `utils`                           | Médio | Pendente     |
+| 2.4 | **Estados de UI padronizados**  | Loading/empty/error como componentes compartilhados reutilizáveis       | `shared/ui`                                                | Baixo | Pendente     |
 
 ## Fase 3 — Experiência e robustez
 
@@ -114,6 +114,11 @@ Fase 1 (dívidas)  →  Fase 2 (dados/CRUD)  →  Fase 3 (UX/robustez)  →  Fas
 A **Fase 1** está concluída (i18n migrado e testes dos utils novos cobertos),
 deixando a base limpa. O próximo foco é a **Fase 2 (dados/CRUD)**, começando
 pelo módulo CRUD de exemplo (2.1) que vira o "exemplo canônico" do Onboarding.
+
+- **2.1 (concluído):** módulo `src/modules/customers` com listagem paginada
+  e busca na URL, detalhe, cadastro, edição e exclusão, servido no `pnpm dev`
+  por uma API simulada em `mock/` (ADR-0039). Os tipos de paginação ficam no
+  módulo até a 2.2 promovê-los.
 
 ## Itens que exigem ADR antes de executar
 

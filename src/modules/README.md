@@ -8,6 +8,10 @@ Módulos do template:
 - `home`: página inicial do projeto (`/`).
 - `showcase`: telas de documentação do template (hub em `/docs`). Removido por
   `pnpm template:clean` ao iniciar um projeto novo (ADR-0026).
+- `customers`: CRUD de exemplo (`/customers`), o exemplo canônico do
+  Onboarding: listagem paginada, detalhe, cadastro, edição e exclusão, com a
+  API simulada de `mock/` no `pnpm dev`. Também removido pelo
+  `pnpm template:clean` (ADR-0039).
 
 Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITECTURE-GUIDE.md)
 
@@ -74,7 +78,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./views/CustomersView.vue'),
     meta: {
       titleKey: 'pageTitle.customers',
-      nav: { titleKey: 'nav.customers', icon: 'group', order: 70 },
+      nav: { titleKey: 'nav.customers', icon: 'group', order: 20 },
     },
   },
   {
