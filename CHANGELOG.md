@@ -61,7 +61,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Chunks de vendor com `rolldownOptions.output.codeSplitting.groups` (o `manualChunks` está deprecado); o runtime `@vue/*` sai do `vendor-i18n` para o `vendor-vue` (ADR-0032).
 - `noUncheckedIndexedAccess` ativo nos tsconfig do app, testes, E2E e Node (ADR-0033).
 - CI com actions fixadas por SHA, setup em `.github/actions/setup` e `timeout-minutes` por job (ADR-0034).
-- Piso de cobertura elevado para linhas 45, funções 33, branches 67 e statements 44.
+- Piso de cobertura elevado para linhas 47, funções 34, branches 69 e statements 46.
 
 ### Adicionado
 
