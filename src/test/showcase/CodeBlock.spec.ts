@@ -1,4 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { flushPromises } from '@vue/test-utils';
 import CodeBlock from '@modules/showcase/components/CodeBlock.vue';
 import { mountWithPlugins } from '@test/utils/mountWithPlugins';
 
@@ -13,6 +14,10 @@ function stubClipboard(): ReturnType<typeof vi.fn> {
 }
 
 describe('CodeBlock', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('renderiza o código informado', () => {
     stubClipboard();
     const wrapper = mountWithPlugins(CodeBlock, {
@@ -42,5 +47,54 @@ describe('CodeBlock', () => {
     await wrapper.get('[data-cy=code-block-copy]').trigger('click');
 
     expect(writeText).toHaveBeenCalledWith('pnpm build');
+  });
+
+  it('indica a cópia no rótulo e volta ao estado inicial após 2 segundos', async () => {
+    vi.useFakeTimers();
+    stubClipboard();
+    const wrapper = mountWithPlugins(CodeBlock, { props: { code: 'pnpm dev' } });
+    const icon = () => wrapper.get('[data-cy=code-block-copy] .v-icon').text();
+    expect(icon()).toBe('content_copy');
+
+    await wrapper.get('[data-cy=code-block-copy]').trigger('click');
+    await flushPromises();
+    expect(icon()).toBe('check');
+
+    vi.advanceTimersByTime(1999);
+    await wrapper.vm.$nextTick();
+    expect(icon()).toBe('check');
+
+    vi.advanceTimersByTime(1);
+    await wrapper.vm.$nextTick();
+    expect(icon()).toBe('content_copy');
+  });
+
+  it('reinicia o prazo quando copia de novo antes de voltar ao estado inicial', async () => {
+    vi.useFakeTimers();
+    stubClipboard();
+    const wrapper = mountWithPlugins(CodeBlock, { props: { code: 'pnpm dev' } });
+    const button = wrapper.get('[data-cy=code-block-copy]');
+    const icon = () => wrapper.get('[data-cy=code-block-copy] .v-icon').text();
+
+    await button.trigger('click');
+    await flushPromises();
+    vi.advanceTimersByTime(1500);
+    await button.trigger('click');
+    await flushPromises();
+    vi.advanceTimersByTime(1500);
+    await wrapper.vm.$nextTick();
+
+    expect(icon()).toBe('check');
+  });
+
+  it('não indica cópia quando a área de transferência recusa a escrita', async () => {
+    const writeText = stubClipboard();
+    writeText.mockRejectedValue(new Error('NotAllowedError'));
+    const wrapper = mountWithPlugins(CodeBlock, { props: { code: 'pnpm dev' } });
+
+    await wrapper.get('[data-cy=code-block-copy]').trigger('click');
+    await flushPromises();
+
+    expect(wrapper.get('[data-cy=code-block-copy] .v-icon').text()).toBe('content_copy');
   });
 });
