@@ -61,7 +61,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Chunks de vendor com `rolldownOptions.output.codeSplitting.groups` (o `manualChunks` está deprecado); o runtime `@vue/*` sai do `vendor-i18n` para o `vendor-vue` (ADR-0032).
 - `noUncheckedIndexedAccess` ativo nos tsconfig do app, testes, E2E e Node (ADR-0033).
 - CI com actions fixadas por SHA, setup em `.github/actions/setup` e `timeout-minutes` por job (ADR-0034).
-- Piso de cobertura elevado para linhas 47, funções 34, branches 69 e statements 46.
+- Piso de cobertura elevado para linhas 100, funções 100, branches 98 e statements 100.
 
 ### Adicionado
 
@@ -69,6 +69,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Tratamento global de erros em `@app/providers/errors`: `app.config.errorHandler` e `unhandledrejection` enviam a um `ErrorReporter` trocável (ADR-0028).
 - Checagem de acessibilidade WCAG 2.1 A/AA no E2E com `@axe-core/playwright` (`expectNoA11yViolations`) (ADR-0029).
 - Testes do `App.vue` (escolha de layout e tema).
+- Testes das telas e componentes da vitrine (stepper do onboarding, paleta por tema, tabelas conferidas contra o repositório e a documentação), das rotas lazy de todos os módulos, do registro de plugins, do provider de i18n, dos layouts, do icon set e de `getEnvVar` (agora exportada por `@core/config`).
 - Testes do `scrollBehavior` do router, do `TheAppHeader`/`useTheme`, da `HomeView` (com e sem a rota da documentação) e da `NotFoundView`.
 - Dependabot semanal para npm e GitHub Actions, com minor e patch agrupados (ADR-0035).
 - TanStack Query (`@tanstack/vue-query`) para dados do servidor: `QueryClient` em `@app/providers/query`, registrado no bootstrap e no `mountWithPlugins` (ADR-0027).
@@ -130,6 +131,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - `parseContentDisposition` truncava nomes de arquivo com espaços.
 - Favicon apontava para arquivo inexistente; `<html lang>` agora é `pt-BR` e segue o locale ativo.
 - Documentação divergente do código (módulo `about`, tokens no cliente, regra de camada invertida na skill, tipos de commit, ordem das camadas, endpoint de usuário no guia de testes).
+- Página de convenções (`/convencoes`) sem os tipos de commit `build` e `wip`, aceitos pelo hook `commit-msg`.
 
 - `npm run build`/`typecheck` não verificavam nenhum arquivo (`vue-tsc --noEmit` sobre o tsconfig de solução); agora usam `vue-tsc -b` (ADR-0016).
 - Gate de cobertura inerte (`coverage.include` vazio): passa a medir `src/` com piso ratchet igual à cobertura real (ADR-0016).
