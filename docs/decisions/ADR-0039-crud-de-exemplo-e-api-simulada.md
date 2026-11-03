@@ -1,6 +1,6 @@
 # ADR-0039: CRUD de exemplo (`customers`) e API simulada no `pnpm dev`
 
-- **Status:** Proposta
+- **Status:** Aceita
 - **Data:** 2026-11-03
 - **Decisores:** Andre Menezes
 - **Relacionadas:** ADR-0025 (colocalização por módulo), ADR-0026 (vitrine em
