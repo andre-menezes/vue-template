@@ -82,7 +82,7 @@ compreensível apenas lendo a interface de props.
 
 ```vue
 <template>
-  <div>
+  <div :class="{ 'bg-grey-darken-4': appStore.theme === 'dark' }">
     <p v-if="loading">Carregando...</p>
     <ul>
       <li v-for="user in users" :key="user.id">{{ user.nome }}</li>
@@ -101,16 +101,14 @@ const loading = ref(false);
 
 onMounted(async () => {
   loading.value = true;
-  appStore.loading = true;
   users.value = await ofetch('/api/users');
   loading.value = false;
-  appStore.loading = false;
 });
 </script>
 ```
 
 Por que é ruim: viola SRP — um componente "apresentacional" está buscando
-dados, manipulando store e gerenciando loading. Isso deveria estar na view
+dados, lendo store e gerenciando loading. Isso deveria estar na view
 container ou num composable. O componente se torna impossível de reutilizar
 em outro contexto sem arrastar toda essa lógica.
 

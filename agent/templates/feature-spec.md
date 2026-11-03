@@ -88,8 +88,9 @@ Informações adicionais, limitações conhecidas ou decisões técnicas pendent
 - [ ] Spec lida e compreendida (sem dúvidas pendentes)
 - [ ] Branch criada: `feat/FEAT-XXX-slug`
 - [ ] Módulo criado em `src/modules/<nome>/`
-- [ ] Tipos criados em `src/types/<nome>/`
-- [ ] Service criado em `src/shared/api/services/`
+- [ ] Tipos criados em `src/modules/<nome>/types.ts`
+- [ ] Service criado em `src/modules/<nome>/api/`
+- [ ] Query num composable do módulo (`useQuery`)
 - [ ] View container implementada
 - [ ] Componentes apresentacionais implementados
 - [ ] Testes unitários criados e passando

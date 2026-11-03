@@ -223,7 +223,7 @@ const problemJson = JSON.stringify(problem, null, 2);
 
 const apiErrorCode = `import { useI18n } from 'vue-i18n';
 import { useErrorMessage } from '@shared/composables';
-import { transferRequest } from '@shared/api/services/account.service';
+import { transferRequest } from '../api/account.service';
 
 const { t } = useI18n();
 const errorMessage = useErrorMessage();

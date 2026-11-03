@@ -9,8 +9,9 @@ Composition API, Vuetify 4, TypeScript strict, Pinia, ofetch e Vue Router.
 
 Reconheça e utilize: SFCs com `<script setup lang="ts">`, `defineProps<T>()`,
 `defineEmits<T>()`, composables `use*`, stores Pinia (Options API), services
-via `createApiInstance`, Vue Router com auto-discovery, aliases de importação
-(`@shared/`, `@core/`, `@app/`, `@typings/`, `@modules/`, `@test/`).
+via `createApiInstance`, queries do TanStack Query (`useQuery`), Vue Router com
+auto-discovery, aliases de importação (`@shared/`, `@core/`, `@app/`,
+`@typings/`, `@modules/`, `@test/`).
 
 ## Arquitetura em camadas
 
@@ -43,53 +44,66 @@ defineProps<{ metric: Metric }>();
 ```
 
 - Sem fetch, sem store, sem efeito lateral.
-- Props tipadas com interface centralizada.
+- Props tipadas com interface (`types.ts` do módulo ou `@typings/` se compartilhada).
 - Ordem: `<template>` → `<script>` → `<style>`.
+
+### Query (composable do módulo)
+
+```ts
+// modules/metrics/composables/useMetricQuery.ts
+import { useQuery } from '@tanstack/vue-query';
+import { getMetricRequest } from '../api/metric.service';
+
+export function useMetricQuery() {
+  return useQuery({
+    queryKey: ['metric'],
+    queryFn: ({ signal }) => getMetricRequest({ signal }),
+  });
+}
+```
+
+- Dados do servidor são lidos com TanStack Query (ADR-0027), nunca com
+  `ref` + `onMounted`.
+- A query fica num composable do módulo; a `queryKey` identifica o dado no cache.
+- Repasse o `signal` ao service para cancelar a requisição.
 
 ### View container
 
 ```vue
 <template>
-  <MetricCard :metric="metric" />
+  <v-alert v-if="error" type="error" :text="error.message" />
+  <v-progress-linear v-else-if="isPending" indeterminate color="primary" />
+  <MetricCard v-else-if="data" :metric="data" />
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { getMetricsRequest } from '@shared/api/services/metrics.service';
-import type { Metric } from '../types';
 import MetricCard from '../components/MetricCard.vue';
+import { useMetricQuery } from '../composables/useMetricQuery';
 
-const metric = ref<Metric | null>(null);
-const loading = ref(false);
-
-onMounted(async () => {
-  loading.value = true;
-  try {
-    metric.value = await getMetricsRequest();
-  } finally {
-    loading.value = false;
-  }
-});
+const { data, error, isPending } = useMetricQuery();
 </script>
 ```
 
-- Orquestra dados (service → ref → props).
-- Controla estados (loading, erro).
+- Orquestra dados (query → props).
+- Trata os estados que a query expõe (loading, erro).
 - Nunca lógica de apresentação complexa.
 
 ### Service
 
 ```ts
+// modules/customers/api/customer.service.ts
 import { httpClient } from '@shared/api/instances';
-import type { Customer } from '@typings/customer';
+import type { Customer } from '../types';
 
-export function getCustomersRequest(): Promise<Customer[]> {
-  return httpClient.get<Customer[]>('/customers');
+export function getCustomersRequest(options: { signal?: AbortSignal } = {}): Promise<Customer[]> {
+  return httpClient.get<Customer[]>('/customers', { signal: options.signal });
 }
 ```
 
+- Fica em `modules/<x>/api/` quando só um módulo usa; vai para
+  `shared/api/services/` quando um segundo módulo precisar (ADR-0025).
 - Usa instância HTTP compartilhada (nunca ofetch direto).
-- Retorno tipado com generic.
+- Retorno tipado com generic e `signal` opcional para cancelamento.
 - Nome descritivo com sufixo `Request`.
 
 ### Store (Pinia)

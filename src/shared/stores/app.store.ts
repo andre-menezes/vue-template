@@ -17,15 +17,10 @@ function resolveInitialTheme(): ThemeName {
 
 export const useAppStore = defineStore('app', {
   state: (): AppState => ({
-    loading: false,
     theme: resolveInitialTheme(),
   }),
 
   actions: {
-    setLoading(value: boolean): void {
-      this.loading = value;
-    },
-
     switchTheme(): void {
       this.theme = this.theme === 'light' ? 'dark' : 'light';
       localStorage.setItem(STORAGE_KEYS.THEME, this.theme);
