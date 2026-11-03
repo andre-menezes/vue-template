@@ -21,10 +21,14 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 ├── types.ts           # tipos do módulo (ou types/ quando crescer)
 ├── api/               # services do módulo (opcional)
 ├── stores/            # stores usadas só por este módulo (opcional)
-└── composables/       # composables usados só por este módulo (opcional)
+├── composables/       # composables usados só por este módulo (opcional)
+└── locales/           # mensagens do módulo, um <locale>.json por locale (opcional)
 ```
 
-Tudo que só este módulo usa fica aqui (ADR-0025). Quando um segundo módulo
+Tudo que só este módulo usa fica aqui (ADR-0025). Um módulo com `locales/`
+precisa de um arquivo para cada locale de `SUPPORTED_LOCALES` (`pt-BR.json` e
+`en-US.json`), com as mesmas chaves: o `messages.ts` os descobre por glob e o
+teste de paridade e o ESLint cobram as chaves (ADR-0038). Quando um segundo módulo
 precisar de algo, promova: tipos para `src/types/`, o resto para `shared/`.
 
 ## Como as rotas são carregadas

@@ -46,16 +46,18 @@ dependência de stores, services ou APIs do browser que alterem estado.
 
 ```ts
 // shared/utils/format.ts
-export function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('pt-BR', {
+export function formatCurrency(value: number, locale = 'pt-BR', currency = 'BRL'): string {
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: 'BRL',
+    currency,
   }).format(value);
 }
 ```
 
 Por que é bom: função pura, sem dependência externa, facilmente testável,
-nome descritivo, retorno previsível para qualquer entrada.
+nome descritivo, retorno previsível para qualquer entrada. O locale vem por
+parâmetro: o componente passa o locale ativo (`useLocale().locale.value`), e a
+util não lê o vue-i18n (ADR-0038).
 
 ### Exemplo — mau código
 

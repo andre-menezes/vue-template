@@ -24,8 +24,9 @@ só ficam em `src/modules/<x>/types.ts` (ADR-0025).
 - `http`: corpo de erro RFC 9457 (`ProblemDetails`)
 
 > `types` não importa de nenhuma camada (verificado pelo ESLint). O schema de
-> mensagens i18n (`MessageSchema`) é derivado do JSON de locale e por isso fica
-> em `app/providers/i18n.ts`.
+> mensagens i18n (`MessageSchema`) é derivado do JSON do locale base (pt-BR)
+> e por isso fica em `app/providers/messages.ts` (reexportado por
+> `app/providers/i18n.ts`).
 
 > O alias é `@typings` (e não `@types`) porque `@types` colide com o
 > namespace reservado do TypeScript para pacotes do DefinitelyTyped.

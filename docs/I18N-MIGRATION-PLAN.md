@@ -10,6 +10,12 @@ usando **apenas** o locale `pt-BR`.
 > `src/app/locales/pt-BR.json`. Este documento permanece como registro do plano
 > e das decisões tomadas na execução.
 
+> **Nota (ADR-0038):** depois da migração, o template passou a suportar
+> múltiplos locales. Hoje há `pt-BR` (base e fallback) e `en-US`, e as
+> mensagens ficam em `locales/<locale>.json` no app e em cada módulo. As
+> menções a "locale único" e a "só `pt-BR`" abaixo descrevem o escopo da
+> migração, não o estado atual.
+
 Voltar para o índice: [README.md](README.md)
 
 ---

@@ -17,7 +17,7 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 
 | Pasta        | Responsabilidade                                                                    |
 | ------------ | ----------------------------------------------------------------------------------- |
-| `locales/`   | Mensagens de internacionalização (pt-BR)                                            |
+| `locales/`   | Mensagens do app, um arquivo por locale (`pt-BR.json`, `en-US.json` — ADR-0038)     |
 | `providers/` | Plugins (Pinia, TanStack Query, i18n, Router, Vuetify) e tratamento global de erros |
 | `styles/`    | SCSS global                                                                         |
 | `views/`     | Views de uso global (404)                                                           |

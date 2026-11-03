@@ -27,8 +27,10 @@ Consolidado na `develop` (ver `CHANGELOG.md`):
 - Qualidade: ESLint/Prettier, Husky, Vitest, Playwright com checagem de
   acessibilidade (axe, ADR-0029), CI (GitHub Actions), pnpm (ADR-0024),
   ADRs 0001–0029.
-- i18n **configurado e migrado** (`vue-i18n`, locale único `pt-BR`): todo texto
-  de UI consolidado em `pt-BR.json` (ver `I18N-MIGRATION-PLAN.md`).
+- i18n **configurado e migrado** (`vue-i18n`): todo texto de UI vem dos
+  `locales/<locale>.json` do app e dos módulos (ver `I18N-MIGRATION-PLAN.md`),
+  em `pt-BR` (base e fallback) e `en-US`, com seletor de idioma no cabeçalho e
+  o Vuetify acompanhando o locale (ADR-0038).
 
 ## Princípios de priorização
 
