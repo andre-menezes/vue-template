@@ -41,7 +41,7 @@ const initialLocale = resolveInitialLocale();
  * the same messages and options as the app.
  */
 export function createAppI18n(locale: SupportedLocale = 'pt-BR') {
-  return createI18n<[MessageSchema], SupportedLocale>({
+  return createI18n<[MessageSchema], SupportedLocale, false>({
     legacy: false,
     globalInjection: true,
     locale,
