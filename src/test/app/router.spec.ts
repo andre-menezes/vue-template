@@ -31,4 +31,11 @@ describe('router', () => {
   it('rola para o topo quando não há posição salva nem hash', () => {
     expect(scrollTo('/pagina')).toEqual({ top: 0, behavior: 'smooth' });
   });
+
+  it('registra só as rotas de app/ e modules/', () => {
+    // src/test/fixtures/stray-routes/routes.ts existe, mas fica fora do glob.
+    expect(router.hasRoute('StrayFixtureRoute')).toBe(false);
+    expect(router.hasRoute('Home')).toBe(true);
+    expect(router.hasRoute('NotFound')).toBe(true);
+  });
 });

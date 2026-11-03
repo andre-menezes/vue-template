@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 
-const modules = import.meta.glob('@/**/routes.ts', { eager: true });
+// Só `app/` e `modules/` declaram rotas; um `routes.ts` em outra pasta (como
+// um helper em `src/test/`) não deve virar rota do app.
+const modules = import.meta.glob('@/{app,modules}/**/routes.ts', { eager: true });
 
 const routes = [
   ...Object.values(modules as Record<string, { default: RouteRecordRaw[] }>).flatMap(
