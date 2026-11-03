@@ -49,6 +49,13 @@ describe('toBlob', () => {
     expect(result.type).toBe('application/pdf');
   });
 
+  it('converte ArrayBuffer em Blob sem type quando nenhum é informado', () => {
+    const result = toBlob(new ArrayBuffer(8));
+
+    expect(result.size).toBe(8);
+    expect(result.type).toBe('');
+  });
+
   it('converte ArrayBuffer em Blob com o type informado', () => {
     const result = toBlob(new ArrayBuffer(8), 'application/octet-stream');
     expect(result).toBeInstanceOf(Blob);

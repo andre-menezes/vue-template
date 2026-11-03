@@ -31,6 +31,16 @@ describe('getErrorMessage', () => {
     expect(getErrorMessage(error, fallbacks)).toBe('Requisição inválida');
   });
 
+  it('ignora um Problem Details sem detail nem title e usa o status da resposta', () => {
+    const error = {
+      status: 503,
+      statusText: 'Service Unavailable',
+      data: { type: 'about:blank', status: 503 },
+    };
+
+    expect(getErrorMessage(error, fallbacks)).toBe('Service Unavailable (HTTP 503)');
+  });
+
   it('usa statusText + status quando não há corpo Problem Details', () => {
     const error = { status: 404, statusText: 'Not Found' };
     expect(getErrorMessage(error, fallbacks)).toBe('Not Found (HTTP 404)');
