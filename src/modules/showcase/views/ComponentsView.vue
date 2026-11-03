@@ -220,7 +220,7 @@ const apiErrorMessage = getErrorMessage({ status: problem.status, data: problem 
 const problemJson = JSON.stringify(problem, null, 2);
 
 const apiErrorCode = `import { getErrorMessage } from '@shared/utils/http-error';
-import { transferRequest } from '@shared/api/services/account.service';
+import { transferRequest } from '../api/account.service';
 
 async function transfer(): Promise<void> {
   try {

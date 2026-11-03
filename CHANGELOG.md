@@ -26,6 +26,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - `.env.test`: as variáveis de ambiente têm valores padrão e nenhum arquivo `.env` é obrigatório.
 - `package-lock.json` e o campo `allowScripts` do `package.json`, substituídos pelo `pnpm-lock.yaml` e por `pnpm.onlyBuiltDependencies` (ADR-0024).
 - Page view do Google Analytics no router e tipos de `src/types/analytics`: nenhum script do gtag era carregado (ADR-0028).
+- Código sem uso: `loading`/`setLoading` da `app.store`, `shared/utils/cookie.ts`, alias `@root` e `dns.setDefaultResultOrder` do `vite.config.ts`. Piso de cobertura de lines e statements ajustado para 37 e 36 (nota na ADR-0016).
 
 ### Alterado
 
@@ -51,6 +52,9 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - `CLAUDE.md` reduzido a um ponteiro para o núcleo `agent/` e os comandos do projeto.
 - Piso de cobertura elevado para linhas 38, funções 27, branches 59 e statements 37.
 - Menu lateral sem `role=list` sobre links, e bloco de código com `<pre>` focável e tooltip com nome acessível (WCAG, apontados pelo axe).
+- Hook `commit-msg` valida também a linha em branco após o título e o corpo em 72 colunas, com testes do validador.
+- Exemplos de customer da vitrine, da skill do agente e dos READMEs seguem a colocalização (ADR-0025) e o TanStack Query (ADR-0027).
+- `pnpm-lock.yaml` no formato do pnpm e fora do Prettier (`.prettierignore`); adapters do Kiro de volta ao `agent/README.md`.
 - Chunks de vendor com `rolldownOptions.output.codeSplitting.groups` (o `manualChunks` está deprecado); o runtime `@vue/*` sai do `vendor-i18n` para o `vendor-vue` (ADR-0032).
 - `noUncheckedIndexedAccess` ativo nos tsconfig do app, testes, E2E e Node (ADR-0033).
 - CI com actions fixadas por SHA, setup em `.github/actions/setup` e `timeout-minutes` por job (ADR-0034).
