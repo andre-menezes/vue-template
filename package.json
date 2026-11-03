@@ -17,8 +17,8 @@
     "build:only:stg": "vite build --mode staging",
     "build:only:prod": "vite build",
     "build": "vue-tsc -b && vite build",
-    "lint": "eslint src e2e playwright.config.ts",
-    "lint:fix": "eslint src e2e playwright.config.ts --fix",
+    "lint": "eslint src e2e mock playwright.config.ts",
+    "lint:fix": "eslint src e2e mock playwright.config.ts --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -71,7 +71,7 @@
     "vue-tsc": "3.3.8"
   },
   "lint-staged": {
-    "{src,e2e}/**/*.{js,mjs,ts,vue}": [
+    "{src,e2e,mock}/**/*.{js,mjs,ts,vue}": [
       "eslint --fix",
       "prettier --write"
     ],

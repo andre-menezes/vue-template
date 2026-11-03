@@ -5,10 +5,13 @@ import vue from '@vitejs/plugin-vue';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 
+import { loadEnv } from 'vite';
 import { defineConfig } from 'vitest/config';
 import { fileURLToPath, URL } from 'node:url';
 import { readFileSync } from 'node:fs';
 import vueDevTools from 'vite-plugin-vue-devtools';
+import { apiMock } from './mock/api-mock.ts';
+import { handlers as mockHandlers } from './mock/handlers.ts';
 
 // Só os dados do `package.json` que a UI exibe. Importar o arquivo no código
 // colocaria a lista inteira de dependências no bundle.
@@ -18,6 +21,18 @@ const appMeta = {
   runtimeDependencies: Object.keys(packageJson.dependencies ?? {}).length,
   toolingDependencies: Object.keys(packageJson.devDependencies ?? {}).length,
 };
+
+/**
+ * API simulada do `pnpm dev` (ADR-0039): só no modo `development` e só com a
+ * API no mesmo servidor (base relativa, como o padrão `/api`). Para usar um
+ * backend real atrás de um proxy relativo, defina `API_MOCK=false`.
+ */
+function devApiMock(mode: string) {
+  const env = loadEnv(mode, process.cwd(), '');
+  const base = env.VITE_API_BASE_URL || '/api';
+  const enabled = mode === 'development' && base.startsWith('/') && env.API_MOCK !== 'false';
+  return enabled ? [apiMock({ base, handlers: mockHandlers, delayMs: 300 })] : [];
+}
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -47,6 +62,7 @@ export default defineConfig(({ mode }) => ({
       dropMessageCompiler: true,
     }),
     ...(mode === 'development' ? [vueDevTools()] : []),
+    ...devApiMock(mode),
   ],
   optimizeDeps: {
     // O `vite-plugin-vuetify` importa os componentes sob demanda, então o Vite
@@ -112,9 +128,10 @@ export default defineConfig(({ mode }) => ({
       },
     },
     setupFiles: ['src/test/setup.ts'],
-    // Os testes de `scripts/` cobrem os scripts de Node do repositório (ex.: o
-    // validador do hook commit-msg); a cobertura continua medindo só `src/`.
-    include: ['src/test/**/*.spec.ts', 'scripts/**/*.spec.mjs'],
+    // Os testes de `scripts/` e `mock/` cobrem o código de Node do repositório
+    // (ex.: o validador do hook commit-msg e a API simulada); a cobertura
+    // continua medindo só `src/`.
+    include: ['src/test/**/*.spec.ts', 'scripts/**/*.spec.mjs', 'mock/**/*.spec.ts'],
     coverage: {
       provider: 'v8' as const,
       reporter: ['text', 'lcov', 'cobertura'],
