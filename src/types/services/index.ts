@@ -38,3 +38,21 @@ export interface BinaryResponse {
   /** Cabeçalho `Content-Disposition` (contém o nome do arquivo, se informado). */
   contentDisposition: string | null;
 }
+
+/**
+ * Página pedida a uma listagem paginada. `page` começa em 1; `pageSize` vai
+ * de 1 a `MAX_PAGE_SIZE` (`@core/config`). Filtros de cada recurso estendem
+ * esta interface (ex.: `CustomerListParams`).
+ */
+export interface PageParams {
+  page: number;
+  pageSize: number;
+}
+
+/** Uma página de resultados e o total de itens que atendem ao filtro. */
+export interface PaginatedResponse<TItem> {
+  items: TItem[];
+  total: number;
+  page: number;
+  pageSize: number;
+}
