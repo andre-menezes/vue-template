@@ -5,6 +5,7 @@
  * traduções; remover a pasta remove as mensagens junto.
  */
 import ptBR from '@app/locales/pt-BR.json';
+import enUS from '@app/locales/en-US.json';
 import { isSupportedLocale, type SupportedLocale } from '@core/config';
 
 /**
@@ -53,11 +54,28 @@ export function mergeModuleMessages(
 }
 
 /**
- * Mensagens do app por locale. Tipado contra o `MessageSchema`: um locale
- * suportado sem arquivo aqui, ou com chave faltando, não compila.
+ * Marca como `never` toda chave de `T` que não existe em `S`, em qualquer
+ * nível. Somado a `S`, exige exatamente as chaves do schema.
+ */
+type NoExtraKeys<T, S> = {
+  [K in keyof T]: K extends keyof S
+    ? T[K] extends object
+      ? NoExtraKeys<T[K], S[K]>
+      : T[K]
+    : never;
+};
+
+/** Formato exigido de um locale: as chaves do pt-BR, nem mais nem menos. */
+type LocaleMessagesOf<T> = MessageSchema & NoExtraKeys<T, MessageSchema>;
+
+/**
+ * Mensagens do app por locale. Um locale suportado sem entrada aqui não
+ * compila, e o `satisfies` acusa no `tsc` a chave que falta ou sobra no JSON
+ * de cada tradução.
  */
 const appMessages: Record<SupportedLocale, MessageSchema> = {
   'pt-BR': ptBR,
+  'en-US': enUS satisfies LocaleMessagesOf<typeof enUS>,
 };
 
 /** Arquivos de locale dos módulos, indexados pelo caminho. */

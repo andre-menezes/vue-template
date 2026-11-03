@@ -30,7 +30,8 @@ describe('getEnvVar', () => {
 describe('locale padrão', () => {
   it('reconhece só os locales suportados', () => {
     expect(isSupportedLocale('pt-BR')).toBe(true);
-    expect(isSupportedLocale('en-US')).toBe(false);
+    expect(isSupportedLocale('en-US')).toBe(true);
+    expect(isSupportedLocale('fr-FR')).toBe(false);
     expect(isSupportedLocale(null)).toBe(false);
   });
 
@@ -39,8 +40,8 @@ describe('locale padrão', () => {
   });
 
   it('falha com o valor e a lista suportada quando o locale não é suportado', () => {
-    expect(() => parseDefaultLocale('en-US')).toThrow(
-      '[Config Error]: VITE_APP_DEFAULT_LOCALE="en-US" não está entre os locales suportados (pt-BR).'
+    expect(() => parseDefaultLocale('fr-FR')).toThrow(
+      '[Config Error]: VITE_APP_DEFAULT_LOCALE="fr-FR" não está entre os locales suportados (pt-BR, en-US).'
     );
   });
 });
