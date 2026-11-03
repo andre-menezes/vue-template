@@ -17,7 +17,8 @@ camadas, consumido via alias `@typings/<contexto>`. Tipos usados por um módulo
 só ficam em `src/modules/<x>/types.ts` (ADR-0025).
 
 - `store`: modelos usados pelas stores e pela camada de UI
-- `services`: contratos genéricos da camada HTTP (query, body, options)
+- `services`: contratos genéricos da camada HTTP (query, body, options) e de
+  paginação (`PageParams`, `PaginatedResponse<TItem>`)
 - `components`: contratos de props de componentes compartilhados
 - `theme`: contratos de tema do Vuetify
 - `router`: augmentation de `RouteMeta` (`layout`)

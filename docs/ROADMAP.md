@@ -69,7 +69,7 @@ o "exemplo canônico" citado no Onboarding.
 | #   | Item                            | Entregável                                                              | Camadas                                                    | Risco | Status       |
 | --- | ------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------- | ----- | ------------ |
 | 2.1 | **Módulo CRUD de exemplo**      | Listagem com paginação + detalhe + criar/editar/excluir                 | módulo: `types → api → query/mutation → view → components` | Médio | ✅ Concluído |
-| 2.2 | **Padrão de paginação/filtros** | Tipos e util de paginação reutilizáveis (`DEFAULT_PAGE_SIZE` já existe) | `types/services`, `utils`                                  | Baixo | Pendente     |
+| 2.2 | **Padrão de paginação/filtros** | Tipos e util de paginação reutilizáveis (`DEFAULT_PAGE_SIZE` já existe) | `types/services`, `utils`                                  | Baixo | ✅ Concluído |
 | 2.3 | **Upload de arquivo**           | Service + helper + util simétricos ao download (multipart)              | `shared/api`, `helpers`, `utils`                           | Médio | Pendente     |
 | 2.4 | **Estados de UI padronizados**  | Loading/empty/error como componentes compartilhados reutilizáveis       | `shared/ui`                                                | Baixo | Pendente     |
 
@@ -117,8 +117,11 @@ pelo módulo CRUD de exemplo (2.1) que vira o "exemplo canônico" do Onboarding.
 
 - **2.1 (concluído):** módulo `src/modules/customers` com listagem paginada
   e busca na URL, detalhe, cadastro, edição e exclusão, servido no `pnpm dev`
-  por uma API simulada em `mock/` (ADR-0039). Os tipos de paginação ficam no
-  módulo até a 2.2 promovê-los.
+  por uma API simulada em `mock/` (ADR-0039).
+- **2.2 (concluído):** `PageParams` e `PaginatedResponse<TItem>` em
+  `@typings/services`, e `parsePageParams`/`toPageQuery` em
+  `@shared/utils/pagination` para ler e montar a página da URL. O módulo
+  `customers` estende os dois só com a busca.
 
 ## Itens que exigem ADR antes de executar
 

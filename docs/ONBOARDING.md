@@ -30,20 +30,20 @@ no lint, na cobertura e no axe, é o módulo `src/modules/customers`: rode
 pelo próprio Vite (`mock/`, ADR-0039); para usar um backend real, aponte o
 `VITE_API_BASE_URL` para ele.
 
-| Arquivo                                        | O que mostra                                                     |
-| ---------------------------------------------- | ---------------------------------------------------------------- |
-| `types.ts`                                     | Contrato da API: cliente, campos editáveis e página de resultado |
-| `api/customer.service.ts`                      | Uma função por endpoint, com `signal` nas leituras               |
-| `composables/customer-keys.ts`                 | Chaves de query centralizadas, para ler e invalidar              |
-| `composables/useCustomersQuery.ts`             | Página reativa aos parâmetros, com `keepPreviousData`            |
-| `composables/useCustomerQuery.ts`              | Detalhe com query desligada sem id (`enabled`)                   |
-| `composables/useCustomerMutations.ts`          | Cadastro, edição e exclusão invalidando as listas                |
-| `list-query.ts`                                | Página e busca na URL, com funções puras                         |
-| `views/CustomersView.vue`                      | Container da listagem: URL → query → tabela                      |
-| `views/CustomerDetailView.vue`                 | Detalhe, 404 tratado e exclusão confirmada                       |
-| `views/CustomerFormView.vue`                   | Um formulário para cadastro e edição                             |
-| `components/`                                  | Tabela, formulário, detalhe e diálogo, só com props e emits      |
-| `src/test/customers/`, `e2e/customers.spec.ts` | Testes do service às views, e o fluxo completo no navegador      |
+| Arquivo                                        | O que mostra                                                    |
+| ---------------------------------------------- | --------------------------------------------------------------- |
+| `types.ts`                                     | Contrato da API: cliente, campos editáveis e filtro da listagem |
+| `api/customer.service.ts`                      | Uma função por endpoint, com `signal` nas leituras              |
+| `composables/customer-keys.ts`                 | Chaves de query centralizadas, para ler e invalidar             |
+| `composables/useCustomersQuery.ts`             | Página reativa aos parâmetros, com `keepPreviousData`           |
+| `composables/useCustomerQuery.ts`              | Detalhe com query desligada sem id (`enabled`)                  |
+| `composables/useCustomerMutations.ts`          | Cadastro, edição e exclusão invalidando as listas               |
+| `list-query.ts`                                | Busca na URL, somada à paginação de `@shared/utils/pagination`  |
+| `views/CustomersView.vue`                      | Container da listagem: URL → query → tabela                     |
+| `views/CustomerDetailView.vue`                 | Detalhe, 404 tratado e exclusão confirmada                      |
+| `views/CustomerFormView.vue`                   | Um formulário para cadastro e edição                            |
+| `components/`                                  | Tabela, formulário, detalhe e diálogo, só com props e emits     |
+| `src/test/customers/`, `e2e/customers.spec.ts` | Testes do service às views, e o fluxo completo no navegador     |
 
 A spec da feature está em [docs/specs/FEAT-001-crud-de-clientes.md](specs/FEAT-001-crud-de-clientes.md).
 O `pnpm template:clean` remove o exemplo junto com a vitrine.
