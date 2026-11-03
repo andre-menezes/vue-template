@@ -180,13 +180,16 @@ export default [
     },
   },
   ...layerRules,
-  // i18n: chaves usadas precisam existir em `pt-BR.json`, o JSON não guarda
-  // chaves órfãs e texto de interface fixo no template é erro (ADR-0037).
+  // i18n: chaves usadas precisam existir nos locales, todo locale tem as
+  // mesmas chaves, o JSON não guarda chaves órfãs e texto de interface fixo
+  // no template é erro (ADR-0037, ADR-0038).
   ...pluginVueI18n.configs['flat/recommended'],
   {
     // Em todos os arquivos (não só em `src`): sem `localeDir`, as regras de
     // mensagem do preset avisam em qualquer JSON, como o `e2e/tsconfig.json`.
     // Com ele, ignoram o que não é locale.
+    // O nome do arquivo é o locale (`pt-BR.json`, `en-US.json`): as regras
+    // juntam os arquivos de mesmo nome do app e dos módulos.
     settings: {
       'vue-i18n': {
         localeDir: './src/**/locales/*.json',
@@ -197,6 +200,7 @@ export default [
   {
     files: ['src/**/*.{ts,vue}', 'src/**/locales/*.json'],
     rules: {
+      // Chave usada no código que não existe em nenhum locale.
       '@intlify/vue-i18n/no-missing-keys': 'error',
       '@intlify/vue-i18n/no-unused-keys': [
         'error',
@@ -221,6 +225,16 @@ export default [
         },
       ],
       '@intlify/vue-i18n/no-v-html': 'off',
+    },
+  },
+  {
+    // O `no-missing-keys` só reclama de chave ausente em todos os locales.
+    // Esta regra cobra, em cada JSON, as chaves que os outros locales têm e
+    // ele não: tradução incompleta é erro, em qualquer direção. O teste de
+    // paridade (`src/test/i18n/locale.spec.ts`) compara também pasta a pasta.
+    files: ['src/**/locales/*.json'],
+    rules: {
+      '@intlify/vue-i18n/no-missing-keys-in-other-locales': 'error',
     },
   },
 ];
