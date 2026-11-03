@@ -193,10 +193,10 @@ Thresholds de cobertura (o CI reprova abaixo destes valores):
 
 | Métrica    | Mínimo |
 | ---------- | ------ |
-| Lines      | 29%    |
-| Functions  | 19%    |
-| Branches   | 51%    |
-| Statements | 28%    |
+| Lines      | 45%    |
+| Functions  | 33%    |
+| Branches   | 67%    |
+| Statements | 44%    |
 
 Os valores são um **piso que só sobe** (ratchet — ADR-0016): refletem a
 cobertura real medida e devem ser elevados em `vite.config.ts` sempre que a

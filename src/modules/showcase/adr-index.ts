@@ -24,15 +24,17 @@ function isAdrStatus(value: string): value is AdrStatus {
 export function parseAdr(file: string, content: string): Adr | null {
   const heading = /^#\s+(ADR-\d{4}):\s*(.+)$/m.exec(content);
   const status = /^-\s+\*\*Status:\*\*\s*(.+)$/m.exec(content);
-  if (!heading || !status) return null;
+  const [, id, rawTitle] = heading ?? [];
+  const rawStatus = status?.[1];
+  if (id === undefined || rawTitle === undefined || rawStatus === undefined) return null;
 
-  const statusValue = status[1].trim();
+  const statusValue = rawStatus.trim();
   if (!isAdrStatus(statusValue)) return null;
 
   return {
-    id: heading[1],
+    id,
     // Remove marcação de código inline do título (ex.: `createApiInstance`).
-    title: heading[2].replace(/`/g, '').trim(),
+    title: rawTitle.replace(/`/g, '').trim(),
     status: statusValue,
     file,
   };
