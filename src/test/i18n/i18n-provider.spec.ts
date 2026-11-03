@@ -6,10 +6,7 @@ import type { MessageSchema } from '@app/providers/i18n';
 async function loadProvider() {
   vi.resetModules();
   const provider = await import('@app/providers/i18n');
-  // Em modo Composition o locale é um ref; a tipagem do createI18n não reflete
-  // isso (mesmo cast usado por `setLocale`).
-  const locale = provider.default.global.locale as unknown as { value: string };
-  return { ...provider, locale };
+  return { ...provider, locale: provider.default.global.locale };
 }
 
 describe('provider de i18n', () => {
@@ -65,6 +62,21 @@ describe('provider de i18n', () => {
     expect(i18n.global.t('nav.home')).toBe('Home');
     expect(localStorage.getItem(STORAGE_KEYS.LOCALE)).toBe('en-US');
     expect(document.documentElement.getAttribute('lang')).toBe('en-US');
+  });
+
+  it('persiste uma troca feita direto no locale global, como a do useI18n()', async () => {
+    const { locale } = await loadProvider();
+
+    locale.value = 'en-US';
+
+    expect(localStorage.getItem(STORAGE_KEYS.LOCALE)).toBe('en-US');
+    expect(document.documentElement.getAttribute('lang')).toBe('en-US');
+  });
+
+  it('não grava o locale inicial: sem escolha do usuário, nada é salvo', async () => {
+    await loadProvider();
+
+    expect(localStorage.getItem(STORAGE_KEYS.LOCALE)).toBeNull();
   });
 
   it('uma chave sem tradução no locale ativo cai no pt-BR (fallbackLocale)', async () => {
