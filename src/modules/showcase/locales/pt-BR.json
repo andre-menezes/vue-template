@@ -373,7 +373,9 @@
       "style": "Formatação, espaçamento, lint (sem alteração de lógica)",
       "perf": "Melhoria de performance",
       "ci": "Alteração de pipeline CI/CD",
-      "revert": "Reversão de commit anterior"
+      "revert": "Reversão de commit anterior",
+      "build": "Sistema de build e dependências (Vite, scripts, tsconfig)",
+      "wip": "Progresso parcial em branch de trabalho; reescrever antes do PR"
     },
     "scopes": {
       "title": "Escopos comuns",

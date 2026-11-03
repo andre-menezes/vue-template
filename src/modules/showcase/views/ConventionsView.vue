@@ -295,6 +295,8 @@ const commitTypes = computed<CommitType[]>(() => [
   { type: 'perf', when: t('conventions.commitTypes.perf') },
   { type: 'ci', when: t('conventions.commitTypes.ci') },
   { type: 'revert', when: t('conventions.commitTypes.revert') },
+  { type: 'build', when: t('conventions.commitTypes.build') },
+  { type: 'wip', when: t('conventions.commitTypes.wip') },
 ]);
 
 const commitScopes = computed<CommitScope[]>(() => [

@@ -47,6 +47,14 @@ describe('ConventionsView', () => {
     expect(followPattern).toEqual([]);
   });
 
+  it('lista todos os tipos de commit documentados (os aceitos pelo hook commit-msg)', () => {
+    const wrapper = mountWithPlugins(ConventionsView);
+    const types = wrapper.findAll('#tipos tbody tr .v-chip').map((chip) => chip.text());
+
+    expect(docTypes).toContain('wip');
+    expect(types).toEqual(docTypes);
+  });
+
   it('os escopos exibidos existem em docs/COMMIT-CONVENTIONS.md', () => {
     const wrapper = mountWithPlugins(ConventionsView);
     const scopes = wrapper.findAll('#escopos .v-chip .font-weight-bold').map((s) => s.text());
