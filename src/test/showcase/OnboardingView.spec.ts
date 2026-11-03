@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { defineComponent, h } from 'vue';
 import type { VueWrapper } from '@vue/test-utils';
+import { createMemoryHistory, createRouter, type RouteRecordRaw } from 'vue-router';
 import { VApp } from 'vuetify/components';
 import OnboardingView from '@modules/showcase/views/OnboardingView.vue';
 import { buildOnboardingFaqs, buildOnboardingSteps } from '@modules/showcase/steps';
@@ -12,10 +13,16 @@ const { t } = createAppI18n('pt-BR').global;
 const steps = buildOnboardingSteps(t);
 const faqs = buildOnboardingFaqs(t);
 
-// O tema da página vem do <v-app>, como no App.vue.
-function mountOnboarding(theme: ThemeName = 'light') {
+const Empty = defineComponent({ render: () => h('div') });
+
+// O tema da página vem do <v-app>, como no App.vue. A rota Customers vem do
+// módulo customers, que o `template:clean` remove.
+function mountOnboarding(theme: ThemeName = 'light', withCustomers = true) {
+  const routes: RouteRecordRaw[] = [{ path: '/onboarding', component: Empty }];
+  if (withCustomers) routes.push({ path: '/customers', name: 'Customers', component: Empty });
+  const router = createRouter({ history: createMemoryHistory(), routes });
   const Host = defineComponent({ render: () => h(VApp, { theme }, () => h(OnboardingView)) });
-  return mountWithPlugins(Host);
+  return mountWithPlugins(Host, { global: { plugins: [router] } });
 }
 
 /** Botões "Anterior" e "Próximo" do v-stepper-actions. */
@@ -31,6 +38,22 @@ function visibleStep(wrapper: VueWrapper): string | undefined {
 }
 
 describe('OnboardingView', () => {
+  it('aponta para o exemplo canônico quando o módulo customers existe', () => {
+    const section = mountOnboarding().get('#canonical-example');
+
+    expect(section.text()).toContain('Exemplo canônico');
+    expect(section.text()).toContain('api/customer.service.ts');
+    expect(section.get('[data-cy=onboarding-canonical-link]').attributes('href')).toBe(
+      '/customers'
+    );
+  });
+
+  it('esconde o link do exemplo sem o módulo customers', () => {
+    const wrapper = mountOnboarding('light', false);
+
+    expect(wrapper.find('[data-cy=onboarding-canonical-link]').exists()).toBe(false);
+  });
+
   it('mostra os comandos de setup em blocos de código', () => {
     const wrapper = mountOnboarding();
     const setup = wrapper.get('#setup');

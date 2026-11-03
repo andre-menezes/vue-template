@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 /**
- * Remove a vitrine de documentação do template (módulo `showcase`) para
- * começar um projeto novo (ADR-0026).
+ * Remove a vitrine de documentação do template (módulo `showcase`, ADR-0026)
+ * e o CRUD de exemplo (módulo `customers`, ADR-0039) para começar um projeto
+ * novo.
  *
- * Apaga o módulo, os testes dele e este próprio script, e tira o
- * `template:clean` do package.json. A página inicial (`modules/home`) e toda a
+ * Apaga os módulos, os testes deles, os endpoints simulados de clientes e
+ * este próprio script, e tira o `template:clean` do package.json. A página
+ * inicial (`modules/home`), a API simulada sem rotas (`mock/`) e toda a
  * infraestrutura (app, core, shared, types) continuam.
  *
  * Uso: `pnpm template:clean`
@@ -14,7 +16,16 @@ import { fileURLToPath } from 'node:url';
 
 const root = new URL('../', import.meta.url);
 
-const targets = ['src/modules/showcase', 'src/test/showcase', 'e2e/showcase'];
+const targets = [
+  'src/modules/showcase',
+  'src/test/showcase',
+  'e2e/showcase',
+  'src/modules/customers',
+  'src/test/customers',
+  'e2e/customers.spec.ts',
+  'mock/customers.ts',
+  'mock/customers.spec.ts',
+];
 
 for (const target of targets) {
   const path = fileURLToPath(new URL(target, root));
@@ -23,6 +34,21 @@ for (const target of targets) {
     console.log(`removido: ${target}`);
   }
 }
+
+// A API simulada continua disponível para os módulos do projeto, sem rotas.
+const handlersPath = fileURLToPath(new URL('mock/handlers.ts', root));
+writeFileSync(
+  handlersPath,
+  `/**
+ * Rotas da API simulada do \`pnpm dev\` (ADR-0039). Para simular um endpoint
+ * novo, crie \`mock/<contexto>.ts\` com os handlers e some-os aqui.
+ */
+import type { MockHandler } from './api-mock.ts';
+
+export const handlers: MockHandler[] = [];
+`
+);
+console.log('esvaziado: mock/handlers.ts');
 
 const packagePath = fileURLToPath(new URL('package.json', root));
 const packageJson = JSON.parse(readFileSync(packagePath, 'utf-8'));

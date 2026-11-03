@@ -195,6 +195,12 @@
       "devFilename": "3. Start the server",
       "testFilename": "4. Run the tests"
     },
+    "canonical": {
+      "title": "Canonical example",
+      "description": "The customers module implements a full CRUD across the template layers: a paginated list with search in the URL, detail, create, edit and delete. In pnpm dev, the API comes from an in-memory simulation (ADR-0039).",
+      "open": "Open the example",
+      "filesLabel": "Where the code lives"
+    },
     "stepper": {
       "stepLabel": "Step {current} of {total}"
     },

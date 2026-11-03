@@ -57,6 +57,8 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Menu lateral sem `role=list` sobre links, e bloco de código com `<pre>` focável e tooltip com nome acessível (WCAG, apontados pelo axe).
 - Hook `commit-msg` valida também a linha em branco após o título e o corpo em 72 colunas, com testes do validador.
 - Exemplos de customer da vitrine, da skill do agente e dos READMEs seguem a colocalização (ADR-0025) e o TanStack Query (ADR-0027).
+- `pnpm template:clean` também remove o módulo `customers` e os endpoints simulados de clientes, deixando `mock/handlers.ts` sem rotas.
+- O helper `expectNoA11yViolations` do E2E espera as transições CSS terminarem antes de rodar o axe.
 - `pnpm-lock.yaml` no formato do pnpm e fora do Prettier (`.prettierignore`); adapters do Kiro de volta ao `agent/README.md`.
 - Chunks de vendor com `rolldownOptions.output.codeSplitting.groups` (o `manualChunks` está deprecado); o runtime `@vue/*` sai do `vendor-i18n` para o `vendor-vue` (ADR-0032).
 - `noUncheckedIndexedAccess` ativo nos tsconfig do app, testes, E2E e Node (ADR-0033).
@@ -65,6 +67,9 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- Módulo `customers` (`/customers`), o CRUD de exemplo citado no Onboarding: listagem paginada com busca e página na URL, detalhe, cadastro, edição e exclusão confirmada, com queries e mutations do TanStack Query, chaves em `customerKeys` e textos em pt-BR e en-US (ADR-0039, spec `FEAT-001`).
+- API simulada no `pnpm dev`: plugin do Vite em `mock/` que responde sob a base da API com dados em memória e erros RFC 9457, sem dependência nova; `API_MOCK=false` o desliga. O E2E responde com os mesmos handlers via `page.route` (ADR-0039).
+- Seção "Exemplo canônico" no Onboarding (guia e vitrine), com link para `/customers`.
 - Locale `en-US`, com tradução completa do app e da vitrine; `pt-BR` continua padrão e fallback, e `VITE_APP_DEFAULT_LOCALE` aceita `pt-BR` ou `en-US` (ADR-0038).
 - Mensagens por locale: cada pasta `locales/` tem um `<locale>.json`, e o `messages.ts` agrupa os arquivos dos módulos pelo nome. O `en-US` do app é tipado contra o `MessageSchema`, e um teste e o ESLint (`no-missing-keys-in-other-locales`) cobram as mesmas chaves e placeholders em todos os locales (ADR-0038).
 - Seletor de idioma no cabeçalho (`TheLocaleMenu`, ícone `translate`) com os nomes nativos, o idioma ativo marcado e acessível por teclado; a escolha é salva em `STORAGE_KEYS.LOCALE` e muda o `<html lang>` e o título da aba. Composable `useLocale()` em `@shared/composables` (ADR-0038).

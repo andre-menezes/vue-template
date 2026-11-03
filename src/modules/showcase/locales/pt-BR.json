@@ -195,6 +195,12 @@
       "devFilename": "3. Subir o servidor",
       "testFilename": "4. Rodar os testes"
     },
+    "canonical": {
+      "title": "Exemplo canônico",
+      "description": "O módulo customers implementa um CRUD completo nas camadas do template: listagem paginada com busca na URL, detalhe, cadastro, edição e exclusão. No pnpm dev, a API vem de uma simulação em memória (ADR-0039).",
+      "open": "Abrir o exemplo",
+      "filesLabel": "Onde está o código"
+    },
     "stepper": {
       "stepLabel": "Passo {current} de {total}"
     },

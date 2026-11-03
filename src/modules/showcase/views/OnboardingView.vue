@@ -50,6 +50,27 @@
       </v-row>
     </DocSection>
 
+    <DocSection
+      :title="$t('onboarding.canonical.title')"
+      :description="$t('onboarding.canonical.description')"
+      icon="group"
+      anchor="canonical-example"
+    >
+      <p class="text-body-2 font-weight-medium mb-2">{{ $t('onboarding.canonical.filesLabel') }}</p>
+      <CodeBlock :code="canonicalTree" language="text" filename="src/modules/customers/" />
+      <v-btn
+        v-if="hasCustomers"
+        :to="{ name: 'Customers' }"
+        color="primary"
+        variant="tonal"
+        prepend-icon="open_in_new"
+        class="mt-4"
+        data-cy="onboarding-canonical-link"
+      >
+        {{ $t('onboarding.canonical.open') }}
+      </v-btn>
+    </DocSection>
+
     <v-stepper
       v-model="currentStep"
       class="onboarding-stepper mb-10"
@@ -141,6 +162,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import DocSection from '../components/DocSection.vue';
 import CodeBlock from '../components/CodeBlock.vue';
 import { buildOnboardingSteps, buildOnboardingChecklist, buildOnboardingFaqs } from '../steps';
@@ -158,6 +180,18 @@ const setupDev = `pnpm dev
 const setupTest = `pnpm test           # testes unitários
 pnpm test:e2e       # testes end-to-end
 pnpm lint           # verificação de estilo`;
+
+// O exemplo vive no módulo `customers`; o link é resolvido pelo nome da rota
+// para não importar outro módulo, e some se o módulo for removido.
+const hasCustomers = useRouter().hasRoute('Customers');
+
+const canonicalTree = `types.ts                  # contrato da API
+api/customer.service.ts   # um endpoint por função
+composables/              # queries, mutations e chaves de cache
+list-query.ts             # página e busca na URL
+views/                    # lista, detalhe e formulário (containers)
+components/               # tabela, formulário, detalhe e diálogo
+locales/                  # pt-BR.json e en-US.json`;
 
 const currentStep = ref(1);
 

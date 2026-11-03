@@ -97,6 +97,7 @@ expõe um ponto de registro e o `app` injeta a implementação no bootstrap.
 ├── docs/                          # Documentação arquitetural e guias
 ├── e2e/                           # Testes end-to-end (Playwright)
 │   ├── *.spec.ts                  # Specs E2E (um arquivo por página/fluxo)
+├── mock/                          # API simulada do `pnpm dev` (plugin do Vite, ADR-0039)
 ├── public/                        # Assets estáticos servidos na raiz
 ├── src/
 │   ├── app/                       # Bootstrap, providers, rotas base
@@ -107,6 +108,7 @@ expõe um ponto de registro e o `app` injeta a implementação no bootstrap.
 │   ├── core/                      # Base sem UI (não importa app/modules/shared)
 │   │   └── config/                # Constantes e variáveis de ambiente
 │   ├── modules/                   # Features por domínio
+│   │   ├── customers/             # CRUD de exemplo, o exemplo canônico (removível, ADR-0039)
 │   │   ├── home/                  # Página inicial do projeto (/)
 │   │   └── showcase/              # Documentação do template (removível, ADR-0026)
 │   ├── shared/                    # Infraestrutura transversal

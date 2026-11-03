@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
     path: '/customers',
     name: 'Customers',
     component: () => import('./views/CustomersView.vue'),
-    meta: { nav: { titleKey: 'nav.customers', icon: 'group', order: 70 } },
+    meta: { nav: { titleKey: 'nav.customers', icon: 'group', order: 20 } },
   },
 ];
 
