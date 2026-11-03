@@ -18,12 +18,25 @@ describe('formatDate', () => {
   it('formata uma data ISO com horário', () => {
     expect(formatDate('2025-03-15T10:30:00-03:00')).toBe('15/03/2025');
   });
+
+  it('usa o formato do locale informado', () => {
+    expect(formatDate('2025-03-15', 'en-US')).toBe('3/15/2025');
+    expect(formatDate('2025-03-15', 'pt-BR')).toBe('15/03/2025');
+  });
 });
 
 describe('formatCurrency', () => {
   it('formata em reais', () => {
     // Intl usa espaço não separável entre o símbolo e o valor.
     expect(formatCurrency(1234.5).replace(/\s/g, ' ')).toBe('R$ 1.234,50');
+  });
+
+  it('usa a pontuação do locale informado, sem trocar a moeda', () => {
+    expect(formatCurrency(1234.5, 'en-US')).toBe('R$1,234.50');
+  });
+
+  it('aceita outra moeda', () => {
+    expect(formatCurrency(1234.5, 'en-US', 'USD')).toBe('$1,234.50');
   });
 });
 
