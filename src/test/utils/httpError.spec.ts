@@ -16,30 +16,44 @@ describe('isProblemDetails', () => {
 });
 
 describe('getErrorMessage', () => {
+  const fallbacks = { unexpected: 'Erro inesperado.', requestFailed: 'Falha na requisição' };
+
   it('usa detail do corpo e anexa o status', () => {
     const error = {
       status: 422,
       data: { title: 'Saldo insuficiente', detail: 'Sem saldo.', status: 422 },
     };
-    expect(getErrorMessage(error)).toBe('Sem saldo. (HTTP 422)');
+    expect(getErrorMessage(error, fallbacks)).toBe('Sem saldo. (HTTP 422)');
   });
 
   it('cai para o title quando não há detail', () => {
     const error = { data: { title: 'Requisição inválida' } };
-    expect(getErrorMessage(error)).toBe('Requisição inválida');
+    expect(getErrorMessage(error, fallbacks)).toBe('Requisição inválida');
   });
 
   it('usa statusText + status quando não há corpo Problem Details', () => {
     const error = { status: 404, statusText: 'Not Found' };
-    expect(getErrorMessage(error)).toBe('Not Found (HTTP 404)');
+    expect(getErrorMessage(error, fallbacks)).toBe('Not Found (HTTP 404)');
   });
 
   it('usa a mensagem do erro quando não há status nem corpo', () => {
-    expect(getErrorMessage(new Error('Falha de rede'))).toBe('Falha de rede');
+    expect(getErrorMessage(new Error('Falha de rede'), fallbacks)).toBe('Falha de rede');
   });
 
-  it('usa o fallback quando não há informação alguma', () => {
-    expect(getErrorMessage({}, 'Algo deu errado.')).toBe('Algo deu errado.');
+  it('usa o fallback de requisição quando há status sem statusText', () => {
+    expect(getErrorMessage({ status: 500 }, fallbacks)).toBe('Falha na requisição (HTTP 500)');
+  });
+
+  it('usa o fallback de erro inesperado quando não há informação alguma', () => {
+    expect(getErrorMessage({}, fallbacks)).toBe('Erro inesperado.');
+    expect(getErrorMessage(null, fallbacks)).toBe('Erro inesperado.');
+  });
+
+  it('não tem texto fixo: os fallbacks vêm do chamador', () => {
+    const english = { unexpected: 'Unexpected error.', requestFailed: 'Request failed' };
+
+    expect(getErrorMessage({}, english)).toBe('Unexpected error.');
+    expect(getErrorMessage({ status: 503 }, english)).toBe('Request failed (HTTP 503)');
   });
 });
 

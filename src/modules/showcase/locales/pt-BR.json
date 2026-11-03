@@ -140,6 +140,11 @@
         "appModulesShared": "app, modules, shared",
         "any": "qualquer outra",
         "dash": "—"
+      },
+      "columns": {
+        "layer": "Camada",
+        "canImport": "Pode importar de",
+        "cannotImport": "Não pode importar de"
       }
     },
     "initFlow": {
@@ -196,15 +201,15 @@
     "steps": {
       "module": {
         "title": "Criar o módulo",
-        "description": "Crie a pasta do módulo em src/modules/<nome>/ com routes.ts, views/ e components/. A rota é registrada automaticamente pelo router (auto-discovery via glob)."
+        "description": "Crie a pasta do módulo em src/modules/{'<'}nome{'>'}/ com routes.ts, views/ e components/. A rota é registrada automaticamente pelo router (auto-discovery via glob)."
       },
       "types": {
         "title": "Criar os tipos",
-        "description": "Crie os contratos do domínio em src/modules/<nome>/types.ts. Só promova para src/types/ quando um segundo módulo precisar deles (ADR-0025)."
+        "description": "Crie os contratos do domínio em src/modules/{'<'}nome{'>'}/types.ts. Só promova para src/types/ quando um segundo módulo precisar deles (ADR-0025)."
       },
       "service": {
         "title": "Criar o service",
-        "description": "Crie as funções de comunicação com o backend em src/modules/<nome>/api/, aceitando um signal opcional para cancelar a requisição. Views nunca chamam endpoints diretamente."
+        "description": "Crie as funções de comunicação com o backend em src/modules/{'<'}nome{'>'}/api/, aceitando um signal opcional para cancelar a requisição. Views nunca chamam endpoints diretamente."
       },
       "query": {
         "title": "Criar a query",
@@ -232,10 +237,10 @@
       "description": "Antes de abrir o PR, confirme que cada item foi atendido."
     },
     "checklist": {
-      "module": "Módulo criado em src/modules/<nome>/",
+      "module": "Módulo criado em src/modules/{'<'}nome{'>'}/",
       "routes": "routes.ts com tipagem RouteRecordRaw[] e meta fields",
-      "types": "Tipos criados em src/modules/<nome>/types.ts",
-      "service": "Service criado em src/modules/<nome>/api/",
+      "types": "Tipos criados em src/modules/{'<'}nome{'>'}/types.ts",
+      "service": "Service criado em src/modules/{'<'}nome{'>'}/api/",
       "query": "Query num composable do módulo (useQuery)",
       "view": "View container usando a query",
       "components": "Componentes apresentacionais com props tipadas",
@@ -329,7 +334,7 @@
     "description": "O padrão de commits e o checklist de code review adotados no projeto. Os hooks de Git validam as mensagens automaticamente — o checklist guia a revisão de cada Pull Request.",
     "branches": {
       "title": "Convenção de branches",
-      "description": "Toda branch nasce da develop e segue o padrão tipo/<código-opcional>-slug em kebab-case.",
+      "description": "Toda branch nasce da develop e segue o padrão tipo/{'<'}código-opcional{'>'}-slug em kebab-case.",
       "neverDirect": "Nunca trabalhe direto na",
       "or": "ou",
       "createFrom": "Crie a nova branch sempre a partir da",
@@ -411,7 +416,7 @@
           "title": "Tipagem",
           "items": {
             "noAny": "Sem uso de any em contratos de domínio",
-            "typedProps": "Props e emits tipados com defineProps<T>() e defineEmits<T>()",
+            "typedProps": "Props e emits tipados com defineProps{'<'}T{'>'}() e defineEmits{'<'}T{'>'}()",
             "centralized": "Tipos centralizados em src/types/ (não inline repetido)",
             "noPrefix": "Interfaces sem prefixo I, em PascalCase"
           }
@@ -504,5 +509,13 @@
       "columnStatus": "Status",
       "footer": "Arquivos completos em {path}. Novas decisões seguem a numeração sequencial (ex.: {example})."
     }
+  },
+  "pageTitle": {
+    "docs": "Documentação",
+    "architecture": "Arquitetura",
+    "onboarding": "Onboarding",
+    "components": "Componentes & UI",
+    "conventions": "Convenções",
+    "decisions": "Decisões arquiteturais"
   }
 }

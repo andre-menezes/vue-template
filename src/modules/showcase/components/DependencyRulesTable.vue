@@ -6,9 +6,15 @@
   >
     <thead>
       <tr>
-        <th class="text-left font-weight-bold">Camada</th>
-        <th class="text-left font-weight-bold">Pode importar de</th>
-        <th class="text-left font-weight-bold">Não pode importar de</th>
+        <th class="text-left font-weight-bold">
+          {{ $t('architecture.dependencyRules.columns.layer') }}
+        </th>
+        <th class="text-left font-weight-bold">
+          {{ $t('architecture.dependencyRules.columns.canImport') }}
+        </th>
+        <th class="text-left font-weight-bold">
+          {{ $t('architecture.dependencyRules.columns.cannotImport') }}
+        </th>
       </tr>
     </thead>
     <tbody>

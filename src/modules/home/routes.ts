@@ -5,7 +5,10 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'Home',
     component: () => import('./views/HomeView.vue'),
-    meta: { nav: { titleKey: 'nav.home', icon: 'home', order: 10 } },
+    meta: {
+      titleKey: 'pageTitle.home',
+      nav: { titleKey: 'nav.home', icon: 'home', order: 10 },
+    },
   },
 ];
 
