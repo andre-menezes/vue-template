@@ -26,6 +26,11 @@ describe('parseContentDisposition', () => {
     expect(parseContentDisposition(header)).toBe('nota final.pdf');
   });
 
+  it('usa o fallback quando o cabeçalho não informa o nome do arquivo', () => {
+    expect(parseContentDisposition('attachment')).toBe('download');
+    expect(parseContentDisposition('inline; size=120', 'relatorio.pdf')).toBe('relatorio.pdf');
+  });
+
   it('usa o fallback quando o cabeçalho é ausente', () => {
     expect(parseContentDisposition(null)).toBe('download');
     expect(parseContentDisposition(undefined, 'custom.bin')).toBe('custom.bin');
