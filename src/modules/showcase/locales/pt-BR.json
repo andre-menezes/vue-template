@@ -94,7 +94,7 @@
       "routes": {
         "title": "Composição de rotas",
         "description": "Rotas descobertas automaticamente por módulo, sem registro central.",
-        "intro": "O router carrega todos os arquivos routes.ts via import.meta.glob. Basta criar um routes.ts no módulo — nenhum arquivo central precisa ser editado.",
+        "intro": "O router carrega os arquivos routes.ts de app/ e modules/ via import.meta.glob. Basta criar um routes.ts no módulo — nenhum arquivo central precisa ser editado.",
         "showcaseTitle": "Exemplo de routes.ts de um módulo",
         "showcaseDescription": "Cada módulo exporta suas rotas com lazy loading e meta fields."
       },
@@ -158,7 +158,7 @@
       },
       "step3": {
         "title": "Auto-discovery de rotas",
-        "description": "O Router carrega todos os routes.ts via import.meta.glob('{'@'}/**/routes.ts')."
+        "description": "O Router carrega todos os routes.ts via import.meta.glob('{'@'}/{'{'}app,modules{'}'}/**/routes.ts')."
       },
       "step4": {
         "title": "mount #app",
