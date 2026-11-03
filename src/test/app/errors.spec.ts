@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createApp, defineComponent, h } from 'vue';
+import { createApp, defineComponent, h, type ComponentPublicInstance } from 'vue';
 import { consoleReporter, registerErrorHandlers, type ErrorReporter } from '@app/providers/errors';
 
 describe('registerErrorHandlers', () => {
@@ -60,5 +60,44 @@ describe('registerErrorHandlers', () => {
     consoleReporter(error, { source: 'vue', info: 'setup function' });
 
     expect(consoleError).toHaveBeenCalledWith('[vue]', 'setup function', error);
+  });
+
+  it('o reporter padrão registra sem info quando o erro vem de fora do Vue', () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const error = new Error('rejeitada');
+
+    consoleReporter(error, { source: 'unhandledrejection' });
+
+    expect(consoleError).toHaveBeenCalledWith('[unhandledrejection]', '', error);
+  });
+
+  it('usa o nome inferido do arquivo para componentes de <script setup>', () => {
+    const report = vi.fn<ErrorReporter>();
+    const app = createApp({ render: () => h('div') });
+    unregister = registerErrorHandlers(app, report);
+    // Componentes SFC sem `name` explícito expõem o nome do arquivo em `__name`.
+    const instance = { $options: { __name: 'CustomerList' } } as ComponentPublicInstance;
+
+    app.config.errorHandler?.(new Error('x'), instance, 'render function');
+
+    expect(report).toHaveBeenCalledWith(expect.any(Error), {
+      source: 'vue',
+      info: 'render function',
+      component: 'CustomerList',
+    });
+  });
+
+  it('informa componente indefinido quando o erro não vem de um componente', () => {
+    const report = vi.fn<ErrorReporter>();
+    const app = createApp({ render: () => h('div') });
+    unregister = registerErrorHandlers(app, report);
+
+    app.config.errorHandler?.(new Error('x'), null, 'app errorHandler');
+
+    expect(report).toHaveBeenCalledWith(expect.any(Error), {
+      source: 'vue',
+      info: 'app errorHandler',
+      component: undefined,
+    });
   });
 });

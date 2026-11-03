@@ -100,6 +100,32 @@ describe('instâncias HTTP', () => {
     expect(options.signal?.aborted).toBe(true);
   });
 
+  it('repassa só o signal da chamada quando o navegador não tem AbortSignal.any', async () => {
+    const original = Object.getOwnPropertyDescriptor(AbortSignal, 'any');
+    Object.defineProperty(AbortSignal, 'any', { value: undefined, configurable: true });
+    const controller = new AbortController();
+
+    try {
+      await httpClient.get('/clientes', { signal: controller.signal });
+    } finally {
+      if (original) Object.defineProperty(AbortSignal, 'any', original);
+    }
+
+    const options = lastCallOptions(instanceFor(API_BASE_URL).fetch);
+    expect(options.signal).toBe(controller.signal);
+    expect(options.timeout).toBeUndefined();
+  });
+
+  it('envia PATCH com o corpo parcial', async () => {
+    await httpClient.patch('/clientes/1', { body: { ativo: false } });
+
+    expect(lastCallOptions(instanceFor(API_BASE_URL).fetch)).toMatchObject({
+      method: 'PATCH',
+      body: { ativo: false },
+      timeout: HTTP_TIMEOUT_MS,
+    });
+  });
+
   it('baixa arquivo devolvendo o blob e o Content-Disposition', async () => {
     const blob = new Blob(['pdf']);
     instanceFor(API_BASE_URL).raw.mockResolvedValue({
