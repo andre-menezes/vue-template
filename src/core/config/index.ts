@@ -22,9 +22,22 @@ export const getEnvVar = (key: keyof AppEnv, defaultValue?: string): string => {
 export const API_BASE_URL = getEnvVar('VITE_API_BASE_URL', '/api');
 export const APP_NAME = getEnvVar('VITE_APP_NAME', 'Vue Template');
 
-/** Supported locales */
-export const SUPPORTED_LOCALES = ['pt-BR'] as const;
+/**
+ * Locales suportados. O primeiro (pt-BR) é o locale base: dele derivam o
+ * schema das mensagens e o fallback. Cada um precisa de `locales/<locale>.json`
+ * no app e em todo módulo com mensagens (ADR-0038).
+ */
+export const SUPPORTED_LOCALES = ['pt-BR', 'en-US'] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+
+/**
+ * Nome de cada locale no próprio idioma, como o seletor de idioma o exibe.
+ * Não é traduzido: quem procura o próprio idioma o reconhece em qualquer tela.
+ */
+export const LOCALE_NATIVE_NAMES: Record<SupportedLocale, string> = {
+  'pt-BR': 'Português (Brasil)',
+  'en-US': 'English (US)',
+};
 
 export const isSupportedLocale = (value: string | null): value is SupportedLocale =>
   SUPPORTED_LOCALES.some((locale) => locale === value);

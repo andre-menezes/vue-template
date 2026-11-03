@@ -65,6 +65,12 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- Locale `en-US`, com tradução completa do app e da vitrine; `pt-BR` continua padrão e fallback, e `VITE_APP_DEFAULT_LOCALE` aceita `pt-BR` ou `en-US` (ADR-0038).
+- Mensagens por locale: cada pasta `locales/` tem um `<locale>.json`, e o `messages.ts` agrupa os arquivos dos módulos pelo nome. O `en-US` do app é tipado contra o `MessageSchema`, e um teste e o ESLint (`no-missing-keys-in-other-locales`) cobram as mesmas chaves e placeholders em todos os locales (ADR-0038).
+- Seletor de idioma no cabeçalho (`TheLocaleMenu`, ícone `translate`) com os nomes nativos, o idioma ativo marcado e acessível por teclado; a escolha é salva em `STORAGE_KEYS.LOCALE` e muda o `<html lang>` e o título da aba. Composable `useLocale()` em `@shared/composables` (ADR-0038).
+- Textos internos do Vuetify (paginação, tabela) seguem o locale do vue-i18n (ADR-0038).
+- `formatDate` e `formatCurrency` recebem o locale (padrão `pt-BR`) e, o `formatCurrency`, a moeda (padrão `BRL`).
+- E2E da troca de idioma (textos, `<html lang>`, título, persistência e teclado) e axe em `en-US` na página inicial e na vitrine.
 - Título da aba por rota (`meta.titleKey`, traduzido, `"<título> · <APP_NAME>"`), foco no `<main>` após navegar e link "Pular para o conteúdo" (ADR-0036).
 - Tratamento global de erros em `@app/providers/errors`: `app.config.errorHandler` e `unhandledrejection` enviam a um `ErrorReporter` trocável (ADR-0028).
 - Checagem de acessibilidade WCAG 2.1 A/AA no E2E com `@axe-core/playwright` (`expectNoA11yViolations`) (ADR-0029).

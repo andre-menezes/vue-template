@@ -10,10 +10,23 @@ import 'vuetify/styles';
 import '@app/styles/icons.scss';
 import '@app/styles/main.scss';
 
-import { createVuetify } from 'vuetify';
-import { pt } from 'vuetify/locale';
+import { ref, watch, type Ref } from 'vue';
+import { createVuetify, type LocaleMessages } from 'vuetify';
+import { en, pt } from 'vuetify/locale';
+import type { SupportedLocale } from '@core/config';
 import { aliases, ms } from './icons';
+import i18n from './i18n';
 import type { AppThemeDefinition } from '@typings/theme';
+
+/**
+ * Textos internos do Vuetify (paginação, tabela, "sem dados"...) por locale
+ * suportado, indexados pelo mesmo código do vue-i18n. Um locale novo sem
+ * entrada aqui não compila (ADR-0038).
+ */
+const vuetifyMessages: Record<SupportedLocale, LocaleMessages> = {
+  'pt-BR': pt,
+  'en-US': en,
+};
 
 const palette = {
   primary: '#FF8066',
@@ -98,10 +111,16 @@ const darkTheme: AppThemeDefinition = {
  * Cria a instância do Vuetify da aplicação. Exportada para que os testes
  * montem componentes com o mesmo tema, ícones e locale.
  *
+ * O locale do Vuetify segue o `locale` recebido (na aplicação, o do
+ * vue-i18n): os textos internos dos componentes trocam junto com os da
+ * aplicação. O adapter oficial (`createVueI18nAdapter`) não serve aqui, pois
+ * passaria as mensagens do Vuetify, cruas, ao vue-i18n, que roda sem o
+ * compilador de mensagens (ADR-0023).
+ *
  * https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
  */
-export function createAppVuetify() {
-  return createVuetify({
+export function createAppVuetify(locale: Readonly<Ref<SupportedLocale>> = ref('pt-BR')) {
+  const vuetify = createVuetify({
     icons: {
       defaultSet: 'ms',
       aliases,
@@ -117,10 +136,17 @@ export function createAppVuetify() {
       },
     },
     locale: {
-      locale: 'pt',
-      messages: { pt },
+      locale: locale.value,
+      fallback: 'pt-BR',
+      messages: vuetifyMessages,
     },
   });
+
+  watch(locale, (next) => {
+    vuetify.locale.current.value = next;
+  });
+
+  return vuetify;
 }
 
-export default createAppVuetify();
+export default createAppVuetify(i18n.global.locale);

@@ -8,7 +8,9 @@
   },
   "header": {
     "activateLightTheme": "Ativar tema claro",
-    "activateDarkTheme": "Ativar tema escuro"
+    "activateDarkTheme": "Ativar tema escuro",
+    "changeLanguage": "Alterar idioma",
+    "languages": "Idiomas"
   },
   "notFound": {
     "eyebrow": "Erro 404",

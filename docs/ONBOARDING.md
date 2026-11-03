@@ -52,8 +52,9 @@ export default routes;
 
 A rota é registrada automaticamente pelo router (auto-discovery via glob), e o
 `meta.nav` coloca o item no menu lateral, na posição de `order`. Não é
-necessário editar nenhum outro arquivo além de criar a chave `nav.customers` no
-`pt-BR.json`. Rotas sem `meta.nav` (detalhe, edição) não aparecem no menu.
+necessário editar nenhum outro arquivo além de criar a chave `nav.customers` em
+cada locale do módulo (`locales/pt-BR.json` e `locales/en-US.json` — ADR-0038).
+Rotas sem `meta.nav` (detalhe, edição) não aparecem no menu.
 
 > Referência: [src/modules/README.md](../src/modules/README.md)
 

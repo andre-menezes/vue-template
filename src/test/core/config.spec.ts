@@ -30,17 +30,19 @@ describe('getEnvVar', () => {
 describe('locale padrão', () => {
   it('reconhece só os locales suportados', () => {
     expect(isSupportedLocale('pt-BR')).toBe(true);
-    expect(isSupportedLocale('en-US')).toBe(false);
+    expect(isSupportedLocale('en-US')).toBe(true);
+    expect(isSupportedLocale('fr-FR')).toBe(false);
     expect(isSupportedLocale(null)).toBe(false);
   });
 
-  it('aceita um locale suportado', () => {
+  it('aceita os locales suportados', () => {
     expect(parseDefaultLocale('pt-BR')).toBe('pt-BR');
+    expect(parseDefaultLocale('en-US')).toBe('en-US');
   });
 
   it('falha com o valor e a lista suportada quando o locale não é suportado', () => {
-    expect(() => parseDefaultLocale('en-US')).toThrow(
-      '[Config Error]: VITE_APP_DEFAULT_LOCALE="en-US" não está entre os locales suportados (pt-BR).'
+    expect(() => parseDefaultLocale('fr-FR')).toThrow(
+      '[Config Error]: VITE_APP_DEFAULT_LOCALE="fr-FR" não está entre os locales suportados (pt-BR, en-US).'
     );
   });
 });
@@ -58,6 +60,15 @@ describe('constantes de configuração', () => {
     const { API_BASE_URL } = await import('@core/config');
 
     expect(API_BASE_URL).toBe('https://api.exemplo.gov.br');
+  });
+
+  it('aceita VITE_APP_DEFAULT_LOCALE=en-US', async () => {
+    vi.stubEnv('VITE_APP_DEFAULT_LOCALE', 'en-US');
+    vi.resetModules();
+
+    const { DEFAULT_LOCALE } = await import('@core/config');
+
+    expect(DEFAULT_LOCALE).toBe('en-US');
   });
 
   it('falha ao carregar com um VITE_APP_DEFAULT_LOCALE não suportado', async () => {

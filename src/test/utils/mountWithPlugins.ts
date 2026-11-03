@@ -4,9 +4,10 @@ import { mount, type ComponentMountingOptions } from '@vue/test-utils';
 import { createAppVuetify } from '@app/providers/vuetify';
 import { createAppI18n } from '@app/providers/i18n';
 
-// Mesmas factories do app: tema, ícones, locale e mensagens não divergem.
-const vuetify = createAppVuetify();
+// Mesmas factories do app: tema, ícones, locale e mensagens não divergem, e
+// o locale do Vuetify acompanha o do i18n, como na aplicação.
 const i18n = createAppI18n('pt-BR');
+const vuetify = createAppVuetify(i18n.global.locale);
 
 /** Cliente novo a cada montagem: sem cache entre testes e sem nova tentativa. */
 function createTestQueryClient(): QueryClient {

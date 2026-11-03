@@ -24,7 +24,7 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 | `composables/`  | Composables de `shared/composables`                                   |
 | `core/`         | `core/config` (variáveis de ambiente)                                 |
 | `helpers/`      | `shared/helpers` (ex.: download de arquivos)                          |
-| `i18n/`         | Mensagens e provider de i18n                                          |
+| `i18n/`         | Mensagens, paridade entre locales e provider de i18n                  |
 | `modules/`      | Views e lógica de módulos (ex.: `HomeView`)                           |
 | `services/`     | Services de `shared/api/services`                                     |
 | `showcase/`     | Módulo showcase (removido junto com ele pelo `template:clean`)        |
@@ -85,7 +85,8 @@ const wrapper = mountWithPlugins(MyComponent, {
 });
 ```
 
-Ele registra Vuetify, i18n, Pinia, router e TanStack Query. Cada montagem recebe
+Ele registra Vuetify, i18n, Pinia, router e TanStack Query, com o locale do
+Vuetify ligado ao do i18n, como na aplicação (ADR-0038). Cada montagem recebe
 um `QueryClient` novo e sem retentativas, para que o cache não vaze entre testes
 e um erro mockado apareça na primeira tentativa. O padrão de teste de uma query
 está em `src/test/api/query.spec.ts`.

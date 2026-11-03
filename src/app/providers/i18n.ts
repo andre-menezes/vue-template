@@ -9,10 +9,15 @@
  * ─ Locale is restored from localStorage on boot (STORAGE_KEYS.LOCALE).
  * ─ Falls back to DEFAULT_LOCALE from app config (validated at boot).
  * ─ The <html lang> attribute follows the active locale from boot.
+ * ─ Every locale change (setLocale or `useI18n().locale` in a component) is
+ *   persisted and reflected on <html lang> by a watcher on the global locale.
+ * ─ `fallbackLocale: 'pt-BR'` — the base locale; a missing translation shows
+ *   the pt-BR text instead of the key.
  * ─ `missingWarn: false` in production to suppress console noise.
  *
  * @see https://vue-i18n.intlify.dev/
  */
+import { watch } from 'vue';
 import { createI18n } from 'vue-i18n';
 import {
   DEFAULT_LOCALE,
@@ -20,7 +25,7 @@ import {
   isSupportedLocale,
   type SupportedLocale,
 } from '@core/config';
-import { ptBRMessages, type MessageSchema } from './messages';
+import { localeMessages, type MessageSchema } from './messages';
 
 export type { MessageSchema };
 
@@ -41,14 +46,12 @@ const initialLocale = resolveInitialLocale();
  * the same messages and options as the app.
  */
 export function createAppI18n(locale: SupportedLocale = 'pt-BR') {
-  return createI18n<[MessageSchema], SupportedLocale>({
+  return createI18n<[MessageSchema], SupportedLocale, false>({
     legacy: false,
     globalInjection: true,
     locale,
     fallbackLocale: 'pt-BR',
-    messages: {
-      'pt-BR': ptBRMessages,
-    },
+    messages: localeMessages,
     // Silence missing-key warnings in production using import.meta.env.DEV
     missingWarn: import.meta.env.DEV,
     fallbackWarn: import.meta.env.DEV,
@@ -59,18 +62,30 @@ const i18n = createAppI18n(initialLocale);
 
 document.documentElement.setAttribute('lang', initialLocale);
 
+/**
+ * Persiste cada troca de locale e atualiza o <html lang>. Fica num watch, e
+ * não só no `setLocale`, porque o seletor de idioma (em `shared/`, que não
+ * importa de `app/`) troca o locale pelo `useI18n()`. `flush: 'sync'` aplica
+ * a troca no mesmo instante, sem esperar o próximo tick.
+ */
+watch(
+  i18n.global.locale,
+  (locale) => {
+    localStorage.setItem(STORAGE_KEYS.LOCALE, locale);
+    document.documentElement.setAttribute('lang', locale);
+  },
+  { flush: 'sync' }
+);
+
 export default i18n;
 
 /**
- * Changes the active locale and persists the choice.
- * Use this instead of setting i18n.global.locale directly.
+ * Changes the active locale; the watcher above persists the choice and
+ * updates <html lang>.
  *
  * @example
- * setLocale('pt-BR')
+ * setLocale('en-US')
  */
 export function setLocale(locale: SupportedLocale): void {
-  // In Composition API mode locale is a WritableComputedRef<string>
-  (i18n.global.locale as unknown as { value: string }).value = locale;
-  localStorage.setItem(STORAGE_KEYS.LOCALE, locale);
-  document.documentElement.setAttribute('lang', locale);
+  i18n.global.locale.value = locale;
 }

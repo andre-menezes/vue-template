@@ -100,7 +100,7 @@ expõe um ponto de registro e o `app` injeta a implementação no bootstrap.
 ├── public/                        # Assets estáticos servidos na raiz
 ├── src/
 │   ├── app/                       # Bootstrap, providers, rotas base
-│   │   ├── locales/               # Mensagens i18n (pt-BR)
+│   │   ├── locales/               # Mensagens i18n (pt-BR.json, en-US.json)
 │   │   ├── providers/             # Registro de plugins (Pinia, i18n, Router, Vuetify)
 │   │   ├── styles/                # SCSS global
 │   │   └── views/                 # Views de uso global (404)
