@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "customers": "Customers"
+  },
+  "pageTitle": {
+    "customers": "Customers",
+    "customerCreate": "New customer",
+    "customerDetail": "Customer",
+    "customerEdit": "Edit customer"
+  },
+  "customers": {
+    "list": {
+      "title": "Customers",
+      "description": "CRUD example with a paginated list, detail, create, edit and delete.",
+      "create": "New customer",
+      "searchLabel": "Search by name or email",
+      "search": "Search",
+      "empty": "No customers found."
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status",
+      "createdAt": "Created on"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "detail": {
+      "back": "Back to the list",
+      "edit": "Edit",
+      "delete": "Delete",
+      "notFound": "Customer not found. It may have been deleted.",
+      "noPhone": "Not provided"
+    },
+    "form": {
+      "createTitle": "New customer",
+      "editTitle": "Edit customer",
+      "optional": "Optional",
+      "activeLabel": "Active customer",
+      "save": "Save",
+      "cancel": "Cancel",
+      "required": "Required field.",
+      "invalidEmail": "Enter a valid email."
+    },
+    "delete": {
+      "title": "Delete customer",
+      "message": "Delete {name}? This cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    }
+  }
+}
