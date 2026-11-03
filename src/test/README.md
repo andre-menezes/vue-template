@@ -15,17 +15,22 @@ Voltar para o guia geral: [../../docs/ARCHITECTURE-GUIDE.md](../../docs/ARCHITEC
 
 ## Organização de `src/test/`
 
-| Pasta          | Conteúdo                                        |
-| -------------- | ----------------------------------------------- |
-| `api/`         | Camada HTTP (instâncias)                        |
-| `components/`  | Componentes Vue (renderização, emits)           |
-| `composables/` | Composables de `shared/composables`             |
-| `helpers/`     | `shared/helpers` (ex.: download de arquivos)    |
-| `modules/`     | Lógica própria de módulos (ex.: índice de ADRs) |
-| `services/`    | Services de `shared/api/services`               |
-| `stores/`      | Estado global (Pinia)                           |
-| `utils/`       | `shared/utils` e o helper `mountWithPlugins`    |
-| `setup.ts`     | Bootstrap do ambiente (mocks globais)           |
+| Pasta           | Conteúdo                                                              |
+| --------------- | --------------------------------------------------------------------- |
+| `api/`          | Camada HTTP (instâncias)                                              |
+| `app/`          | `App.vue`, providers, rotas do app e dos módulos base                 |
+| `architecture/` | Regras de dependência entre camadas                                   |
+| `components/`   | Componentes e layouts de `shared/ui` (renderização, emits)            |
+| `composables/`  | Composables de `shared/composables`                                   |
+| `core/`         | `core/config` (variáveis de ambiente)                                 |
+| `helpers/`      | `shared/helpers` (ex.: download de arquivos)                          |
+| `i18n/`         | Mensagens e provider de i18n                                          |
+| `modules/`      | Views e lógica de módulos (ex.: `HomeView`)                           |
+| `services/`     | Services de `shared/api/services`                                     |
+| `showcase/`     | Módulo showcase (removido junto com ele pelo `template:clean`)        |
+| `stores/`       | Estado global (Pinia)                                                 |
+| `utils/`        | `shared/utils` e os helpers `mountWithPlugins` e `loadRouteComponent` |
+| `setup.ts`      | Bootstrap do ambiente (mocks globais)                                 |
 
 ## Comandos
 
@@ -44,10 +49,10 @@ Definidos em `vite.config.ts`. O pipeline falha se a cobertura cair abaixo de:
 
 | Métrica    | Mínimo |
 | ---------- | ------ |
-| Lines      | 47%    |
-| Functions  | 34%    |
-| Branches   | 69%    |
-| Statements | 46%    |
+| Lines      | 100%   |
+| Functions  | 100%   |
+| Branches   | 98%    |
+| Statements | 100%   |
 
 Os valores são um **piso que só sobe** (ratchet — ADR-0016): refletem a
 cobertura real medida e devem ser elevados em `vite.config.ts` sempre que a
@@ -84,6 +89,22 @@ Ele registra Vuetify, i18n, Pinia, router e TanStack Query. Cada montagem recebe
 um `QueryClient` novo e sem retentativas, para que o cache não vaze entre testes
 e um erro mockado apareça na primeira tentativa. O padrão de teste de uma query
 está em `src/test/api/query.spec.ts`.
+
+## Helper `loadRouteComponent`
+
+Executa o `import()` lazy de uma rota e devolve o componente carregado, para o
+teste conferir que a rota abre a view certa:
+
+```ts
+import routes from '@modules/home/routes';
+import HomeView from '@modules/home/views/HomeView.vue';
+import { loadRouteComponent } from '@test/utils/route-component';
+
+expect(await loadRouteComponent(routes[0])).toBe(HomeView);
+```
+
+Não nomeie arquivos de teste ou helpers como `routes.ts`: o router do app
+importa todo `routes.ts` de `src/` (`import.meta.glob('@/**/routes.ts')`).
 
 ## Exemplo — bom código (teste focado com mock isolado)
 

@@ -156,10 +156,10 @@ Adicione nos componentes para seletores estáveis:
 
 | Métrica    | Mínimo |
 | ---------- | ------ |
-| Lines      | 29%    |
-| Functions  | 19%    |
-| Branches   | 51%    |
-| Statements | 28%    |
+| Lines      | 100%   |
+| Functions  | 100%   |
+| Branches   | 98%    |
+| Statements | 100%   |
 
 Os valores são um **piso que só sobe** (ratchet — ADR-0016): refletem a
 cobertura real medida e devem ser elevados em `vite.config.ts` sempre que a
