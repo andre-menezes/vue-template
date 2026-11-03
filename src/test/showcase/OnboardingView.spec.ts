@@ -3,12 +3,14 @@ import { defineComponent, h } from 'vue';
 import type { VueWrapper } from '@vue/test-utils';
 import { VApp } from 'vuetify/components';
 import OnboardingView from '@modules/showcase/views/OnboardingView.vue';
-import { buildOnboardingSteps } from '@modules/showcase/steps';
+import { buildOnboardingFaqs, buildOnboardingSteps } from '@modules/showcase/steps';
 import { createAppI18n } from '@app/providers/i18n';
 import type { ThemeName } from '@typings/theme';
 import { mountWithPlugins } from '@test/utils/mountWithPlugins';
 
-const steps = buildOnboardingSteps(createAppI18n('pt-BR').global.t);
+const { t } = createAppI18n('pt-BR').global;
+const steps = buildOnboardingSteps(t);
+const faqs = buildOnboardingFaqs(t);
 
 // O tema da página vem do <v-app>, como no App.vue.
 function mountOnboarding(theme: ThemeName = 'light') {
@@ -100,6 +102,16 @@ describe('OnboardingView', () => {
 
     expect(wrapper.findAll('[data-cy=onboarding-checklist] .v-list-item')).toHaveLength(13);
     expect(wrapper.findAll('[data-cy=onboarding-faq] .v-expansion-panel')).toHaveLength(4);
+  });
+
+  it('abre a resposta de uma pergunta do FAQ ao clicar nela', async () => {
+    const wrapper = mountOnboarding();
+    const firstPanel = wrapper.get('[data-cy=onboarding-faq] .v-expansion-panel');
+    expect(firstPanel.text()).not.toContain(faqs[0]?.answer);
+
+    await firstPanel.get('.v-expansion-panel-title').trigger('click');
+
+    expect(firstPanel.get('.v-expansion-panel-text').text()).toBe(faqs[0]?.answer);
   });
 
   it('adapta as cores do FAQ ao tema', () => {
