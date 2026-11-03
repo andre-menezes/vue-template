@@ -6,7 +6,11 @@
  * of the codebase never references env variables directly.
  */
 
-const getEnvVar = (key: keyof AppEnv, defaultValue?: string): string => {
+/**
+ * Lê uma variável de ambiente; sem valor nem padrão, falha na inicialização
+ * em vez de seguir com configuração incompleta. Exportada para teste.
+ */
+export const getEnvVar = (key: keyof AppEnv, defaultValue?: string): string => {
   const value = import.meta.env[key] || defaultValue;
   if (!value) {
     throw new Error(`[Config Error]: A variável de ambiente ${key} não foi definida.`);
