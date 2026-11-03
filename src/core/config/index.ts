@@ -30,6 +30,15 @@ export const APP_NAME = getEnvVar('VITE_APP_NAME', 'Vue Template');
 export const SUPPORTED_LOCALES = ['pt-BR', 'en-US'] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
+/**
+ * Nome de cada locale no próprio idioma, como o seletor de idioma o exibe.
+ * Não é traduzido: quem procura o próprio idioma o reconhece em qualquer tela.
+ */
+export const LOCALE_NATIVE_NAMES: Record<SupportedLocale, string> = {
+  'pt-BR': 'Português (Brasil)',
+  'en-US': 'English (US)',
+};
+
 export const isSupportedLocale = (value: string | null): value is SupportedLocale =>
   SUPPORTED_LOCALES.some((locale) => locale === value);
 

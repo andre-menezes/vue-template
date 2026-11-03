@@ -8,7 +8,9 @@
   },
   "header": {
     "activateLightTheme": "Switch to light theme",
-    "activateDarkTheme": "Switch to dark theme"
+    "activateDarkTheme": "Switch to dark theme",
+    "changeLanguage": "Change language",
+    "languages": "Languages"
   },
   "notFound": {
     "eyebrow": "Error 404",
