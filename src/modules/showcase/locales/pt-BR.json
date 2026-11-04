@@ -364,6 +364,15 @@
         "delete": "Excluir",
         "confirmTitle": "Excluir cliente",
         "confirmMessage": "Esta ação não pode ser desfeita."
+      },
+      "stats": {
+        "title": "Indicadores e visões",
+        "description": "BaseStatCard destaca um número; BaseSegmentedControl alterna a visão ou o período.",
+        "periodLabel": "Período",
+        "week": "Semana",
+        "month": "Mês",
+        "projects": "Projetos no período",
+        "contacts": "Contatos ativos"
       }
     }
   },

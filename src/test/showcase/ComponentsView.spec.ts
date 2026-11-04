@@ -88,7 +88,8 @@ describe('ComponentsView', () => {
     expect(section.findAll('[data-cy=status-chip]')).toHaveLength(4);
     expect(section.findAll('[data-cy=avatar]')).toHaveLength(3);
     expect(section.findAll('[data-cy=event-block]')).toHaveLength(3);
-    expect(section.findAll('[data-cy=code-block]')).toHaveLength(3);
+    expect(section.findAll('[data-cy=stat-card]')).toHaveLength(2);
+    expect(section.findAll('[data-cy=code-block]')).toHaveLength(4);
   });
 
   it('abre e fecha o diálogo de confirmação de exemplo', async () => {
@@ -108,5 +109,15 @@ describe('ComponentsView', () => {
     expect(dialog().props('modelValue')).toBe(true);
     wrapper.unmount();
     vi.unstubAllGlobals();
+  });
+
+  it('troca os indicadores de exemplo pelo período', async () => {
+    const wrapper = mountComponents();
+    const values = () =>
+      wrapper.findAll('#design-system [data-cy=stat-card-value]').map((v) => v.text());
+
+    expect(values()).toEqual(['78', '214']);
+    await wrapper.get('#design-system [data-cy=segmented-option-week]').trigger('click');
+    expect(values()).toEqual(['18', '52']);
   });
 });

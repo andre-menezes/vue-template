@@ -17,8 +17,8 @@ describe('MetricCard', () => {
     });
 
     expect(wrapper.text()).toContain('Dependências');
-    expect(wrapper.get('strong').text()).toBe('42');
+    expect(wrapper.get('[data-cy=stat-card-value]').text()).toBe('42');
     expect(wrapper.text()).toContain('no package.json');
-    expect(wrapper.get('.v-avatar').classes()).toContain('text-info');
+    expect(wrapper.get('.v-icon').classes()).toContain('text-info');
   });
 });

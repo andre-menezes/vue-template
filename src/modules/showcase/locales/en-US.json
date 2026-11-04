@@ -364,6 +364,15 @@
         "delete": "Delete",
         "confirmTitle": "Delete customer",
         "confirmMessage": "This cannot be undone."
+      },
+      "stats": {
+        "title": "Indicators and views",
+        "description": "BaseStatCard highlights a number; BaseSegmentedControl switches the view or period.",
+        "periodLabel": "Period",
+        "week": "Week",
+        "month": "Month",
+        "projects": "Projects in the period",
+        "contacts": "Active contacts"
       }
     }
   },

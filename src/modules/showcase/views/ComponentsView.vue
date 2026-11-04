@@ -214,6 +214,40 @@
         </ShowcaseCard>
 
         <ShowcaseCard
+          :title="$t('components.designSystem.stats.title')"
+          :description="$t('components.designSystem.stats.description')"
+          :code="statsCode"
+          language="vue"
+        >
+          <template #preview>
+            <div class="d-flex flex-column ga-4 flex-grow-1">
+              <BaseSegmentedControl
+                v-model="period"
+                :label="$t('components.designSystem.stats.periodLabel')"
+                :options="periodOptions"
+              />
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <BaseStatCard
+                    :value="period === 'month' ? 78 : 18"
+                    :label="$t('components.designSystem.stats.projects')"
+                    icon="star"
+                  />
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <BaseStatCard
+                    :value="period === 'month' ? 214 : 52"
+                    :label="$t('components.designSystem.stats.contacts')"
+                    icon="person"
+                    color="secondary"
+                  />
+                </v-col>
+              </v-row>
+            </div>
+          </template>
+        </ShowcaseCard>
+
+        <ShowcaseCard
           :title="$t('components.designSystem.events.title')"
           :description="$t('components.designSystem.events.description')"
           :code="eventCode"
@@ -283,6 +317,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useTheme } from 'vuetify';
 import DocSection from '../components/DocSection.vue';
 import ShowcaseCard from '../components/ShowcaseCard.vue';
@@ -292,11 +327,20 @@ import BaseAvatar from '@shared/ui/components/BaseAvatar.vue';
 import BaseConfirmDialog from '@shared/ui/components/BaseConfirmDialog.vue';
 import BaseEventBlock from '@shared/ui/components/BaseEventBlock.vue';
 import BasePageHeader from '@shared/ui/components/BasePageHeader.vue';
+import BaseSegmentedControl from '@shared/ui/components/BaseSegmentedControl.vue';
+import BaseStatCard from '@shared/ui/components/BaseStatCard.vue';
 import BaseStatusChip from '@shared/ui/components/BaseStatusChip.vue';
 import type { ProblemDetails } from '@typings/http';
 
 const theme = useTheme();
+const { t } = useI18n();
 const confirmOpen = ref(false);
+
+const period = ref<'week' | 'month'>('month');
+const periodOptions = computed(() => [
+  { value: 'week' as const, label: t('components.designSystem.stats.week') },
+  { value: 'month' as const, label: t('components.designSystem.stats.month') },
+]);
 
 /** Retorna o hexadecimal da cor no tema ativo (adapta-se a light/dark). */
 function colorHex(color: string): string {
@@ -325,6 +369,8 @@ import BaseAvatar from '@shared/ui/components/BaseAvatar.vue';
 import BaseConfirmDialog from '@shared/ui/components/BaseConfirmDialog.vue';
 import BaseEventBlock from '@shared/ui/components/BaseEventBlock.vue';
 import BasePageHeader from '@shared/ui/components/BasePageHeader.vue';
+import BaseSegmentedControl from '@shared/ui/components/BaseSegmentedControl.vue';
+import BaseStatCard from '@shared/ui/components/BaseStatCard.vue';
 import BaseStatusChip from '@shared/ui/components/BaseStatusChip.vue';
 import { transferRequest } from '../api/account.service';
 
@@ -387,6 +433,10 @@ const statusCode = `<BaseStatusChip label="Confirmado" tone="success" />
 <BaseStatusChip label="Pendente" tone="warning" icon="schedule" />
 <BaseAvatar name="Ana Souza" />           <!-- iniciais e cor estáveis pelo nome -->
 <BaseAvatar name="Ana Souza" decorative /> <!-- ao lado do nome escrito -->`;
+
+const statsCode = `<BaseSegmentedControl v-model="periodo" label="Período" :options="opcoes" />
+<BaseStatCard :value="78" label="Projetos" icon="star" />
+<BaseStatCard :value="214" label="Contatos" icon="person" color="secondary" />`;
 
 const eventCode = `<BaseEventBlock time="09:00 – 10:00" title="Reunião com cliente" subtitle="Online" hue="indigo" />
 <BaseEventBlock time="12:00" title="Almoço" hue="green" compact />
