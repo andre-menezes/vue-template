@@ -133,6 +133,26 @@ const label = computed(() => toThemeLabel(appStore.theme));
 
 ---
 
+## Notificações e erro de gravação (ADR-0040)
+
+- Avise o usuário com `useNotify()` (`success`, `info`, `warning`, `error`),
+  com o texto já traduzido; o snackbar global (`TheNotifications`, no
+  `App.vue`) mostra uma de cada vez.
+- O erro de uma gravação (`useMutation`) vira notificação sozinho, pelo
+  `MutationCache` do `@app/providers/query` e o helper `notifyHttpError`.
+  Se a tela já mostra o erro (formulário, diálogo), declare
+  `meta: { notifyError: false }` na mutation para não avisar duas vezes.
+- O erro de uma leitura (`useQuery`) fica na tela, no `BaseErrorState`.
+
+```ts
+const notify = useNotify();
+mutation.mutate(params, {
+  onSuccess: () => notify.success(t('orders.notify.saved')),
+});
+```
+
+---
+
 ## composables — Lógica reativa compartilhada
 
 Funções `useXxx` que retornam **estado reativo** (refs, computeds) e/ou

@@ -79,16 +79,18 @@ Objetivo: padronizar feedback ao usuário e endurecer o tratamento de erros.
 
 | #   | Item                               | Entregável                                                                                            | Camadas                               | Risco | Status       |
 | --- | ---------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------- | ----- | ------------ |
-| 3.1 | **Notificações (snackbar/toast)**  | Store + composable `useNotify` + render global                                                        | `shared/stores`, `composables`, `app` | Baixo | Pendente     |
-| 3.2 | **Tratamento global de erro HTTP** | Interceptor/handler central mapeando RFC 9457 → notificação                                           | `shared/api`, `helpers`               | Médio | Parcial      |
+| 3.1 | **Notificações (snackbar/toast)**  | Store + composable `useNotify` + render global                                                        | `shared/stores`, `composables`, `app` | Baixo | ✅ Concluído |
+| 3.2 | **Tratamento global de erro HTTP** | Interceptor/handler central mapeando RFC 9457 → notificação                                           | `shared/api`, `helpers`               | Médio | ✅ Concluído |
 | 3.3 | **Formulários + validação**        | Padrão de form com validação (avaliar lib em ADR) e exemplo no CRUD                                   | `shared/ui`, `composables`            | Médio | Pendente     |
 | 3.4 | **Acessibilidade (a11y)**          | Auditoria das telas (foco, labels, contraste) + ajustes                                               | transversal                           | Baixo | ✅ Concluído |
 | 3.5 | **Login próprio**                  | Tela de login, guard de rotas e sessão integrados ao backend de autenticação próprio (quando existir) | `app`, `shared`, `core`               | Alto  | Pendente     |
 
-- **3.2 (parcial):** o `errorHandler` do Vue e o `unhandledrejection` já levam
-  os erros não tratados a um `ErrorReporter` trocável (ADR-0028), e
-  `getErrorMessage` extrai a mensagem de um corpo RFC 9457. Falta mapear os
-  erros HTTP para uma notificação ao usuário, o que depende da 3.1.
+- **3.1 e 3.2 (concluídos, ADR-0040):** store de notificações, `useNotify` e
+  o snackbar global `TheNotifications`. O erro de uma gravação (mutation) vira
+  notificação com a mensagem RFC 9457, pelo `MutationCache`; a tela que já
+  mostra o erro declara `meta: { notifyError: false }`. Erros de leitura
+  ficam na tela (`BaseErrorState`), e os não tratados seguem no
+  `ErrorReporter` (ADR-0028).
 - **3.4 (concluído, PR #8):** o E2E roda o axe (WCAG 2.1 A/AA) em todas as
   páginas, e o tema ganhou tons de texto com contraste AA (ADR-0029).
 
@@ -133,8 +135,6 @@ Onboarding. O próximo foco é a **Fase 3 (UX/robustez)**.
 
 ## Itens que exigem ADR antes de executar
 
-- 3.1/3.2 Padrão de notificação e mapeamento dos erros HTTP para ela (o
-  handler global de erros já está na ADR-0028).
 - 3.3 Biblioteca de formulários/validação.
 - 3.5 Fluxo de autenticação do login próprio.
 - 4.x Toda a estratégia multi-framework.
