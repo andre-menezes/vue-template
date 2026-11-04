@@ -10,10 +10,7 @@
     "onboarding": "Onboarding",
     "components": "Components",
     "conventions": "Conventions",
-    "decisions": "Decisions",
-    "groups": {
-      "docs": "Template docs"
-    }
+    "decisions": "Decisions"
   },
   "docsHome": {
     "eyebrow": "Living documentation",
@@ -336,35 +333,6 @@
       "previewTitle": "Module",
       "previewText": "Feature isolated by domain.",
       "previewAction": "Open"
-    },
-    "designSystem": {
-      "title": "Agenda design system",
-      "description": "Base components in shared/ui, designed in Figma: color saved for what matters, 4px radius and borders instead of shadows.",
-      "status": {
-        "title": "Status and avatar",
-        "description": "BaseStatusChip uses the theme's container backgrounds; BaseAvatar shows initials on a stable event color.",
-        "confirmed": "Confirmed",
-        "pending": "Pending",
-        "cancelled": "Cancelled",
-        "draft": "Draft"
-      },
-      "events": {
-        "title": "Appointment blocks",
-        "description": "BaseEventBlock in the eight event colors, regular or compact.",
-        "meeting": "Client meeting",
-        "online": "Online",
-        "content": "Content production",
-        "lunch": "Lunch"
-      },
-      "page": {
-        "title": "Header and confirmation",
-        "description": "BasePageHeader gives the screen its title; BaseConfirmDialog confirms destructive actions.",
-        "header": "Customers",
-        "subtitle": "32 registered",
-        "delete": "Delete",
-        "confirmTitle": "Delete customer",
-        "confirmMessage": "This cannot be undone."
-      }
     }
   },
   "conventions": {

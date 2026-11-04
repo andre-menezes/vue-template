@@ -1,10 +1,14 @@
 # ADR-0045: Componentes base e padrões do design system Agenda
 
-- **Status:** Aceita
+- **Status:** Descontinuada
 - **Data:** 2026-11-04
 - **Decisores:** Andre Menezes
 - **Relacionadas:** ADR-0012 (Vuetify), ADR-0029 (contraste AA), ADR-0044
   (paleta do design system Agenda)
+
+> Nota (ADR-0047): a mudança desta ADR foi revertida a pedido do Andre, que
+> preferiu o visual original do template (coral e azul). O texto fica como
+> registro da decisão.
 
 ## Contexto e problema
 

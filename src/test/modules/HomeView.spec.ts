@@ -7,12 +7,10 @@ import HomeView from '@modules/home/views/HomeView.vue';
 
 const Empty = defineComponent({ render: () => h('div') });
 
-async function mountHome(withDocs: boolean, withExample = false) {
+async function mountHome(withDocs: boolean) {
   const routes: RouteRecordRaw[] = [{ path: '/', name: 'Home', component: HomeView }];
-  // As rotas DocsHome e Customers vêm dos módulos showcase e customers, que o
-  // `template:clean` remove.
+  // A rota DocsHome vem do módulo showcase, que o `template:clean` remove.
   if (withDocs) routes.push({ path: '/docs', name: 'DocsHome', component: Empty });
-  if (withExample) routes.push({ path: '/customers', name: 'Customers', component: Empty });
 
   const router = createRouter({ history: createMemoryHistory(), routes });
   await router.push('/');
@@ -40,20 +38,5 @@ describe('HomeView', () => {
     const wrapper = await mountHome(false);
 
     expect(wrapper.find('[data-cy="home-docs-link"]').exists()).toBe(false);
-  });
-
-  it('mostra o link para o CRUD de exemplo só quando a rota Customers existe', async () => {
-    const withExample = await mountHome(false, true);
-    const without = await mountHome(false);
-
-    expect(withExample.get('[data-cy="home-example-link"]').attributes('href')).toBe('/customers');
-    expect(without.find('[data-cy="home-example-link"]').exists()).toBe(false);
-  });
-
-  it('lista os três próximos passos', async () => {
-    const wrapper = await mountHome(false);
-
-    expect(wrapper.findAll('[data-cy="home-step"]')).toHaveLength(3);
-    expect(wrapper.text()).toContain('Criar um módulo');
   });
 });

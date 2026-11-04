@@ -15,16 +15,13 @@
       <BaseEmptyState :title="$t('customers.list.empty')" icon="person_search" />
     </template>
     <template #[`item.name`]="{ item }">
-      <div class="d-flex align-center ga-3 py-2">
-        <BaseAvatar :name="item.name" :size="32" decorative />
-        <router-link
-          :to="{ name: 'CustomerDetail', params: { id: item.id } }"
-          class="text-primary-text font-weight-medium"
-          data-cy="customer-link"
-        >
-          {{ item.name }}
-        </router-link>
-      </div>
+      <router-link
+        :to="{ name: 'CustomerDetail', params: { id: item.id } }"
+        class="text-primary-text font-weight-medium"
+        data-cy="customer-link"
+      >
+        {{ item.name }}
+      </router-link>
     </template>
     <template #[`item.active`]="{ item }">
       <CustomerStatusChip :active="item.active" />
@@ -40,7 +37,6 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useLocale } from '@shared/composables/useLocale';
 import { formatDate } from '@shared/utils/format';
-import BaseAvatar from '@shared/ui/components/BaseAvatar.vue';
 import BaseEmptyState from '@shared/ui/components/BaseEmptyState.vue';
 import type { Customer } from '../types';
 import CustomerStatusChip from './CustomerStatusChip.vue';

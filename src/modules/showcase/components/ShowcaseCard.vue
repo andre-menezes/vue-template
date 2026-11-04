@@ -1,5 +1,5 @@
 <template>
-  <v-card class="showcase-card" data-cy="showcase-card">
+  <v-card variant="outlined" class="showcase-card" data-cy="showcase-card">
     <v-card-item class="pt-5 px-5 px-md-6">
       <v-card-title class="text-subtitle-1 font-weight-bold">{{ title }}</v-card-title>
       <v-card-subtitle v-if="description" class="text-wrap">{{ description }}</v-card-subtitle>

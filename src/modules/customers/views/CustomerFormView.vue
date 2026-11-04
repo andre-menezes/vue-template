@@ -1,8 +1,8 @@
 <template>
-  <section data-cy="customer-form-page">
-    <BasePageHeader
-      :title="isEdit ? $t('customers.form.editTitle') : $t('customers.form.createTitle')"
-    />
+  <section class="py-6" data-cy="customer-form-page">
+    <h1 class="text-h4 font-weight-bold mb-6" data-cy="customer-form-title">
+      {{ isEdit ? $t('customers.form.editTitle') : $t('customers.form.createTitle') }}
+    </h1>
 
     <BaseLoadingState v-if="isEdit && isPending" />
     <BaseEmptyState
@@ -20,7 +20,7 @@
       data-cy="customer-form-load-error"
       @retry="refetch"
     />
-    <v-card v-else max-width="640" class="pa-4 pa-sm-6">
+    <v-card v-else variant="outlined" max-width="640" class="pa-4 pa-sm-6">
       <CustomerForm
         :initial-values="customer"
         :saving="saving"
@@ -41,7 +41,6 @@ import { useNotify } from '@shared/composables/useNotify';
 import BaseEmptyState from '@shared/ui/components/BaseEmptyState.vue';
 import BaseErrorState from '@shared/ui/components/BaseErrorState.vue';
 import BaseLoadingState from '@shared/ui/components/BaseLoadingState.vue';
-import BasePageHeader from '@shared/ui/components/BasePageHeader.vue';
 import CustomerForm from '../components/CustomerForm.vue';
 import { useCustomerQuery } from '../composables/useCustomerQuery';
 import {
