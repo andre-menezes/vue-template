@@ -1,10 +1,13 @@
 <template>
-  <v-sheet class="code-block rounded border overflow-hidden" data-cy="code-block">
+  <v-sheet
+    class="code-block rounded-lg border-accent border-sm overflow-hidden"
+    data-cy="code-block"
+  >
     <v-toolbar
       v-if="language || filename"
       density="compact"
-      color="surface-light"
-      class="code-block__toolbar pa-2"
+      color="accent-variant"
+      class="pa-2"
       :height="36"
     >
       <span class="text-caption font-weight-medium text-medium-emphasis px-2">
@@ -18,7 +21,7 @@
       </v-chip>
     </v-toolbar>
 
-    <v-sheet color="surface-light" class="d-flex align-start ga-2 px-4 py-3">
+    <v-sheet color="accent-variant" class="d-flex align-start ga-2 px-4 py-3">
       <pre
         class="code-block__pre text-high-emphasis flex-grow-1"
         tabindex="0"
@@ -82,12 +85,8 @@ async function copy(): Promise<void> {
   margin: 0;
   white-space: pre;
   overflow-x: auto;
-  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Code', 'Consolas', monospace;
-  font-size: 0.8125rem;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem;
   line-height: 1.6;
-}
-
-.code-block__toolbar {
-  border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
 }
 </style>

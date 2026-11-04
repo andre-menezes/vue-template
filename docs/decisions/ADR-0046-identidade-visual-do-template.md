@@ -1,10 +1,14 @@
 # ADR-0046: Identidade visual do template
 
-- **Status:** Aceita
+- **Status:** Descontinuada
 - **Data:** 2026-11-04
 - **Decisores:** Andre Menezes
 - **Relacionadas:** ADR-0026 (vitrine removível), ADR-0036 (navegação
   acessível), ADR-0044 (paleta), ADR-0045 (componentes do design system)
+
+> Nota (ADR-0047): a mudança desta ADR foi revertida a pedido do Andre, que
+> preferiu o visual original do template (coral e azul). O texto fica como
+> registro da decisão.
 
 ## Contexto e problema
 

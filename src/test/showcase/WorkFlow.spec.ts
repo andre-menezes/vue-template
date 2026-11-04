@@ -48,11 +48,11 @@ describe('WorkFlow', () => {
     expect(cta.attributes('href')).toBe('/onboarding');
   });
 
-  it('usa o painel de destaque da marca nos dois temas', async () => {
-    for (const theme of ['light', 'dark'] as const) {
-      const wrapper = await mountWorkFlow(theme);
+  it('usa o gradiente do tema ativo', async () => {
+    const light = await mountWorkFlow('light');
+    const dark = await mountWorkFlow('dark');
 
-      expect(wrapper.get('.v-card').classes()).toContain('bg-primary-container');
-    }
+    expect(light.get('.v-card').classes()).toContain('gradient-light');
+    expect(dark.get('.v-card').classes()).toContain('gradient-dark');
   });
 });

@@ -15,14 +15,7 @@ function createTestRouter() {
         path: '/decisoes',
         component: Empty,
         // Chaves do locale base, que continuam existindo após o `template:clean`.
-        meta: {
-          nav: {
-            titleKey: 'notFound.title',
-            icon: 'gavel',
-            order: 60,
-            groupKey: 'header.languages',
-          },
-        },
+        meta: { nav: { titleKey: 'notFound.title', icon: 'gavel', order: 60 } },
       },
       {
         path: '/',
@@ -81,21 +74,5 @@ describe('TheNavigationMenu', () => {
     expect(wrapper.findComponent(TheNavigationMenu).emitted('update:modelValue')).toEqual([
       [false],
     ]);
-  });
-
-  it('agrupa os itens pelo groupKey, com os sem grupo primeiro e sem título', async () => {
-    const wrapper = await mountMenu(true);
-
-    expect(wrapper.findAll('[data-cy=nav-group]').map((group) => group.text())).toEqual([
-      'Idiomas',
-    ]);
-    expect(wrapper.find('.v-list-item').text()).toContain('Início');
-  });
-
-  it('no modo rail, troca o título do grupo por um divisor e dá o nome ao item', async () => {
-    const wrapper = await mountMenu(false);
-
-    expect(wrapper.find('[data-cy=nav-group]').exists()).toBe(false);
-    expect(wrapper.find('.v-navigation-drawer .v-divider').exists()).toBe(true);
   });
 });

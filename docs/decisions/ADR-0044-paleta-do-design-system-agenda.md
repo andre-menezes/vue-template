@@ -1,10 +1,14 @@
 # ADR-0044: Paleta do design system Agenda
 
-- **Status:** Aceita
+- **Status:** Descontinuada
 - **Data:** 2026-11-04
 - **Decisores:** Andre Menezes
 - **Relacionadas:** ADR-0012 (Vuetify como UI), ADR-0029 (emenda a paleta e
   os tons de texto)
+
+> Nota (ADR-0047): a mudança desta ADR foi revertida a pedido do Andre, que
+> preferiu o visual original do template (coral e azul). O texto fica como
+> registro da decisão.
 
 ## Contexto e problema
 
