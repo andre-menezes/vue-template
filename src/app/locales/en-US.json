@@ -46,5 +46,8 @@
   "validation": {
     "required": "Required field.",
     "email": "Enter a valid email."
+  },
+  "dialog": {
+    "cancel": "Cancel"
   }
 }
