@@ -98,3 +98,4 @@ substitui a anterior e atualize o status da antiga.
 | [ADR-0043](ADR-0043-monitoramento-de-erros-com-sentry.md)      | Monitoramento de erros com o Sentry, opcional               | Aceita        |
 | [ADR-0044](ADR-0044-paleta-do-design-system-agenda.md)         | Paleta do design system Agenda                              | Aceita        |
 | [ADR-0045](ADR-0045-componentes-base-do-design-system.md)      | Componentes base e padrões do design system Agenda          | Aceita        |
+| [ADR-0046](ADR-0046-identidade-visual-do-template.md)          | Identidade visual do template                               | Aceita        |
