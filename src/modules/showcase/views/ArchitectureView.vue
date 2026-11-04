@@ -101,7 +101,7 @@
       icon="database"
       anchor="estado"
     >
-      <v-table density="comfortable" class="border rounded-lg">
+      <v-table density="comfortable" class="border rounded">
         <thead>
           <tr>
             <th class="text-left font-weight-bold">
@@ -134,7 +134,7 @@
           <p class="text-subtitle-2 font-weight-bold mb-2">
             {{ $t('architecture.sections.conventions.aliasesTitle') }}
           </p>
-          <v-table density="compact" class="border rounded-lg">
+          <v-table density="compact" class="border rounded">
             <tbody>
               <tr v-for="alias in aliases" :key="alias.name">
                 <td>

@@ -6,7 +6,7 @@
     aria-hidden="true"
     focusable="false"
   >
-    <rect width="32" height="32" rx="8" class="base-logo__tile" />
+    <rect width="32" height="32" rx="4" class="base-logo__tile" />
     <!-- Três camadas empilhadas: a arquitetura em camadas do template. -->
     <path d="M16 7 25 11.5 16 16 7 11.5Z" class="base-logo__layer" />
     <path

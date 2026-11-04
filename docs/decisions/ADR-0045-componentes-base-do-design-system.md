@@ -6,9 +6,10 @@
 - **Relacionadas:** ADR-0012 (Vuetify), ADR-0029 (contraste AA), ADR-0044
   (paleta do design system Agenda)
 
-> Nota (ADR-0047): os cartões trocaram a borda pela sombra suave do Vora, e
-> a fonte passou a Poppins. O raio, a escala tipográfica e os componentes
-> desta ADR continuam.
+> Nota (ADR-0047): os cartões trocaram a borda pela sombra suave do Vora, a
+> fonte passou a Poppins e o raio passou a 4px em tudo (menus e diálogos
+> deixaram os 8px; chips deixaram a pílula). A escala tipográfica e os
+> componentes desta ADR continuam.
 
 ## Contexto e problema
 

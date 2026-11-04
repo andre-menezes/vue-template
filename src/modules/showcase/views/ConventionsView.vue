@@ -41,7 +41,7 @@
       <p class="text-subtitle-2 font-weight-bold mt-6 mb-2">
         {{ $t('conventions.branches.prefixesTitle') }}
       </p>
-      <v-table density="comfortable" class="border rounded-lg">
+      <v-table density="comfortable" class="border rounded">
         <thead>
           <tr>
             <th class="text-left font-weight-bold">
@@ -94,7 +94,7 @@
       icon="category"
       anchor="tipos"
     >
-      <v-table density="comfortable" class="border rounded-lg">
+      <v-table density="comfortable" class="border rounded">
         <thead>
           <tr>
             <th class="text-left font-weight-bold">

@@ -43,7 +43,7 @@ const emit = defineEmits<{ 'update:modelValue': [value: TValue] }>();
   width: fit-content;
   height: auto !important;
   background: rgb(var(--v-theme-surface-light));
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .base-segmented__option {

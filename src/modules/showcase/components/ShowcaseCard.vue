@@ -7,7 +7,7 @@
 
     <v-card-text class="px-5 px-md-6 pb-5 pb-md-6">
       <v-sheet
-        rounded="lg"
+        rounded
         class="showcase-card__preview d-flex flex-wrap align-center ga-4 pa-5 mb-4"
         data-cy="showcase-preview"
       >

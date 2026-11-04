@@ -14,21 +14,21 @@ o design do **Vora**, um kit de UI de dashboard SaaS (PSD e Figma) que ele
 licenciou. O Vora tem uma linguagem própria: azul vivo, Poppins, cartões
 brancos com sombra suave sobre fundo cinza claro, menu lateral com uma barra
 no item ativo, indicadores com o número em destaque e controles segmentados.
-Ele também pediu para **manter o raio de borda** já definido (4px, e 8px em
-menus e diálogos). Como adotar o Vora sem perder o que o template já
-garante (contraste AA, temas claro e escuro, componentes `Base*`)?
+Ele também pediu que o **raio de borda seja de 4px** em tudo. Como adotar o
+Vora sem perder o que o template já garante (contraste AA, temas claro e
+escuro, componentes `Base*`)?
 
 ## Drivers da decisão
 
 - Fidelidade ao Vora nas cores, na fonte, nas superfícies e no menu.
-- Raio de 4px mantido, por pedido do Andre.
+- Raio de 4px em tudo, por pedido do Andre.
 - Contraste AA nos dois temas (o Vora só tem o tema claro).
 - Os componentes e as telas existentes continuam funcionando.
 
 ## Opções consideradas
 
-- **Adotar a linguagem do Vora no tema, nos padrões e na casca, mantendo o
-  raio** — escolhida.
+- **Adotar a linguagem do Vora no tema, nos padrões e na casca, com raio de
+  4px** — escolhida.
 - **Copiar o Vora integralmente (raio de 12–16px, cabeçalho com busca e
   perfil)** — o raio contraria o pedido, e busca e perfil seriam controles
   sem função num template sem login.
@@ -47,8 +47,11 @@ garante (contraste AA, temas claro e escuro, componentes `Base*`)?
   da Inter (`@fontsource-variable/inter` sai). A escala tipográfica da
   ADR-0045 continua.
 - **Superfícies:** cartões sem borda e com a sombra curta e difusa do Vora
-  (classe `.app-surface`, aplicada pelo padrão do `VCard`). O raio continua
-  em 4px, e 8px em menus e diálogos.
+  (classe `.app-surface`, aplicada pelo padrão do `VCard`).
+- **Raio de 4px em tudo:** chips (antes em pílula), menus e diálogos (antes
+  8px), o trilho do controle segmentado, as tabelas da vitrine e o logo. Só
+  avatares, rádios e o trilho do switch continuam redondos, porque o círculo
+  é a forma deles, não um raio.
 - **Menu lateral:** o item ativo fica com texto e ícone na cor primária,
   sem fundo, e uma barra de 4px na borda esquerda.
 - **Cabeçalho:** 72px, com o botão de menu também no desktop (recolhe o

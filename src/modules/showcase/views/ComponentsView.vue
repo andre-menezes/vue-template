@@ -20,7 +20,7 @@
     >
       <v-row>
         <v-col v-for="color in themeColors" :key="color" cols="6" sm="4" md="2">
-          <v-sheet :color="color" rounded="lg" height="88" class="pa-2">
+          <v-sheet :color="color" rounded height="88" class="pa-2">
             <v-row>
               <v-col cols="12">
                 <span class="text-caption font-weight-medium">{{ color }}</span>

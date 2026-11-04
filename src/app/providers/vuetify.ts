@@ -209,7 +209,7 @@ const darkTheme: AppThemeDefinition = {
  */
 /**
  * Padrões dos componentes do Vuetify (ADR-0045, revistos pela ADR-0047):
- * raio de 4px (8px em menus e diálogos), cartões com a sombra suave do
+ * raio de 4px em tudo (chips, menus e diálogos inclusive), cartões com a sombra suave do
  * design Vora no lugar da borda, campos em contorno e botões sem elevação.
  * Uma prop explícita no componente continua prevalecendo.
  */
@@ -224,8 +224,9 @@ export const componentDefaults = {
   VAutocomplete: { variant: 'outlined', density: 'comfortable', color: 'primary' },
   VCheckbox: { color: 'primary' },
   VSwitch: { color: 'primary', inset: true },
-  VMenu: { VList: { rounded: 'lg', elevation: 2 } },
-  VDialog: { VCard: { rounded: 'lg', elevation: 3, border: false } },
+  VChip: { rounded: 'md' },
+  VMenu: { VList: { rounded: 'md', elevation: 2 } },
+  VDialog: { VCard: { rounded: 'md', elevation: 3, border: false } },
 };
 
 export function createAppVuetify(locale: Readonly<Ref<SupportedLocale>> = ref('pt-BR')) {

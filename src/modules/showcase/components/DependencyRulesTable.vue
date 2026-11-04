@@ -1,7 +1,7 @@
 <template>
   <v-table
     density="comfortable"
-    class="dependency-rules-table border rounded-lg"
+    class="dependency-rules-table border rounded"
     data-cy="dependency-rules"
   >
     <thead>

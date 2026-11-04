@@ -55,7 +55,7 @@
       icon="gavel"
       anchor="indice"
     >
-      <v-table density="comfortable" class="border rounded-lg" data-cy="adr-table">
+      <v-table density="comfortable" class="border rounded" data-cy="adr-table">
         <thead>
           <tr>
             <th class="text-left font-weight-bold">{{ $t('decisions.index.columnAdr') }}</th>

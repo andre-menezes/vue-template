@@ -20,7 +20,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
-- Visual do template baseado no design Vora (ADR-0047): azul `#2953E8`, fonte Poppins, cartões com sombra suave sobre fundo `#F4F4F4`, item ativo do menu com barra lateral e botão de menu também no desktop; o raio de 4px continua. Componentes `BaseStatCard` e `BaseSegmentedControl`.
+- Visual do template baseado no design Vora (ADR-0047): azul `#2953E8`, fonte Poppins, cartões com sombra suave sobre fundo `#F4F4F4`, item ativo do menu com barra lateral e botão de menu também no desktop; raio de 4px em tudo, inclusive chips, menus e diálogos. Componentes `BaseStatCard` e `BaseSegmentedControl`.
 - Nova identidade visual (ADR-0046): logo próprio em camadas na cor primária, cabeçalho claro com borda, menu lateral compacto e agrupado (`meta.nav.groupKey`), largura de leitura de 1200px, página inicial com painel de boas-vindas e próximos passos, e 404 tipográfica.
 - Componentes base do design system Agenda em `shared/ui`: `BasePageHeader`, `BaseStatusChip`, `BaseAvatar` (com `getInitials` e `hueFor`), `BaseConfirmDialog` e `BaseEventBlock`; tipos `EventHue`/`StatusTone` e cores `<tom>-container` no tema; seção "Design system Agenda" na vitrine (ADR-0045).
 - Escala tipográfica do design system (`text-h1`…`text-overline` e variantes por breakpoint): o Vuetify 4 não gera essas classes, que estavam sem efeito nas telas (ADR-0045).

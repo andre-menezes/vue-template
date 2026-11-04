@@ -155,6 +155,12 @@ describe('padrões dos componentes (ADR-0045)', () => {
     expect(componentDefaults.VTextField.variant).toBe('outlined');
     expect(componentDefaults.VBtn.variant).toBe('flat');
     expect(componentDefaults.VCard).toEqual({ elevation: 0, border: false, class: 'app-surface' });
-    expect(componentDefaults.VDialog.VCard).toMatchObject({ rounded: 'lg', elevation: 3 });
+    expect(componentDefaults.VDialog.VCard).toMatchObject({ rounded: 'md', elevation: 3 });
+  });
+
+  it('usa o raio de 4px (md) também em chips, menus e diálogos', () => {
+    expect(componentDefaults.VChip.rounded).toBe('md');
+    expect(componentDefaults.VMenu.VList.rounded).toBe('md');
+    expect(componentDefaults.VDialog.VCard.rounded).toBe('md');
   });
 });

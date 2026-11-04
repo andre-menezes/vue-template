@@ -44,7 +44,8 @@ sai no design system usando os componentes do Vuetify e os `Base*` abaixo.
   sombra suave (`.app-surface`) sobre fundo cinza e item ativo do menu com
   barra lateral. O raio continua em 4px.
 - **Padrões:** botões sem elevação, cartões sem borda e com a sombra do Vora,
-  campos em contorno, menus e diálogos com raio de 8px e sombra
+  campos em contorno, raio de 4px em tudo (chips, menus e diálogos inclusive) e
+  sombra em menus e diálogos
   (`componentDefaults` em `@app/providers/vuetify`). Não repita essas props
   nas telas.
 - **Cores:** marca nas ações; texto colorido com `<cor>-text`; fundos de
