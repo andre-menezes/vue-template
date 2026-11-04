@@ -1,7 +1,10 @@
 <template>
   <!-- Superfície com borda inferior, sem sombra: só o que flutua tem sombra (ADR-0046). -->
-  <v-app-bar class="app-header px-2 px-sm-4" color="surface" flat border="b" height="64">
-    <v-app-bar-nav-icon class="d-md-none" @click="emit('toggleNavigation')" />
+  <v-app-bar class="app-header px-2 px-sm-4" color="surface" flat border="b" height="72">
+    <v-app-bar-nav-icon
+      :aria-label="$t('header.toggleNavigation')"
+      @click="emit('toggleNavigation')"
+    />
     <router-link
       to="/"
       class="app-header__brand d-flex align-center ga-3 text-decoration-none"

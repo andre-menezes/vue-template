@@ -10,7 +10,8 @@
     "activateLightTheme": "Ativar tema claro",
     "activateDarkTheme": "Ativar tema escuro",
     "changeLanguage": "Alterar idioma",
-    "languages": "Idiomas"
+    "languages": "Idiomas",
+    "toggleNavigation": "Mostrar ou recolher o menu"
   },
   "notFound": {
     "eyebrow": "Erro 404",

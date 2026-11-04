@@ -23,9 +23,9 @@
           v-for="item in group.items"
           :key="item.route"
           :to="item.route"
-          color="primary"
+          color="primary-text"
           rounded="md"
-          class="mb-1"
+          class="navigation-menu__item mb-1"
           :title="rail ? $t(item.titleKey) : undefined"
         >
           <template #prepend><v-icon :icon="item.icon" size="20" /></template>
@@ -97,6 +97,33 @@ const menuGroups = computed<MenuGroup[]>(() => {
 </script>
 
 <style scoped>
+/*
+ * Item ativo no estilo Vora (ADR-0047): texto e ícone na cor primária, sem
+ * fundo, com uma barra de 4px na borda esquerda do menu.
+ */
+.navigation-menu__item {
+  position: relative;
+  overflow: visible;
+}
+
+.navigation-menu__item.v-list-item--active :deep(.v-list-item__overlay) {
+  opacity: 0;
+}
+
+.navigation-menu__item.v-list-item--active::before {
+  content: '';
+  position: absolute;
+  inset-block: 6px;
+  inset-inline-start: -8px;
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+  background: rgb(var(--v-theme-primary));
+}
+
+.navigation-menu__item.v-list-item--active :deep(.v-list-item-title) {
+  font-weight: 600;
+}
+
 .navigation-status {
   border-top: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
 }
