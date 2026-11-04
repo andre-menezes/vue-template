@@ -8,6 +8,7 @@ interface AppEnv {
   readonly VITE_API_BASE_URL?: string;
   readonly VITE_APP_NAME?: string;
   readonly VITE_APP_DEFAULT_LOCALE?: string;
+  readonly VITE_SENTRY_DSN?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- só agrega `AppEnv` ao tipo do Vite.

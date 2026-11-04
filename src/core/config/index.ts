@@ -74,5 +74,11 @@ export const MAIN_CONTENT_ID = 'main-content';
 export const DEFAULT_PAGE_SIZE = 10;
 export const MAX_PAGE_SIZE = 100;
 
+/**
+ * DSN do Sentry. Opcional: vazio deixa o monitoramento desligado e os erros
+ * só no console (ADR-0043).
+ */
+export const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN ?? '';
+
 /** timeouts */
 export const HTTP_TIMEOUT_MS = 10_000;
