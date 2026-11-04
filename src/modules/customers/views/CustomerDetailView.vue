@@ -1,5 +1,5 @@
 <template>
-  <section class="py-6" data-cy="customer-detail-page">
+  <section data-cy="customer-detail-page">
     <v-btn
       :to="{ name: 'Customers' }"
       variant="text"

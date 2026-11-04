@@ -1,5 +1,5 @@
 <template>
-  <section class="py-6" data-cy="customers-page">
+  <section data-cy="customers-page">
     <BasePageHeader
       :title="$t('customers.list.title')"
       :subtitle="$t('customers.list.description')"

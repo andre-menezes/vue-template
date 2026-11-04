@@ -1,5 +1,5 @@
 <template>
-  <section class="conventions-page py-6 py-md-8" data-cy="conventions-page">
+  <section class="conventions-page" data-cy="conventions-page">
     <div class="mb-8">
       <p class="text-overline text-primary-text font-weight-bold mb-2">
         {{ $t('conventions.eyebrow') }}

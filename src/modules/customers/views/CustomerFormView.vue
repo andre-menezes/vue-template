@@ -1,5 +1,5 @@
 <template>
-  <section class="py-6" data-cy="customer-form-page">
+  <section data-cy="customer-form-page">
     <BasePageHeader
       :title="isEdit ? $t('customers.form.editTitle') : $t('customers.form.createTitle')"
     />

@@ -1,5 +1,5 @@
 <template>
-  <section class="architecture-page py-6 py-md-8" data-cy="architecture-page">
+  <section class="architecture-page" data-cy="architecture-page">
     <div class="mb-8">
       <p class="text-overline text-primary-text font-weight-bold mb-2">
         {{ $t('architecture.eyebrow') }}
