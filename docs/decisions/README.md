@@ -93,3 +93,4 @@ substitui a anterior e atualize o status da antiga.
 | [ADR-0038](ADR-0038-suporte-a-multiplos-locales.md)            | Suporte a múltiplos locales, começando pelo en-US           | Aceita        |
 | [ADR-0039](ADR-0039-crud-de-exemplo-e-api-simulada.md)         | CRUD de exemplo (`customers`) e API simulada no `pnpm dev`  | Aceita        |
 | [ADR-0040](ADR-0040-notificacoes-e-erro-global-de-gravacao.md) | Notificações globais e erro de gravação notificado          | Aceita        |
+| [ADR-0041](ADR-0041-deploy-com-docker-e-nginx.md)              | Deploy em imagem Docker com Nginx                           | Aceita        |
