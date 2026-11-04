@@ -1,7 +1,6 @@
 <template>
   <v-card
     class="navigation-card h-100 d-flex flex-column"
-    variant="outlined"
     :to="card.route"
     data-cy="nav-card"
     :data-cy-route="card.route"

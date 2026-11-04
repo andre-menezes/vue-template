@@ -69,7 +69,7 @@ testes dela e a documentação em `docs/`.
 | `src/core/config/index.ts`            | Padrão do `APP_NAME` (ou defina `VITE_APP_NAME` em cada ambiente)    |
 | `src/app/locales/*.json`              | `welcome.*`: texto da página inicial, nos dois locales               |
 | `src/modules/home/views/HomeView.vue` | A página inicial do projeto                                          |
-| `public/favicon.svg`, `BaseLogo.vue`  | Ícone e logo                                                         |
+| `public/favicon.svg`, `BaseLogo.vue`  | Ícone e logo: troque a marca genérica do template (ADR-0046)         |
 | `src/app/providers/vuetify.ts`        | Cores do tema (mantenha os tons `-text` com contraste AA — ADR-0029) |
 | `LICENSE.md`                          | Titular e tipo de licença                                            |
 | `README.md`, `CONTRIBUTING.md`        | Nome e descrição do projeto                                          |

@@ -91,7 +91,7 @@ export function useCustomersQuery() {
       reference: 'src/shared/ui/README.md',
       code: [
         '<template>',
-        '  <section class="py-6">',
+        '  <section>',
         '    <h1 class="text-h4 font-weight-bold mb-4">Clientes</h1>',
         '    <v-alert v-if="error" type="error" :text="error.message" />',
         '    <CustomerList v-else :customers="data ?? []" :loading="isPending" />',
