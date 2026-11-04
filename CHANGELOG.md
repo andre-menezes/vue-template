@@ -34,7 +34,6 @@ Experiência e produção: notificações e erro de gravação notificado, formu
 
 ### Alterado
 
-- Tema com a paleta do design system Agenda: marca índigo (`#4162D9`), teal no secondary/accent, neutros frios e contraste AA nos dois temas, com a paleta separada por tema e os nomes de cor mantidos; novas cores `surface-bright`, `surface-light`, `border`, `primary-container` e as cores de evento do calendário (`event-<matiz>`, `event-<matiz>-bg`, `on-event-<matiz>-bg`) em oito matizes (ADR-0044).
 - O `matchMedia` simulado dos testes avalia `min-width`/`max-width` contra `window.innerWidth`, como o `useDisplay` do Vuetify 4.3 espera; alias de ícone `clock` mapeado (Vuetify 4.3).
 - Dependências atualizadas: 17 minor/patch (Vuetify 4.3.1, vue-router 5.4.0, pinia 4.1.0, vite 8.3.5, eslint 10.14.0 e outras), TypeScript 6.0.3 e as actions do CI (checkout, setup-node, upload-artifact e pnpm/action-setup).
 
