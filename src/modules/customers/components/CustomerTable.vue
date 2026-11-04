@@ -7,11 +7,13 @@
     :items-per-page="pageSize"
     :items-per-page-options="PAGE_SIZE_OPTIONS"
     :loading="loading"
-    :no-data-text="$t('customers.list.empty')"
     item-value="id"
     data-cy="customer-table"
     @update:options="onOptions"
   >
+    <template #no-data>
+      <BaseEmptyState :title="$t('customers.list.empty')" icon="person_search" />
+    </template>
     <template #[`item.name`]="{ item }">
       <router-link
         :to="{ name: 'CustomerDetail', params: { id: item.id } }"
@@ -35,6 +37,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useLocale } from '@shared/composables/useLocale';
 import { formatDate } from '@shared/utils/format';
+import BaseEmptyState from '@shared/ui/components/BaseEmptyState.vue';
 import type { Customer } from '../types';
 import CustomerStatusChip from './CustomerStatusChip.vue';
 

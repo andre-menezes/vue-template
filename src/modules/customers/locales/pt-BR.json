@@ -32,7 +32,8 @@
       "back": "Voltar para a lista",
       "edit": "Editar",
       "delete": "Excluir",
-      "notFound": "Cliente não encontrado. Ele pode ter sido excluído.",
+      "notFound": "Cliente não encontrado",
+      "notFoundDescription": "Ele pode ter sido excluído ou o endereço está incorreto.",
       "noPhone": "Não informado"
     },
     "form": {

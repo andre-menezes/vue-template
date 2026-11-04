@@ -39,12 +39,13 @@
       </v-btn>
     </form>
 
-    <v-alert
+    <BaseErrorState
       v-if="error"
-      type="error"
-      variant="tonal"
-      :text="errorMessage(error)"
+      :message="errorMessage(error)"
+      retryable
+      :retrying="isFetching"
       data-cy="customers-error"
+      @retry="refetch"
     />
     <CustomerTable
       v-else
@@ -62,6 +63,7 @@
 import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useErrorMessage } from '@shared/composables/useErrorMessage';
+import BaseErrorState from '@shared/ui/components/BaseErrorState.vue';
 import CustomerTable from '../components/CustomerTable.vue';
 import { useCustomersQuery } from '../composables/useCustomersQuery';
 import { parseListQuery, toListQuery } from '../list-query';
@@ -73,7 +75,7 @@ const errorMessage = useErrorMessage();
 
 // A URL é a fonte da verdade da página e da busca; a query reage a ela.
 const params = computed(() => parseListQuery(route.query));
-const { data, error, isFetching } = useCustomersQuery(params);
+const { data, error, isFetching, refetch } = useCustomersQuery(params);
 
 const searchTerm = ref(params.value.search ?? '');
 // Voltar no histórico muda a busca da URL; o campo acompanha.

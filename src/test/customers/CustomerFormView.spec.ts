@@ -121,4 +121,14 @@ describe('CustomerFormView — edição', () => {
       'Sem conexão'
     );
   });
+
+  it('tenta buscar de novo pelo estado de erro', async () => {
+    vi.mocked(service.getCustomerRequest).mockRejectedValueOnce(httpError(500, 'Falha'));
+    const { wrapper } = await mountForm(7);
+
+    await wrapper.get('[data-cy="error-state-retry"]').trigger('click');
+    await flushPromises();
+
+    expect(wrapper.find('[data-cy="customer-form"]').exists()).toBe(true);
+  });
 });

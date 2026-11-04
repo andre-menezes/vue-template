@@ -4,13 +4,21 @@
       {{ isEdit ? $t('customers.form.editTitle') : $t('customers.form.createTitle') }}
     </h1>
 
-    <v-progress-linear v-if="isEdit && isPending" indeterminate color="primary" />
-    <v-alert
-      v-else-if="error"
-      :type="isNotFoundError(error) ? 'info' : 'error'"
-      variant="tonal"
-      :text="isNotFoundError(error) ? $t('customers.detail.notFound') : errorMessage(error)"
+    <BaseLoadingState v-if="isEdit && isPending" />
+    <BaseEmptyState
+      v-else-if="error && isNotFoundError(error)"
+      :title="$t('customers.detail.notFound')"
+      :description="$t('customers.detail.notFoundDescription')"
+      icon="person_off"
       data-cy="customer-form-load-error"
+    />
+    <BaseErrorState
+      v-else-if="error"
+      :message="errorMessage(error)"
+      retryable
+      :retrying="isFetching"
+      data-cy="customer-form-load-error"
+      @retry="refetch"
     />
     <v-card v-else variant="outlined" max-width="640" class="pa-4 pa-sm-6">
       <CustomerForm
@@ -28,6 +36,9 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useErrorMessage } from '@shared/composables/useErrorMessage';
+import BaseEmptyState from '@shared/ui/components/BaseEmptyState.vue';
+import BaseErrorState from '@shared/ui/components/BaseErrorState.vue';
+import BaseLoadingState from '@shared/ui/components/BaseLoadingState.vue';
 import CustomerForm from '../components/CustomerForm.vue';
 import { useCustomerQuery } from '../composables/useCustomerQuery';
 import {
@@ -44,7 +55,13 @@ const router = useRouter();
 const errorMessage = useErrorMessage();
 
 const isEdit = computed(() => props.id !== undefined);
-const { data: customer, error, isPending } = useCustomerQuery(() => props.id ?? null);
+const {
+  data: customer,
+  error,
+  isPending,
+  isFetching,
+  refetch,
+} = useCustomerQuery(() => props.id ?? null);
 
 const createMutation = useCreateCustomerMutation();
 const updateMutation = useUpdateCustomerMutation();

@@ -32,7 +32,8 @@
       "back": "Back to the list",
       "edit": "Edit",
       "delete": "Delete",
-      "notFound": "Customer not found. It may have been deleted.",
+      "notFound": "Customer not found",
+      "notFoundDescription": "It may have been deleted, or the address is wrong.",
       "noPhone": "Not provided"
     },
     "form": {
