@@ -15,6 +15,11 @@
 > Nota (2026-10-30): o hook `commit-msg` passou a validar também a linha em
 > branco após o título e o corpo em 72 colunas, regras que já estavam no
 > `docs/COMMIT-CONVENTIONS.md` mas não eram verificadas.
+>
+> Nota (2026-11-04): o fluxo de publicação de versões ficou documentado no
+> CONTRIBUTING (seção "Publicando uma versão"): `release/<versão>` a partir
+> da `develop`, PR para a `main`, tag `v<versão>` e merge de volta na
+> `develop`.
 
 ## Contexto e problema
 
