@@ -6,6 +6,8 @@ import BaseAvatar from '@shared/ui/components/BaseAvatar.vue';
 import BaseConfirmDialog from '@shared/ui/components/BaseConfirmDialog.vue';
 import BaseEventBlock from '@shared/ui/components/BaseEventBlock.vue';
 import BasePageHeader from '@shared/ui/components/BasePageHeader.vue';
+import BaseSegmentedControl from '@shared/ui/components/BaseSegmentedControl.vue';
+import BaseStatCard from '@shared/ui/components/BaseStatCard.vue';
 import BaseStatusChip from '@shared/ui/components/BaseStatusChip.vue';
 import { mountWithPlugins } from '@test/utils/mountWithPlugins';
 
@@ -167,5 +169,55 @@ describe('BaseConfirmDialog', () => {
     await open({ errorMessage: 'Falhou (HTTP 500)' });
 
     expect(inBody('confirm-dialog-error')?.textContent).toContain('Falhou (HTTP 500)');
+  });
+});
+
+describe('BaseStatCard', () => {
+  it('mostra valor, rótulo, detalhe e o ícone preenchido na cor', () => {
+    const wrapper = mountWithPlugins(BaseStatCard, {
+      props: { value: 78, label: 'Projetos', detail: 'no mês', icon: 'star', color: 'secondary' },
+    });
+
+    expect(wrapper.get('[data-cy=stat-card-value]').text()).toBe('78');
+    expect(wrapper.text()).toContain('Projetos');
+    expect(wrapper.text()).toContain('no mês');
+    expect(wrapper.get('.v-icon').classes()).toContain('text-secondary');
+    expect(wrapper.get('.v-icon').text()).toBe('star');
+  });
+
+  it('não repete o sufixo -fill de um ícone que já o tem', () => {
+    const wrapper = mountWithPlugins(BaseStatCard, {
+      props: { value: 1, label: 'Runtime', icon: 'rocket_launch-fill' },
+    });
+
+    expect(wrapper.get('.v-icon').text()).toBe('rocket_launch');
+    expect(wrapper.get('.v-icon').classes()).toContain('ms-fill');
+  });
+
+  it('sem ícone nem detalhe, mostra só o número e o rótulo', () => {
+    const wrapper = mountWithPlugins(BaseStatCard, { props: { value: '12', label: 'Tarefas' } });
+
+    expect(wrapper.find('.v-icon').exists()).toBe(false);
+    expect(wrapper.findAll('p')).toHaveLength(1);
+  });
+});
+
+describe('BaseSegmentedControl', () => {
+  const options = [
+    { value: 'week', label: 'Semana' },
+    { value: 'month', label: 'Mês' },
+  ];
+
+  it('marca a opção atual e emite a escolhida', async () => {
+    const wrapper = mountWithPlugins(BaseSegmentedControl, {
+      props: { modelValue: 'month', options, label: 'Período' },
+    });
+
+    expect(wrapper.get('[data-cy=segmented-option-month]').classes()).toContain('v-btn--active');
+    expect(wrapper.get('[data-cy=segmented-control]').attributes('aria-label')).toBe('Período');
+
+    await wrapper.get('[data-cy=segmented-option-week]').trigger('click');
+
+    expect(wrapper.emitted('update:modelValue')).toEqual([['week']]);
   });
 });
