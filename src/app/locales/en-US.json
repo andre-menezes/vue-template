@@ -16,12 +16,29 @@
     "eyebrow": "Error 404",
     "title": "Page not found",
     "description": "The address you entered does not point to an available page.",
-    "illustrationCredit": "Web illustrations by Storyset"
+    "goBack": "Go back"
   },
   "welcome": {
+    "eyebrow": "Home",
     "title": "Welcome to {appName}",
-    "description": "Project created from the Vue Template. Start by creating a module in src/modules/.",
-    "docsLink": "See the template documentation"
+    "description": "Project created from the Vue Template: layered architecture, data layer, i18n, accessibility and deploy ready. Start by creating a module in src/modules/.",
+    "docsLink": "See the template documentation",
+    "exampleLink": "See the CRUD example",
+    "nextSteps": "Next steps",
+    "steps": {
+      "module": {
+        "title": "Create a module",
+        "description": "Routes, screens, service and queries live together in the module folder; the side menu finds it on its own."
+      },
+      "test": {
+        "title": "Test with the coverage floor",
+        "description": "Unit tests with Vitest and E2E with Playwright and axe. CI fails below the coverage floor."
+      },
+      "deploy": {
+        "title": "Ship with Docker",
+        "description": "An Nginx image with SPA fallback, caching and security headers, ready for any cloud."
+      }
+    }
   },
   "pageTitle": {
     "home": "Home",
