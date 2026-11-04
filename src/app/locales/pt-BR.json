@@ -39,5 +39,8 @@
     "emptyTitle": "Nada por aqui",
     "errorTitle": "Não foi possível carregar",
     "retry": "Tentar novamente"
+  },
+  "notifications": {
+    "close": "Fechar"
   }
 }
