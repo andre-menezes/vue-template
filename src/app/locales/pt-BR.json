@@ -33,5 +33,11 @@
   "errors": {
     "unexpected": "Erro inesperado.",
     "requestFailed": "Erro na requisição"
+  },
+  "states": {
+    "loading": "Carregando…",
+    "emptyTitle": "Nada por aqui",
+    "errorTitle": "Não foi possível carregar",
+    "retry": "Tentar novamente"
   }
 }
