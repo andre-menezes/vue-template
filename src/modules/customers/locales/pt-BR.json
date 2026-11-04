@@ -47,8 +47,7 @@
     "delete": {
       "title": "Excluir cliente",
       "message": "Excluir {name}? Esta ação não pode ser desfeita.",
-      "confirm": "Excluir",
-      "cancel": "Cancelar"
+      "confirm": "Excluir"
     },
     "notify": {
       "created": "Cliente cadastrado: {name}.",

@@ -45,7 +45,7 @@ describe('CustomerDetailView', () => {
     const { wrapper } = await mountDetail();
 
     expect(service.getCustomerRequest).toHaveBeenCalledWith(7, expect.anything());
-    expect(wrapper.find('[data-cy="customer-detail-title"]').text()).toBe('Maria Souza');
+    expect(wrapper.find('[data-cy="page-header-title"]').text()).toBe('Maria Souza');
     expect(wrapper.find('[data-cy="customer-edit-btn"]').attributes('href')).toBe(
       '/customers/7/edit'
     );
@@ -74,7 +74,7 @@ describe('CustomerDetailView', () => {
     await wrapper.get('[data-cy="error-state-retry"]').trigger('click');
     await flushPromises();
 
-    expect(wrapper.find('[data-cy="customer-detail-title"]').text()).toBe('Maria Souza');
+    expect(wrapper.find('[data-cy="page-header-title"]').text()).toBe('Maria Souza');
   });
 
   it('exclui após confirmar e volta para a lista', async () => {
@@ -83,7 +83,7 @@ describe('CustomerDetailView', () => {
 
     await wrapper.find('[data-cy="customer-delete-btn"]').trigger('click');
     await flushPromises();
-    inBody('customer-delete-confirm-btn')?.click();
+    inBody('confirm-dialog-confirm')?.click();
     await flushPromises();
 
     expect(service.deleteCustomerRequest).toHaveBeenCalledWith(7);
@@ -100,16 +100,16 @@ describe('CustomerDetailView', () => {
 
     await wrapper.find('[data-cy="customer-delete-btn"]').trigger('click');
     await flushPromises();
-    inBody('customer-delete-confirm-btn')?.click();
+    inBody('confirm-dialog-confirm')?.click();
     await flushPromises();
 
-    expect(inBody('customer-delete-error')?.textContent).toContain('Não excluiu');
+    expect(inBody('confirm-dialog-error')?.textContent).toContain('Não excluiu');
     expect(router.currentRoute.value.name).toBe('CustomerDetail');
 
-    inBody('customer-delete-cancel-btn')?.click();
+    inBody('confirm-dialog-cancel')?.click();
     await wrapper.find('[data-cy="customer-delete-btn"]').trigger('click');
     await flushPromises();
 
-    expect(inBody('customer-delete-error')).toBeNull();
+    expect(inBody('confirm-dialog-error')).toBeNull();
   });
 });

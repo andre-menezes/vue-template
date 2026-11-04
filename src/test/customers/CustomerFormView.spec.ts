@@ -38,7 +38,7 @@ describe('CustomerFormView — cadastro', () => {
   it('mostra o formulário vazio sem buscar cliente', async () => {
     const { wrapper } = await mountForm();
 
-    expect(wrapper.find('[data-cy="customer-form-title"]').text()).toBe('Novo cliente');
+    expect(wrapper.find('[data-cy="page-header-title"]').text()).toBe('Novo cliente');
     expect(wrapper.find('[data-cy="customer-form"]').exists()).toBe(true);
     expect(service.getCustomerRequest).not.toHaveBeenCalled();
   });
@@ -87,7 +87,7 @@ describe('CustomerFormView — edição', () => {
   it('preenche o formulário com o cliente', async () => {
     const { wrapper } = await mountForm(7);
 
-    expect(wrapper.find('[data-cy="customer-form-title"]').text()).toBe('Editar cliente');
+    expect(wrapper.find('[data-cy="page-header-title"]').text()).toBe('Editar cliente');
     expect(
       wrapper.find<HTMLInputElement>('[data-cy="customer-name-input"] input').element.value
     ).toBe('Maria Souza');

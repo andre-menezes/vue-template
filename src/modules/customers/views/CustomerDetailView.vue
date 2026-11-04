@@ -27,11 +27,11 @@
       @retry="refetch"
     />
     <template v-else-if="customer">
-      <div class="d-flex flex-wrap align-center justify-space-between ga-4 mb-6">
-        <h1 class="text-h4 font-weight-bold mb-0" data-cy="customer-detail-title">
-          {{ customer.name }}
-        </h1>
-        <div class="d-flex ga-2">
+      <BasePageHeader :title="customer.name" :subtitle="customer.email">
+        <template #prepend>
+          <BaseAvatar :name="customer.name" :size="56" decorative />
+        </template>
+        <template #actions>
           <v-btn
             :to="{ name: 'CustomerEdit', params: { id } }"
             variant="tonal"
@@ -50,15 +50,18 @@
           >
             {{ $t('customers.detail.delete') }}
           </v-btn>
-        </div>
-      </div>
+        </template>
+      </BasePageHeader>
 
       <CustomerDetails :customer="customer" />
 
-      <CustomerDeleteDialog
+      <BaseConfirmDialog
         v-model="deleteDialogOpen"
-        :customer-name="customer.name"
-        :deleting="deleteMutation.isPending.value"
+        :title="$t('customers.delete.title')"
+        :message="$t('customers.delete.message', { name: customer.name })"
+        :confirm-label="$t('customers.delete.confirm')"
+        tone="error"
+        :loading="deleteMutation.isPending.value"
         :error-message="deleteMutation.error.value && errorMessage(deleteMutation.error.value)"
         @confirm="confirmDelete(customer.name)"
       />
@@ -72,10 +75,12 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useErrorMessage } from '@shared/composables/useErrorMessage';
 import { useNotify } from '@shared/composables/useNotify';
+import BaseAvatar from '@shared/ui/components/BaseAvatar.vue';
+import BaseConfirmDialog from '@shared/ui/components/BaseConfirmDialog.vue';
 import BaseEmptyState from '@shared/ui/components/BaseEmptyState.vue';
 import BaseErrorState from '@shared/ui/components/BaseErrorState.vue';
 import BaseLoadingState from '@shared/ui/components/BaseLoadingState.vue';
-import CustomerDeleteDialog from '../components/CustomerDeleteDialog.vue';
+import BasePageHeader from '@shared/ui/components/BasePageHeader.vue';
 import CustomerDetails from '../components/CustomerDetails.vue';
 import { useDeleteCustomerMutation } from '../composables/useCustomerMutations';
 import { useCustomerQuery } from '../composables/useCustomerQuery';
