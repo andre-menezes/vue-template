@@ -114,7 +114,13 @@ copie o [.env.example](../.env.example) para `.env.development.local`.
 - Crie as labels de `.github/labels.md`.
 - Confira o `.github/dependabot.yml` (ADR-0035).
 
-## 8. Validar e fazer o primeiro commit
+## 8. Preparar o deploy
+
+A imagem de produção (Docker + Nginx) já vem pronta: veja o
+[DEPLOY.md](DEPLOY.md). Defina as `VITE_*` de cada ambiente por
+`--build-arg` e, se a API estiver em outro domínio, a `CSP_CONNECT_SRC`.
+
+## 9. Validar e fazer o primeiro commit
 
 ```bash
 pnpm lint && pnpm build && pnpm test:coverage && pnpm test:e2e

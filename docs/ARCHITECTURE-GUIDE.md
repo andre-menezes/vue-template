@@ -94,6 +94,7 @@ expõe um ponto de registro e o `app` injeta a implementação no bootstrap.
 
 ```text
 .
+├── docker/                        # Configuração do Nginx da imagem de produção (ADR-0041)
 ├── docs/                          # Documentação arquitetural e guias
 ├── e2e/                           # Testes end-to-end (Playwright)
 │   ├── *.spec.ts                  # Specs E2E (um arquivo por página/fluxo)
@@ -121,6 +122,7 @@ expõe um ponto de registro e o `app` injeta a implementação no bootstrap.
 │   │   └── assets/                # Arquivos estáticos compartilhados
 │   ├── test/                      # Testes unitários e de integração (Vitest)
 │   └── types/                     # Contratos TypeScript centralizados
+├── Dockerfile                     # Imagem de produção: build + Nginx (ADR-0041)
 ├── .editorconfig                  # Configuração de editor (LF, UTF-8, 2 espaços)
 ├── .gitattributes                 # Normalização de line endings (eol=lf)
 ├── .prettierrc                    # Configuração do Prettier
