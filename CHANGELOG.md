@@ -67,6 +67,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- Estados de UI padronizados em `shared/ui/components`: `BaseLoadingState` (anunciado com `role="status"`), `BaseEmptyState` (título, descrição, ícone e ações) e `BaseErrorState` (mensagem e "Tentar novamente"), com textos em `states.*` nos dois locales. O módulo `customers` passa a usá-los, e a busca de lista e detalhe pode ser refeita pelo estado de erro (roadmap 2.4).
 - Upload de arquivo, simétrico ao download: `httpClient.upload` envia `multipart/form-data`; `toFormData`, `validateFile` (tamanho, tipo pelo formato do `accept` e arquivo vazio) e `formatFileSize` em `@shared/utils/file-upload`; `validateAndUpload` e `FileValidationError` em `@shared/helpers/file-upload`; exemplo `uploadReportAttachmentRequest` no service de relatórios (roadmap 2.3).
 - Padrão de paginação reutilizável: `PageParams` e `PaginatedResponse<TItem>` em `@typings/services`, e `parsePageParams`, `toPageQuery` e `firstQueryValue` em `@shared/utils/pagination` para ler e montar `page`/`pageSize` na URL, com `DEFAULT_PAGE_SIZE` e `MAX_PAGE_SIZE` de `@core/config`. O módulo `customers` passa a usá-los (roadmap 2.2).
 - Módulo `customers` (`/customers`), o CRUD de exemplo citado no Onboarding: listagem paginada com busca e página na URL, detalhe, cadastro, edição e exclusão confirmada, com queries e mutations do TanStack Query, chaves em `customerKeys` e textos em pt-BR e en-US (ADR-0039, spec `FEAT-001`).
