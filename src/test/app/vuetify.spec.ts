@@ -74,3 +74,58 @@ describe('locale do Vuetify', () => {
     });
   });
 });
+
+/** Contraste WCAG 2.1 entre duas cores `#RRGGBB`. */
+function contrast(a: string, b: string) {
+  const luminance = (hex: string) => {
+    const [r = 0, g = 0, bl = 0] = [1, 3, 5].map((i) => {
+      const c = Number.parseInt(hex.slice(i, i + 2), 16) / 255;
+      return c <= 0.040_45 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+  };
+  const [light, dark] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return ((light ?? 0) + 0.05) / ((dark ?? 0) + 0.05);
+}
+
+describe('tema do design system Agenda', () => {
+  const themes = createAppVuetify().theme.themes.value;
+  const light: Record<string, unknown> = { ...themes.light?.colors };
+  const dark: Record<string, unknown> = { ...themes.dark?.colors };
+  const hues = ['indigo', 'teal', 'violet', 'pink', 'orange', 'amber', 'green', 'sky'];
+  const textTones = ['primary', 'secondary', 'accent', 'info', 'success', 'warning'];
+
+  it('os dois temas definem os mesmos nomes de cor', () => {
+    expect(Object.keys(dark).sort()).toEqual(Object.keys(light).sort());
+  });
+
+  it.each(['light', 'dark'] as const)(
+    'tem as três cores de evento por matiz no tema %s',
+    (name) => {
+      const colors = name === 'light' ? light : dark;
+
+      for (const hue of hues) {
+        for (const key of [`event-${hue}`, `event-${hue}-bg`, `on-event-${hue}-bg`]) {
+          expect(colors[key], key).toMatch(/^#[0-9A-F]{6}$/);
+        }
+        expect(
+          contrast(String(colors[`on-event-${hue}-bg`]), String(colors[`event-${hue}-bg`])),
+          hue
+        ).toBeGreaterThanOrEqual(4.5);
+      }
+    }
+  );
+
+  it.each(['light', 'dark'] as const)('os tons -text passam no AA no tema %s', (name) => {
+    const colors = name === 'light' ? light : dark;
+
+    for (const tone of textTones) {
+      for (const base of ['background', 'surface']) {
+        expect(
+          contrast(String(colors[`${tone}-text`]), String(colors[base])),
+          `${tone}-text sobre ${base}`
+        ).toBeGreaterThanOrEqual(4.5);
+      }
+    }
+  });
+});
