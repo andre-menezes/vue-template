@@ -70,7 +70,7 @@ o "exemplo canônico" citado no Onboarding.
 | --- | ------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------- | ----- | ------------ |
 | 2.1 | **Módulo CRUD de exemplo**      | Listagem com paginação + detalhe + criar/editar/excluir                 | módulo: `types → api → query/mutation → view → components` | Médio | ✅ Concluído |
 | 2.2 | **Padrão de paginação/filtros** | Tipos e util de paginação reutilizáveis (`DEFAULT_PAGE_SIZE` já existe) | `types/services`, `utils`                                  | Baixo | ✅ Concluído |
-| 2.3 | **Upload de arquivo**           | Service + helper + util simétricos ao download (multipart)              | `shared/api`, `helpers`, `utils`                           | Médio | Pendente     |
+| 2.3 | **Upload de arquivo**           | Service + helper + util simétricos ao download (multipart)              | `shared/api`, `helpers`, `utils`                           | Médio | ✅ Concluído |
 | 2.4 | **Estados de UI padronizados**  | Loading/empty/error como componentes compartilhados reutilizáveis       | `shared/ui`                                                | Baixo | Pendente     |
 
 ## Fase 3 — Experiência e robustez
@@ -122,10 +122,14 @@ pelo módulo CRUD de exemplo (2.1) que vira o "exemplo canônico" do Onboarding.
   `@typings/services`, e `parsePageParams`/`toPageQuery` em
   `@shared/utils/pagination` para ler e montar a página da URL. O módulo
   `customers` estende os dois só com a busca.
+- **2.3 (concluído):** `httpClient.upload` (POST multipart), `toFormData`,
+  `validateFile` e `formatFileSize` em `@shared/utils/file-upload`,
+  `validateAndUpload` em `@shared/helpers/file-upload` e o exemplo
+  `uploadReportAttachmentRequest`. Sem lib nova, então sem ADR; progresso de
+  envio fica de fora (o `fetch` não o informa).
 
 ## Itens que exigem ADR antes de executar
 
-- 2.3 Upload (se exigir lib de multipart específica).
 - 3.1/3.2 Padrão de notificação e mapeamento dos erros HTTP para ela (o
   handler global de erros já está na ADR-0028).
 - 3.3 Biblioteca de formulários/validação.

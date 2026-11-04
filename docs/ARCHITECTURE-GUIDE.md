@@ -221,9 +221,10 @@ Documentação detalhada: [src/shared/api/README.md](../src/shared/api/README.md
 **Resumo:**
 
 - `shared/api/instances/index.ts` → factory que recebe `baseURL`, cria **uma**
-  instância do ofetch e retorna `get`, `post`, `put`, `patch`, `delete` e
-  `download`, todos com `(url, { query?, body?, headers?, signal? })` e
-  tipagem genérica, sem casts.
+  instância do ofetch e retorna `get`, `post`, `put`, `patch`, `delete`,
+  `download` e `upload` (multipart), todos com
+  `(url, { query?, body?, headers?, signal? })` (no `upload`, `fields` no lugar
+  de `body`) e tipagem genérica, sem casts.
 - Instância pré-configurada: `httpClient` (API da aplicação, `VITE_API_BASE_URL`).
 - Services expõem funções com nome de negócio. Ficam em `modules/<x>/api/`
   quando um módulo só os usa, e em `shared/api/services/` quando são
@@ -262,8 +263,8 @@ Documentação detalhada: [src/shared/README.md](../src/shared/README.md)
 | Sim                       | Não                       | `helpers/`     |
 | Sim                       | Sim                       | `composables/` |
 
-- **utils**: funções puras — `formatCurrency`, `truncate`, `formatDate`.
-- **helpers**: interagem com stores/services/DOM — `downloadAndSave`.
+- **utils**: funções puras — `formatCurrency`, `truncate`, `formatDate`, `validateFile`.
+- **helpers**: interagem com stores/services/DOM — `downloadAndSave`, `validateAndUpload`.
 - **composables**: lógica reativa — `useTheme`.
 
 ---
