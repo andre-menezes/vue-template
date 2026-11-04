@@ -7,6 +7,7 @@ Documentação arquitetural e guias de referência do projeto.
 | Documento                                            | Descrição                                      |
 | ---------------------------------------------------- | ---------------------------------------------- |
 | [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)       | Guia central de arquitetura (índice principal) |
+| [NEW-PROJECT.md](NEW-PROJECT.md)                     | Como começar um projeto a partir do template   |
 | [ONBOARDING.md](ONBOARDING.md)                       | Como criar uma feature passo a passo           |
 | [COMMIT-CONVENTIONS.md](COMMIT-CONVENTIONS.md)       | Padrão de mensagens de commit                  |
 | [CODE-REVIEW-CHECKLIST.md](CODE-REVIEW-CHECKLIST.md) | Critérios de aprovação de PR                   |
