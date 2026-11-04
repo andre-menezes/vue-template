@@ -18,6 +18,17 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Adicionado
+
+- Notificações globais: `notification.store`, `useNotify()` (`success`, `info`, `warning`, `error`) e o snackbar `TheNotifications` no `App.vue`, com fundo `surface` para manter o contraste AA (ADR-0040, roadmap 3.1).
+- Erro de gravação notificado: o `MutationCache` do `QueryClient` leva o erro de toda mutation ao `notifyHttpError`, com a mensagem RFC 9457; `meta: { notifyError: false }` (tipado em `@typings/query`) desliga o aviso quando a tela já mostra o erro (ADR-0040, roadmap 3.2).
+- O CRUD de clientes notifica cadastro, edição e exclusão.
+
+### Alterado
+
+- O `matchMedia` simulado dos testes avalia `min-width`/`max-width` contra `window.innerWidth`, como o `useDisplay` do Vuetify 4.3 espera; alias de ícone `clock` mapeado (Vuetify 4.3).
+- Dependências atualizadas: 17 minor/patch (Vuetify 4.3.1, vue-router 5.4.0, pinia 4.1.0, vite 8.3.5, eslint 10.14.0 e outras), TypeScript 6.0.3 e as actions do CI (checkout, setup-node, upload-artifact e pnpm/action-setup).
+
 ## [1.0.0] - 2026-11-04
 
 Primeira versão estável do template: arquitetura em camadas, camada de dados completa com o CRUD de exemplo, i18n em pt-BR e en-US, acessibilidade verificada e CI no GitHub Actions.
