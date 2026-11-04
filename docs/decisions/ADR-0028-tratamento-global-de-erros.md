@@ -5,6 +5,9 @@
 - **Decisores:** Andre Menezes
 - **Relacionadas:** ADR-0027 (TanStack Query para dados assíncronos)
 
+> Nota (ADR-0043): o reporter do console ganhou o par do Sentry, ligado por
+> `VITE_SENTRY_DSN` (`@app/providers/monitoring`). Sem o DSN, nada muda.
+
 ## Contexto e problema
 
 O template não tinha `app.config.errorHandler` nem captura de

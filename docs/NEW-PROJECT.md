@@ -106,6 +106,7 @@ copie o [.env.example](../.env.example) para `.env.development.local`.
 | `VITE_API_BASE_URL`       | URL da API real; com uma URL absoluta, a API simulada não atua     |
 | `VITE_APP_DEFAULT_LOCALE` | Idioma inicial (`pt-BR` ou `en-US`)                                |
 | `API_MOCK`                | `false` para desligar a API simulada com uma base relativa (proxy) |
+| `VITE_SENTRY_DSN`         | Liga o envio de erros ao Sentry (ADR-0043)                         |
 
 ## 7. Configurar o repositório
 
