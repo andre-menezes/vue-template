@@ -6,7 +6,9 @@ import type {
   RequestOptions,
   ReadRequestOptions,
   BinaryResponse,
+  UploadRequestOptions,
 } from '@typings/services';
+import { toFormData } from '@shared/utils/file-upload';
 
 /**
  * Cancelamento da requisição. Sem `signal`, vale o timeout padrão do ofetch.
@@ -103,6 +105,20 @@ export function createApiInstance(baseURL: string) {
         blob: response._data,
         contentDisposition: response.headers.get('content-disposition'),
       };
+    },
+
+    /**
+     * Envia arquivos em `multipart/form-data` (POST). O navegador define o
+     * `Content-Type` com o boundary do `FormData`; não o informe nos headers.
+     */
+    upload<T = unknown, TQuery extends QueryParams = QueryParams>(
+      url: string,
+      { fields, query, headers, signal }: UploadRequestOptions<TQuery>
+    ): Promise<T> {
+      return $fetch<T>(
+        url,
+        toFetchOptions('POST', { query, headers, signal, body: toFormData(fields) })
+      );
     },
   };
 }

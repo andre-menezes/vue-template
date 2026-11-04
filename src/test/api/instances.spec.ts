@@ -150,4 +150,19 @@ describe('instâncias HTTP', () => {
       'Download sem conteúdo binário'
     );
   });
+
+  it('envia arquivos em multipart por POST, sem fixar o Content-Type', async () => {
+    const file = new File(['pdf'], 'contrato.pdf', { type: 'application/pdf' });
+
+    await httpClient.upload('/reports/1/attachments', {
+      fields: { file, description: 'Contrato' },
+      query: { versao: 2 },
+    });
+
+    const options = lastCallOptions(instanceFor(API_BASE_URL).fetch);
+    expect(options).toMatchObject({ method: 'POST', query: { versao: 2 } });
+    expect(options.body).toBeInstanceOf(FormData);
+    expect((options.body as FormData).get('description')).toBe('Contrato');
+    expect(options.headers).toBeUndefined();
+  });
 });
