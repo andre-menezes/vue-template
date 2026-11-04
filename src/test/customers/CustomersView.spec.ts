@@ -96,4 +96,15 @@ describe('CustomersView', () => {
     expect(wrapper.find('[data-cy="customers-error"]').text()).toContain('Banco fora do ar');
     expect(wrapper.find('[data-cy="customer-table"]').exists()).toBe(false);
   });
+
+  it('tenta de novo pelo estado de erro', async () => {
+    vi.mocked(service.getCustomersRequest).mockRejectedValueOnce(httpError(500, 'Fora do ar'));
+    const { wrapper } = await mountList();
+
+    await wrapper.get('[data-cy="error-state-retry"]').trigger('click');
+    await flushPromises();
+
+    expect(service.getCustomersRequest).toHaveBeenCalledTimes(2);
+    expect(wrapper.find('[data-cy="customer-link"]').exists()).toBe(true);
+  });
 });

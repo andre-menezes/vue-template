@@ -33,5 +33,11 @@
   "errors": {
     "unexpected": "Unexpected error.",
     "requestFailed": "Request failed"
+  },
+  "states": {
+    "loading": "Loading…",
+    "emptyTitle": "Nothing here",
+    "errorTitle": "Couldn't load",
+    "retry": "Try again"
   }
 }

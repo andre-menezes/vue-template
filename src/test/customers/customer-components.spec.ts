@@ -69,6 +69,17 @@ describe('CustomerTable', () => {
     expect(wrapper.text()).toContain('Inativo');
   });
 
+  it('mostra o estado vazio sem clientes', async () => {
+    const router = await createCustomersRouter();
+    const wrapper = mountWithPlugins(CustomerTable, {
+      props: { customers: [], total: 0, page: 1, pageSize: 10, loading: false },
+      global: { plugins: [router] },
+    });
+    await flushPromises();
+
+    expect(wrapper.get('[data-cy="empty-state-title"]').text()).toBe('Nenhum cliente encontrado.');
+  });
+
   it('não emite nada quando as opções não mudam (montagem)', async () => {
     const wrapper = await mountTable();
 

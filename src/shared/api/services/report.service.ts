@@ -1,5 +1,5 @@
 /**
- * Service de relatórios — exemplo de download de arquivo via API.
+ * Service de relatórios — exemplo de download e de upload de arquivo via API.
  *
  * O backend (Java) responde com um `InputStream` e o cabeçalho
  * `Content-Disposition: attachment; filename="relatorio.pdf"`.
@@ -7,7 +7,7 @@
  * para que o helper/view faça o salvamento.
  */
 import { httpClient } from '../instances';
-import type { BinaryResponse } from '@typings/services';
+import type { BinaryResponse, UploadedFile } from '@typings/services';
 
 /**
  * Baixa o relatório de um recurso específico.
@@ -20,4 +20,22 @@ import type { BinaryResponse } from '@typings/services';
  */
 export function downloadReportRequest(id: number): Promise<BinaryResponse> {
   return httpClient.download(`/reports/${id}/pdf`);
+}
+
+/**
+ * Anexa um arquivo a um relatório, em `multipart/form-data` (campo `file`).
+ * Valide o arquivo antes com `validateAndUpload` (`@shared/helpers/file-upload`).
+ *
+ * @example
+ * const attachment = await uploadReportAttachmentRequest(123, file);
+ */
+export function uploadReportAttachmentRequest(
+  id: number,
+  file: File,
+  { signal }: { signal?: AbortSignal } = {}
+): Promise<UploadedFile> {
+  return httpClient.upload<UploadedFile>(`/reports/${id}/attachments`, {
+    fields: { file },
+    signal,
+  });
 }

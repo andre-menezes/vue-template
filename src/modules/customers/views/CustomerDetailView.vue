@@ -10,13 +10,21 @@
       {{ $t('customers.detail.back') }}
     </v-btn>
 
-    <v-progress-linear v-if="isPending" indeterminate color="primary" />
-    <v-alert
-      v-else-if="error"
-      :type="isNotFoundError(error) ? 'info' : 'error'"
-      variant="tonal"
-      :text="isNotFoundError(error) ? $t('customers.detail.notFound') : errorMessage(error)"
+    <BaseLoadingState v-if="isPending" />
+    <BaseEmptyState
+      v-else-if="error && isNotFoundError(error)"
+      :title="$t('customers.detail.notFound')"
+      :description="$t('customers.detail.notFoundDescription')"
+      icon="person_off"
       data-cy="customer-detail-error"
+    />
+    <BaseErrorState
+      v-else-if="error"
+      :message="errorMessage(error)"
+      retryable
+      :retrying="isFetching"
+      data-cy="customer-detail-error"
+      @retry="refetch"
     />
     <template v-else-if="customer">
       <div class="d-flex flex-wrap align-center justify-space-between ga-4 mb-6">
@@ -62,6 +70,9 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useErrorMessage } from '@shared/composables/useErrorMessage';
+import BaseEmptyState from '@shared/ui/components/BaseEmptyState.vue';
+import BaseErrorState from '@shared/ui/components/BaseErrorState.vue';
+import BaseLoadingState from '@shared/ui/components/BaseLoadingState.vue';
 import CustomerDeleteDialog from '../components/CustomerDeleteDialog.vue';
 import CustomerDetails from '../components/CustomerDetails.vue';
 import { useDeleteCustomerMutation } from '../composables/useCustomerMutations';
@@ -73,7 +84,7 @@ const props = defineProps<{ id: number }>();
 const router = useRouter();
 const errorMessage = useErrorMessage();
 
-const { data: customer, error, isPending } = useCustomerQuery(() => props.id);
+const { data: customer, error, isPending, isFetching, refetch } = useCustomerQuery(() => props.id);
 const deleteMutation = useDeleteCustomerMutation();
 const deleteDialogOpen = ref(false);
 

@@ -26,7 +26,7 @@ Voltar para o guia geral: [../../../docs/ARCHITECTURE-GUIDE.md](../../../docs/AR
 
 Novas instâncias (ex.: uma API de terceiros) são criadas via
 `createApiInstance(baseURL)` e expõem os métodos `get`, `post`, `put`, `patch`,
-`delete` e `download`.
+`delete`, `download` e `upload`.
 
 Não há tratamento global de autenticação (401/403) nem envio de credenciais:
 o template não tem login (ADR-0021). Quando o login próprio existir, esse
@@ -107,6 +107,9 @@ httpClient.download<TQuery>(url, { query?, headers?, signal? }) // → { blob, c
 httpClient.post<T, TQuery, TBody>(url, { query?, body?, headers?, signal? })
 httpClient.put<T, TQuery, TBody>(url, { query?, body?, headers?, signal? })
 httpClient.patch<T, TQuery, TBody>(url, { query?, body?, headers?, signal? })
+
+// upload — POST multipart/form-data montado a partir de `fields`
+httpClient.upload<T, TQuery>(url, { fields, query?, headers?, signal? })
 ```
 
 - `query` aceita qualquer objeto, inclusive uma `interface` de filtro do
@@ -134,6 +137,38 @@ httpClient.put<Item>('/items/1', {
   body: { name: 'Atualizado' },
 });
 ```
+
+## Upload de arquivo
+
+O par do download: `httpClient.upload` envia `multipart/form-data` (POST). Os
+`fields` viram o `FormData` (`toFormData`, em `@shared/utils/file-upload`):
+arquivos mantêm o nome, arrays repetem o campo e `null`/`undefined` ficam de
+fora. Não informe `Content-Type`: o navegador o define com o boundary.
+
+```ts
+// service — shared/api/services/report.service.ts
+export function uploadReportAttachmentRequest(id: number, file: File) {
+  return httpClient.upload<UploadedFile>(`/reports/${id}/attachments`, { fields: { file } });
+}
+
+// na tela — valida antes de enviar (tamanho, tipo, vazio)
+import { FileValidationError, validateAndUpload } from '@shared/helpers/file-upload';
+
+try {
+  await validateAndUpload(file, { maxBytes: 5 * 1024 ** 2, accept: ['.pdf'] }, (valid) =>
+    uploadReportAttachmentRequest(123, valid)
+  );
+} catch (error) {
+  if (error instanceof FileValidationError) {
+    // error.violation: 'empty' | 'tooLarge' | 'invalidType' → mensagem traduzida
+  }
+}
+```
+
+Numa tela com TanStack Query, chame o `validateAndUpload` no `mutationFn` de
+um `useMutation`. Para mostrar o limite, use `formatFileSize(rules.maxBytes)`.
+O `fetch` não informa o progresso do envio; uma barra de progresso exigiria
+`XMLHttpRequest` e uma decisão própria (ADR).
 
 ## Cancelando uma requisição
 

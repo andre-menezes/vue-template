@@ -86,6 +86,18 @@ test.describe('Clientes', () => {
     await page.goto('/customers');
 
     await expect(page.getByTestId('customers-error')).toContainText('Banco indisponível.');
+    await expect(page.getByTestId('error-state-retry')).toBeVisible();
+    await expectNoA11yViolations(page);
+  });
+
+  test('mostra os estados vazio e de não encontrado sem violações WCAG', async ({ page }) => {
+    await page.goto('/customers?search=ninguem');
+    await expect(page.getByTestId('empty-state-title')).toHaveText('Nenhum cliente encontrado.');
+    await expectNoA11yViolations(page);
+
+    await page.goto('/customers/999');
+    await expect(page.getByTestId('customer-detail-error')).toContainText('Cliente não encontrado');
+    await expectNoA11yViolations(page);
   });
 
   test('não tem violações WCAG A/AA na lista, no detalhe e no formulário', async ({ page }) => {

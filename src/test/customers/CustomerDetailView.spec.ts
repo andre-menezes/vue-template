@@ -66,6 +66,16 @@ describe('CustomerDetailView', () => {
     expect(wrapper.find('[data-cy="customer-detail-error"]').text()).toContain('Falha no servidor');
   });
 
+  it('tenta buscar de novo pelo estado de erro', async () => {
+    vi.mocked(service.getCustomerRequest).mockRejectedValueOnce(httpError(500, 'Falha'));
+    const { wrapper } = await mountDetail();
+
+    await wrapper.get('[data-cy="error-state-retry"]').trigger('click');
+    await flushPromises();
+
+    expect(wrapper.find('[data-cy="customer-detail-title"]').text()).toBe('Maria Souza');
+  });
+
   it('exclui após confirmar e volta para a lista', async () => {
     vi.mocked(service.deleteCustomerRequest).mockResolvedValue(undefined);
     const { wrapper, router } = await mountDetail();
