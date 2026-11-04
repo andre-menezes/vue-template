@@ -205,10 +205,14 @@ export default [
       '@intlify/vue-i18n/no-unused-keys': [
         'error',
         // `nav.*` e `pageTitle.*` chegam ao `$t` por variável (`item.titleKey`
-        // no menu, `meta.titleKey` no título da página), que a regra não
-        // consegue rastrear. Um teste garante que toda rota aponta para uma
-        // chave existente.
-        { extensions: ['.ts', '.vue'], ignores: ['/^nav\\./', '/^pageTitle\\./'] },
+        // no menu, `meta.titleKey` no título da página), e as mensagens de
+        // validação (`validation.*`, `<módulo>.validation.*`) saem dos schemas
+        // do Zod (ADR-0042); a regra não rastreia nenhum dos dois. Testes
+        // garantem que rotas e schemas apontam para chaves existentes.
+        {
+          extensions: ['.ts', '.vue'],
+          ignores: ['/^nav\\./', '/^pageTitle\\./', '/^(\\w+\\.)?validation\\./'],
+        },
       ],
       '@intlify/vue-i18n/no-raw-text': [
         'error',

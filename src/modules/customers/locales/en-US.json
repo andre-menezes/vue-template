@@ -42,9 +42,7 @@
       "optional": "Optional",
       "activeLabel": "Active customer",
       "save": "Save",
-      "cancel": "Cancel",
-      "required": "Required field.",
-      "invalidEmail": "Enter a valid email."
+      "cancel": "Cancel"
     },
     "delete": {
       "title": "Delete customer",
@@ -56,6 +54,9 @@
       "created": "Customer created: {name}.",
       "updated": "Customer updated: {name}.",
       "deleted": "Customer deleted: {name}."
+    },
+    "validation": {
+      "nameTooLong": "Use at most 120 characters."
     }
   }
 }

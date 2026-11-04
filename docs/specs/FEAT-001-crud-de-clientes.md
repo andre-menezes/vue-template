@@ -74,8 +74,7 @@ RFC 9457 (`application/problem+json`).
 
 ## Observações
 
-- A validação usa as `rules` do Vuetify até a escolha da biblioteca de
-  formulários (roadmap 3.3).
+- A validação usa VeeValidate + Zod (`customers/schemas.ts`, ADR-0042).
 - Sem notificação de sucesso: depende do padrão de snackbar (roadmap 3.1).
 
 ---

@@ -42,5 +42,9 @@
   },
   "notifications": {
     "close": "Close"
+  },
+  "validation": {
+    "required": "Required field.",
+    "email": "Enter a valid email."
   }
 }

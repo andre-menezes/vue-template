@@ -81,7 +81,7 @@ Objetivo: padronizar feedback ao usuário e endurecer o tratamento de erros.
 | --- | ---------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------- | ----- | ------------ |
 | 3.1 | **Notificações (snackbar/toast)**  | Store + composable `useNotify` + render global                                                        | `shared/stores`, `composables`, `app` | Baixo | ✅ Concluído |
 | 3.2 | **Tratamento global de erro HTTP** | Interceptor/handler central mapeando RFC 9457 → notificação                                           | `shared/api`, `helpers`               | Médio | ✅ Concluído |
-| 3.3 | **Formulários + validação**        | Padrão de form com validação (avaliar lib em ADR) e exemplo no CRUD                                   | `shared/ui`, `composables`            | Médio | Pendente     |
+| 3.3 | **Formulários + validação**        | Padrão de form com validação (avaliar lib em ADR) e exemplo no CRUD                                   | `shared/ui`, `composables`            | Médio | ✅ Concluído |
 | 3.4 | **Acessibilidade (a11y)**          | Auditoria das telas (foco, labels, contraste) + ajustes                                               | transversal                           | Baixo | ✅ Concluído |
 | 3.5 | **Login próprio**                  | Tela de login, guard de rotas e sessão integrados ao backend de autenticação próprio (quando existir) | `app`, `shared`, `core`               | Alto  | Pendente     |
 
@@ -91,6 +91,10 @@ Objetivo: padronizar feedback ao usuário e endurecer o tratamento de erros.
   mostra o erro declara `meta: { notifyError: false }`. Erros de leitura
   ficam na tela (`BaseErrorState`), e os não tratados seguem no
   `ErrorReporter` (ADR-0028).
+- **3.3 (concluído, ADR-0042):** VeeValidate + Zod 4, com o adapter
+  `toTypedSchema` em `@shared/utils/form-schema`, schemas no módulo e
+  mensagens como chaves de i18n (`validation.*`). O formulário de clientes é
+  o exemplo.
 - **3.4 (concluído, PR #8):** o E2E roda o axe (WCAG 2.1 A/AA) em todas as
   páginas, e o tema ganhou tons de texto com contraste AA (ADR-0029).
 
@@ -135,7 +139,6 @@ Onboarding. O próximo foco é a **Fase 3 (UX/robustez)**.
 
 ## Itens que exigem ADR antes de executar
 
-- 3.3 Biblioteca de formulários/validação.
 - 3.5 Fluxo de autenticação do login próprio.
 - 4.x Toda a estratégia multi-framework.
 
