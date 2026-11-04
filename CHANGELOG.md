@@ -18,6 +18,25 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [1.1.0] - 2026-11-04
+
+Experiência e produção: notificações e erro de gravação notificado, formulários com VeeValidate + Zod, imagem Docker + Nginx e monitoramento opcional com o Sentry.
+
+### Adicionado
+
+- Monitoramento de erros opcional com o Sentry (`@sentry/vue` 11.8): com `VITE_SENTRY_DSN`, os erros do `registerErrorHandlers` vão também para o Sentry, com ambiente e versão; sem o DSN, o SDK nem é baixado (ADR-0043).
+- Formulários com VeeValidate 4.15 + Zod 4.6: adapter `toTypedSchema` em `@shared/utils/form-schema`, schema `customers/schemas.ts` (trim, telefone vazio como `null`, limite de 120 caracteres no nome) e mensagens em `validation.*`; o `CustomerForm` deixa as `rules` do Vuetify (ADR-0042, roadmap 3.3).
+- Imagem de produção: `Dockerfile` multi-stage (Node 24 + pnpm, depois `nginx-unprivileged` na porta 8080) e `docker/nginx.conf.template` com fallback da SPA, cache dos assets, gzip, `/healthz`, CSP e cabeçalhos de segurança; job `docker` no CI e guia `docs/DEPLOY.md` (ADR-0041).
+- Extensões recomendadas do VS Code: Claude Code, Vitest, Playwright, i18n Ally (com os locales dos módulos), Error Lens, GitLens e Container Tools.
+- Notificações globais: `notification.store`, `useNotify()` (`success`, `info`, `warning`, `error`) e o snackbar `TheNotifications` no `App.vue`, com fundo `surface` para manter o contraste AA (ADR-0040, roadmap 3.1).
+- Erro de gravação notificado: o `MutationCache` do `QueryClient` leva o erro de toda mutation ao `notifyHttpError`, com a mensagem RFC 9457; `meta: { notifyError: false }` (tipado em `@typings/query`) desliga o aviso quando a tela já mostra o erro (ADR-0040, roadmap 3.2).
+- O CRUD de clientes notifica cadastro, edição e exclusão.
+
+### Alterado
+
+- O `matchMedia` simulado dos testes avalia `min-width`/`max-width` contra `window.innerWidth`, como o `useDisplay` do Vuetify 4.3 espera; alias de ícone `clock` mapeado (Vuetify 4.3).
+- Dependências atualizadas: 17 minor/patch (Vuetify 4.3.1, vue-router 5.4.0, pinia 4.1.0, vite 8.3.5, eslint 10.14.0 e outras), TypeScript 6.0.3 e as actions do CI (checkout, setup-node, upload-artifact e pnpm/action-setup).
+
 ## [1.0.0] - 2026-11-04
 
 Primeira versão estável do template: arquitetura em camadas, camada de dados completa com o CRUD de exemplo, i18n em pt-BR e en-US, acessibilidade verificada e CI no GitHub Actions.
@@ -187,6 +206,7 @@ Primeira versão estável do template: arquitetura em camadas, camada de dados c
 - Documentação arquitetural em `docs/` e READMEs por camada.
 - Testes unitários (Vitest) e E2E (Cypress).
 
-[Não lançado]: https://github.com/andre-menezes/vue-template/compare/v1.0.0...HEAD
+[Não lançado]: https://github.com/andre-menezes/vue-template/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/andre-menezes/vue-template/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/andre-menezes/vue-template/compare/v0.0.0...v1.0.0
 [0.0.0]: https://github.com/andre-menezes/vue-template/releases/tag/v0.0.0

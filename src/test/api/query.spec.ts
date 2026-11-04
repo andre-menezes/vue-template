@@ -2,7 +2,9 @@ import { describe, expect, it, vi } from 'vitest';
 import { defineComponent, h } from 'vue';
 import { flushPromises } from '@vue/test-utils';
 import { useQuery } from '@tanstack/vue-query';
-import { createQueryClient } from '@app/providers/query';
+import { createPinia, setActivePinia } from 'pinia';
+import { createQueryClient, notifyMutationError } from '@app/providers/query';
+import { useNotificationStore } from '@shared/stores/notification.store';
 import { mountWithPlugins } from '@test/utils/mountWithPlugins';
 
 describe('createQueryClient', () => {
@@ -10,6 +12,49 @@ describe('createQueryClient', () => {
     const queries = createQueryClient().getDefaultOptions().queries;
 
     expect(queries).toMatchObject({ staleTime: 30_000, retry: 1, refetchOnWindowFocus: false });
+  });
+});
+
+describe('erro de mutation (ADR-0040)', () => {
+  async function failMutation(meta?: { notifyError?: boolean }) {
+    const onMutationError = vi.fn();
+    const mutation = createQueryClient(onMutationError)
+      .getMutationCache()
+      .build(createQueryClient(), {
+        mutationFn: () => Promise.reject(new Error('falhou')),
+        meta,
+      });
+    await mutation.execute(undefined).catch(() => undefined);
+    return onMutationError;
+  }
+
+  it('repassa o erro ao handler global', async () => {
+    const onMutationError = await failMutation();
+
+    expect(onMutationError).toHaveBeenCalledWith(expect.objectContaining({ message: 'falhou' }));
+  });
+
+  it('não repassa quando a mutation pede notifyError: false', async () => {
+    expect(await failMutation({ notifyError: false })).not.toHaveBeenCalled();
+  });
+
+  it('funciona sem handler', async () => {
+    const mutation = createQueryClient()
+      .getMutationCache()
+      .build(createQueryClient(), { mutationFn: () => Promise.reject(new Error('x')) });
+
+    await expect(mutation.execute(undefined)).rejects.toThrow('x');
+  });
+
+  it('o handler do app notifica com os fallbacks traduzidos', () => {
+    setActivePinia(createPinia());
+
+    notifyMutationError(null);
+
+    expect(useNotificationStore().current).toMatchObject({
+      type: 'error',
+      message: 'Erro inesperado.',
+    });
   });
 });
 

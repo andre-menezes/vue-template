@@ -106,6 +106,7 @@ copie o [.env.example](../.env.example) para `.env.development.local`.
 | `VITE_API_BASE_URL`       | URL da API real; com uma URL absoluta, a API simulada não atua     |
 | `VITE_APP_DEFAULT_LOCALE` | Idioma inicial (`pt-BR` ou `en-US`)                                |
 | `API_MOCK`                | `false` para desligar a API simulada com uma base relativa (proxy) |
+| `VITE_SENTRY_DSN`         | Liga o envio de erros ao Sentry (ADR-0043)                         |
 
 ## 7. Configurar o repositório
 
@@ -114,7 +115,13 @@ copie o [.env.example](../.env.example) para `.env.development.local`.
 - Crie as labels de `.github/labels.md`.
 - Confira o `.github/dependabot.yml` (ADR-0035).
 
-## 8. Validar e fazer o primeiro commit
+## 8. Preparar o deploy
+
+A imagem de produção (Docker + Nginx) já vem pronta: veja o
+[DEPLOY.md](DEPLOY.md). Defina as `VITE_*` de cada ambiente por
+`--build-arg` e, se a API estiver em outro domínio, a `CSP_CONNECT_SRC`.
+
+## 9. Validar e fazer o primeiro commit
 
 ```bash
 pnpm lint && pnpm build && pnpm test:coverage && pnpm test:e2e

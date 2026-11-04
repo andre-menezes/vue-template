@@ -133,6 +133,58 @@ const label = computed(() => toThemeLabel(appStore.theme));
 
 ---
 
+## Notificações e erro de gravação (ADR-0040)
+
+- Avise o usuário com `useNotify()` (`success`, `info`, `warning`, `error`),
+  com o texto já traduzido; o snackbar global (`TheNotifications`, no
+  `App.vue`) mostra uma de cada vez.
+- O erro de uma gravação (`useMutation`) vira notificação sozinho, pelo
+  `MutationCache` do `@app/providers/query` e o helper `notifyHttpError`.
+  Se a tela já mostra o erro (formulário, diálogo), declare
+  `meta: { notifyError: false }` na mutation para não avisar duas vezes.
+- O erro de uma leitura (`useQuery`) fica na tela, no `BaseErrorState`.
+
+```ts
+const notify = useNotify();
+mutation.mutate(params, {
+  onSuccess: () => notify.success(t('orders.notify.saved')),
+});
+```
+
+---
+
+## Formulários e validação (ADR-0042)
+
+O schema do Zod valida e transforma; o VeeValidate guarda o estado dos campos.
+
+```ts
+// modules/orders/schemas.ts — mensagens são chaves de i18n
+export const orderFormSchema = z.object({
+  title: z.string().trim().min(1, { error: 'validation.required' }),
+  email: z
+    .string()
+    .trim()
+    .pipe(z.email({ error: 'validation.email' })),
+}) satisfies z.ZodType<OrderParams, OrderFormValues>;
+
+// componente
+const { defineField, handleSubmit } = useForm({
+  validationSchema: toTypedSchema(orderFormSchema), // @shared/utils/form-schema
+  initialValues,
+});
+const [title, titleProps] = defineField('title', {
+  props: (state) => ({ 'error-messages': state.errors.map((key) => t(key)) }),
+  validateOnModelUpdate: false,
+});
+const onSubmit = handleSubmit((values) => emit('submit', values)); // values: OrderParams
+```
+
+Mensagens genéricas ficam em `validation.*` no locale do app; as do módulo, em
+`<módulo>.validation.*`. Exemplo completo: `modules/customers/schemas.ts` e
+`CustomerForm.vue`.
+
+---
+
 ## composables — Lógica reativa compartilhada
 
 Funções `useXxx` que retornam **estado reativo** (refs, computeds) e/ou

@@ -42,15 +42,21 @@
       "optional": "Opcional",
       "activeLabel": "Cliente ativo",
       "save": "Salvar",
-      "cancel": "Cancelar",
-      "required": "Campo obrigatório.",
-      "invalidEmail": "Informe um e-mail válido."
+      "cancel": "Cancelar"
     },
     "delete": {
       "title": "Excluir cliente",
       "message": "Excluir {name}? Esta ação não pode ser desfeita.",
       "confirm": "Excluir",
       "cancel": "Cancelar"
+    },
+    "notify": {
+      "created": "Cliente cadastrado: {name}.",
+      "updated": "Cliente atualizado: {name}.",
+      "deleted": "Cliente excluído: {name}."
+    },
+    "validation": {
+      "nameTooLong": "Use no máximo 120 caracteres."
     }
   }
 }

@@ -78,6 +78,7 @@ export const aliases: IconAliases = {
   arrowleft: 'keyboard_arrow_left',
   arrowright: 'keyboard_arrow_right',
   backspace: 'backspace',
+  clock: 'schedule',
 };
 
 /**

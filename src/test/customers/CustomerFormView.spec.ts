@@ -4,6 +4,7 @@ import * as service from '@modules/customers/api/customer.service';
 import CustomerForm from '@modules/customers/components/CustomerForm.vue';
 import CustomerFormView from '@modules/customers/views/CustomerFormView.vue';
 import { mountWithPlugins } from '@test/utils/mountWithPlugins';
+import { useNotificationStore } from '@shared/stores/notification.store';
 import { buildCustomer, httpError } from './fixtures';
 import { createCustomersRouter } from './router';
 
@@ -49,6 +50,7 @@ describe('CustomerFormView — cadastro', () => {
     await submit(wrapper);
 
     expect(service.createCustomerRequest).toHaveBeenCalledWith(params);
+    expect(useNotificationStore().current?.message).toBe('Cliente cadastrado: Maria Souza.');
     await vi.waitFor(() => expect(router.currentRoute.value.fullPath).toBe('/customers/40'));
   });
 
@@ -61,6 +63,8 @@ describe('CustomerFormView — cadastro', () => {
     await submit(wrapper);
 
     expect(wrapper.find('[data-cy="customer-form-error"]').text()).toContain('HTTP 409');
+    // O formulário mostra o erro; a notificação global fica desligada.
+    expect(useNotificationStore().queue).toEqual([]);
     expect(router.currentRoute.value.name).toBe('CustomerCreate');
   });
 
@@ -96,6 +100,7 @@ describe('CustomerFormView — edição', () => {
     await submit(wrapper);
 
     expect(service.updateCustomerRequest).toHaveBeenCalledWith(7, params);
+    expect(useNotificationStore().current?.message).toBe('Cliente atualizado: Maria Souza.');
     await vi.waitFor(() => expect(router.currentRoute.value.fullPath).toBe('/customers/7'));
   });
 

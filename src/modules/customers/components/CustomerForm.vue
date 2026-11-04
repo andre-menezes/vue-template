@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" data-cy="customer-form" @submit.prevent="onSubmit">
+  <form novalidate data-cy="customer-form" @submit="onSubmit">
     <v-alert
       v-if="errorMessage"
       type="error"
@@ -9,24 +9,26 @@
       data-cy="customer-form-error"
     />
     <v-text-field
-      v-model="fields.name"
+      v-model="name"
+      v-bind="nameProps"
       :label="$t('customers.fields.name')"
-      :rules="[required]"
+      :counter="NAME_MAX_LENGTH"
       autocomplete="name"
       class="mb-2"
       data-cy="customer-name-input"
     />
     <v-text-field
-      v-model="fields.email"
+      v-model="email"
+      v-bind="emailProps"
       :label="$t('customers.fields.email')"
-      :rules="[required, validEmail]"
       type="email"
       autocomplete="email"
       class="mb-2"
       data-cy="customer-email-input"
     />
     <v-text-field
-      v-model="fields.phone"
+      v-model="phone"
+      v-bind="phoneProps"
       :label="$t('customers.fields.phone')"
       :hint="$t('customers.form.optional')"
       persistent-hint
@@ -36,7 +38,7 @@
       data-cy="customer-phone-input"
     />
     <v-switch
-      v-model="fields.active"
+      v-model="active"
       :label="$t('customers.form.activeLabel')"
       color="primary"
       inset
@@ -55,13 +57,14 @@
         {{ $t('customers.form.save') }}
       </v-btn>
     </div>
-  </v-form>
+  </form>
 </template>
 
 <script setup lang="ts">
-import { reactive, useTemplateRef } from 'vue';
+import { useForm, type PublicPathState } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
-import type { VForm } from 'vuetify/components';
+import { toTypedSchema } from '@shared/utils/form-schema';
+import { NAME_MAX_LENGTH, customerFormSchema, toFormValues } from '../schemas';
 import type { CustomerParams } from '../types';
 
 const props = defineProps<{
@@ -78,39 +81,31 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const form = useTemplateRef<VForm>('form');
 
-// Cópia local: editar o formulário não altera o objeto recebido por prop.
-const fields = reactive({
-  name: props.initialValues?.name ?? '',
-  email: props.initialValues?.email ?? '',
-  phone: props.initialValues?.phone ?? '',
-  active: props.initialValues?.active ?? true,
+/**
+ * Formulário com VeeValidate + Zod (ADR-0042): o schema valida e transforma
+ * os valores; o VeeValidate guarda o estado de cada campo. A cópia local
+ * garante que editar não altera o objeto recebido por prop.
+ */
+const { defineField, handleSubmit } = useForm({
+  validationSchema: toTypedSchema(customerFormSchema),
+  initialValues: toFormValues(props.initialValues),
 });
 
 /**
- * Validação simples com as `rules` do Vuetify. A biblioteca de formulários e
- * validação do template ainda será escolhida em ADR (roadmap 3.3); o servidor
- * continua validando e a resposta de erro aparece no alerta.
+ * Liga um campo ao `v-text-field`: as mensagens do schema são chaves de
+ * i18n, traduzidas aqui. O erro só aparece depois que o campo perde o foco
+ * ou o formulário é enviado.
  */
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const vuetifyField = (state: PublicPathState) => ({
+  'error-messages': state.errors.map((key) => t(key)),
+});
+const fieldOptions = { props: vuetifyField, validateOnModelUpdate: false };
 
-const required = (value: string): true | string =>
-  value.trim() !== '' || t('customers.form.required');
+const [name, nameProps] = defineField('name', fieldOptions);
+const [email, emailProps] = defineField('email', fieldOptions);
+const [phone, phoneProps] = defineField('phone', fieldOptions);
+const [active] = defineField('active');
 
-const validEmail = (value: string): true | string =>
-  EMAIL_PATTERN.test(value.trim()) || t('customers.form.invalidEmail');
-
-async function onSubmit(): Promise<void> {
-  const result = await form.value?.validate();
-  if (!result?.valid) return;
-
-  const phone = fields.phone.trim();
-  emit('submit', {
-    name: fields.name.trim(),
-    email: fields.email.trim(),
-    phone: phone === '' ? null : phone,
-    active: fields.active,
-  });
-}
+const onSubmit = handleSubmit((values) => emit('submit', values));
 </script>

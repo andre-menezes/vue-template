@@ -10,7 +10,11 @@ import { customerKeys } from './customer-keys';
 /**
  * Gravações de clientes (ADR-0027). Cada uma invalida as queries que deixou
  * desatualizadas; a tela que as exibe busca de novo sozinha.
+ *
+ * O formulário e o diálogo de exclusão mostram o erro onde ele aconteceu,
+ * então as três desligam a notificação global de erro (ADR-0040).
  */
+const meta = { notifyError: false };
 
 /** Cadastra um cliente; as listas passam a incluir o novo registro. */
 export function useCreateCustomerMutation() {
@@ -18,6 +22,7 @@ export function useCreateCustomerMutation() {
 
   return useMutation({
     mutationFn: (params: CustomerParams) => createCustomerRequest(params),
+    meta,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: customerKeys.lists() }),
   });
 }
@@ -29,6 +34,7 @@ export function useUpdateCustomerMutation() {
   return useMutation({
     mutationFn: ({ id, params }: { id: number; params: CustomerParams }) =>
       updateCustomerRequest(id, params),
+    meta,
     onSuccess: (customer) => {
       queryClient.setQueryData(customerKeys.detail(customer.id), customer);
       return queryClient.invalidateQueries({ queryKey: customerKeys.lists() });
@@ -42,6 +48,7 @@ export function useDeleteCustomerMutation() {
 
   return useMutation({
     mutationFn: (id: number) => deleteCustomerRequest(id),
+    meta,
     onSuccess: (_result, id) => {
       queryClient.removeQueries({ queryKey: customerKeys.detail(id) });
       return queryClient.invalidateQueries({ queryKey: customerKeys.lists() });

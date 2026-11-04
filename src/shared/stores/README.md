@@ -6,9 +6,10 @@ Voltar para o guia geral: [../../../docs/ARCHITECTURE-GUIDE.md](../../../docs/AR
 
 ## Stores existentes
 
-| Store       | Responsabilidade                                      |
-| ----------- | ----------------------------------------------------- |
-| `app.store` | Estado de UX global (tema persistido em localStorage) |
+| Store                | Responsabilidade                                                |
+| -------------------- | --------------------------------------------------------------- |
+| `app.store`          | Estado de UX global (tema persistido em localStorage)           |
+| `notification.store` | Fila do snackbar global; as telas usam o `useNotify` (ADR-0040) |
 
 ## Quando criar uma store
 

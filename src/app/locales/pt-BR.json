@@ -39,5 +39,12 @@
     "emptyTitle": "Nada por aqui",
     "errorTitle": "Não foi possível carregar",
     "retry": "Tentar novamente"
+  },
+  "notifications": {
+    "close": "Fechar"
+  },
+  "validation": {
+    "required": "Campo obrigatório.",
+    "email": "Informe um e-mail válido."
   }
 }
