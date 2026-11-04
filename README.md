@@ -10,6 +10,7 @@ Template frontend baseado em Vue 3 + TypeScript + Vite, com foco em:
 
 ## Leitura recomendada
 
+- Começar um projeto a partir do template: [docs/NEW-PROJECT.md](docs/NEW-PROJECT.md)
 - Guia arquitetural completo: [docs/ARCHITECTURE-GUIDE.md](docs/ARCHITECTURE-GUIDE.md)
 - Estrutura de código principal: [src/README.md](src/README.md)
 - Convenções da camada app: [src/app/README.md](src/app/README.md)

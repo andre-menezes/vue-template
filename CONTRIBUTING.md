@@ -25,6 +25,7 @@ abrir seu primeiro Pull Request (PR).
 - [Testes](#testes)
 - [Validação antes do PR](#validação-antes-do-pr)
 - [Abrindo um Pull Request](#abrindo-um-pull-request)
+- [Publicando uma versão](#publicando-uma-versão)
 - [Registrando no CHANGELOG](#registrando-no-changelog)
 
 ---
@@ -232,6 +233,28 @@ Para conferir cobertura: `pnpm test:coverage`.
 
 O checklist objetivo de aprovação está em
 [docs/CODE-REVIEW-CHECKLIST.md](docs/CODE-REVIEW-CHECKLIST.md).
+
+---
+
+## Publicando uma versão
+
+A `main` recebe só versões; o trabalho do dia a dia vai para a `develop`.
+Versões seguem o [Versionamento Semântico](https://semver.org/lang/pt-BR/).
+
+1. Crie `release/<versão>` a partir da `develop` atualizada (ex.:
+   `release/1.1.0`).
+2. Nela, só o fechamento da versão: `version` no `package.json` e, no
+   CHANGELOG, a seção `[Não lançado]` vira `[<versão>] - <data>`, com uma
+   `[Não lançado]` vazia acima.
+3. Abra um PR da `release/<versão>` para a `main` e faça o merge com o CI
+   verde.
+4. Crie a tag e a release no GitHub a partir da `main`:
+   `gh release create v<versão> --target main --generate-notes`.
+5. Traga a `main` de volta para a `develop` (PR `main` → `develop`), para a
+   versão e o CHANGELOG ficarem iguais nas duas.
+
+Correção urgente em produção: `hotfix/<versão>` a partir da `main`, com os
+mesmos passos 2 a 5.
 
 ---
 
