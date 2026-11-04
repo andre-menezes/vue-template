@@ -1,5 +1,5 @@
 <template>
-  <section class="home-page py-6 py-md-8" data-cy="docs-home-page">
+  <section class="home-page" data-cy="docs-home-page">
     <div class="mb-8">
       <p class="text-overline text-primary-text font-weight-bold mb-2">
         {{ $t('docsHome.eyebrow') }}
@@ -33,7 +33,7 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" lg="4" class="mt-16">
+      <v-col cols="12" lg="4">
         <WorkFlow :activity="activity" />
       </v-col>
     </v-row>

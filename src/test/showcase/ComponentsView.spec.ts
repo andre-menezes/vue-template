@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
-import { defineComponent, h } from 'vue';
+import { describe, expect, it, vi } from 'vitest';
+import { defineComponent, h, nextTick } from 'vue';
 import { VApp } from 'vuetify/components';
+import BaseConfirmDialog from '@shared/ui/components/BaseConfirmDialog.vue';
 import ComponentsView from '@modules/showcase/views/ComponentsView.vue';
 import { createAppVuetify } from '@app/providers/vuetify';
 import type { ThemeName } from '@typings/theme';
@@ -79,5 +80,33 @@ describe('ComponentsView', () => {
     const iconButton = wrapper.findAll('#botoes [data-cy=showcase-preview] .v-btn').at(-1);
 
     expect(iconButton?.attributes('aria-label')).toBe('Favoritar');
+  });
+
+  it('mostra os componentes do design system, com código de cada um', () => {
+    const section = mountComponents().get('#design-system');
+
+    expect(section.findAll('[data-cy=status-chip]')).toHaveLength(4);
+    expect(section.findAll('[data-cy=avatar]')).toHaveLength(3);
+    expect(section.findAll('[data-cy=event-block]')).toHaveLength(3);
+    expect(section.findAll('[data-cy=code-block]')).toHaveLength(3);
+  });
+
+  it('abre e fecha o diálogo de confirmação de exemplo', async () => {
+    vi.stubGlobal('visualViewport', new EventTarget());
+    const wrapper = mountComponents();
+    const dialog = () => wrapper.findComponent(BaseConfirmDialog);
+
+    await wrapper.get('[data-cy=ds-confirm-open]').trigger('click');
+    expect(dialog().props('modelValue')).toBe(true);
+
+    dialog().vm.$emit('confirm');
+    await nextTick();
+    expect(dialog().props('modelValue')).toBe(false);
+
+    dialog().vm.$emit('update:modelValue', true);
+    await nextTick();
+    expect(dialog().props('modelValue')).toBe(true);
+    wrapper.unmount();
+    vi.unstubAllGlobals();
   });
 });

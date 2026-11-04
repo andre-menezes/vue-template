@@ -11,7 +11,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./views/DocsHomeView.vue'),
     meta: {
       titleKey: 'pageTitle.docs',
-      nav: { titleKey: 'nav.docs', icon: 'menu_book', order: 100 },
+      nav: { titleKey: 'nav.docs', icon: 'menu_book', order: 100, groupKey: 'nav.groups.docs' },
     },
   },
   {
@@ -20,7 +20,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./views/ArchitectureView.vue'),
     meta: {
       titleKey: 'pageTitle.architecture',
-      nav: { titleKey: 'nav.architecture', icon: 'account_tree', order: 110 },
+      nav: {
+        titleKey: 'nav.architecture',
+        icon: 'account_tree',
+        order: 110,
+        groupKey: 'nav.groups.docs',
+      },
     },
   },
   {
@@ -29,7 +34,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./views/OnboardingView.vue'),
     meta: {
       titleKey: 'pageTitle.onboarding',
-      nav: { titleKey: 'nav.onboarding', icon: 'rocket_launch-fill', order: 120 },
+      nav: {
+        titleKey: 'nav.onboarding',
+        icon: 'rocket_launch-fill',
+        order: 120,
+        groupKey: 'nav.groups.docs',
+      },
     },
   },
   {
@@ -38,7 +48,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./views/ComponentsView.vue'),
     meta: {
       titleKey: 'pageTitle.components',
-      nav: { titleKey: 'nav.components', icon: 'palette', order: 130 },
+      nav: { titleKey: 'nav.components', icon: 'palette', order: 130, groupKey: 'nav.groups.docs' },
     },
   },
   {
@@ -47,7 +57,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./views/ConventionsView.vue'),
     meta: {
       titleKey: 'pageTitle.conventions',
-      nav: { titleKey: 'nav.conventions', icon: 'checklist', order: 140 },
+      nav: {
+        titleKey: 'nav.conventions',
+        icon: 'checklist',
+        order: 140,
+        groupKey: 'nav.groups.docs',
+      },
     },
   },
   {
@@ -56,7 +71,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./views/DecisionsView.vue'),
     meta: {
       titleKey: 'pageTitle.decisions',
-      nav: { titleKey: 'nav.decisions', icon: 'gavel', order: 150 },
+      nav: { titleKey: 'nav.decisions', icon: 'gavel', order: 150, groupKey: 'nav.groups.docs' },
     },
   },
 ];

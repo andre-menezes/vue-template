@@ -10,7 +10,10 @@
     "onboarding": "Onboarding",
     "components": "Componentes",
     "conventions": "Convenções",
-    "decisions": "Decisões"
+    "decisions": "Decisões",
+    "groups": {
+      "docs": "Documentação do template"
+    }
   },
   "docsHome": {
     "eyebrow": "Documentação viva",
@@ -333,6 +336,35 @@
       "previewTitle": "Módulo",
       "previewText": "Feature isolada por domínio.",
       "previewAction": "Abrir"
+    },
+    "designSystem": {
+      "title": "Design system Agenda",
+      "description": "Componentes base de shared/ui, desenhados no Figma: cor reservada para o que importa, raio de 4px e borda no lugar de sombra.",
+      "status": {
+        "title": "Status e avatar",
+        "description": "BaseStatusChip usa os fundos container do tema; BaseAvatar mostra as iniciais sobre uma cor de evento estável.",
+        "confirmed": "Confirmado",
+        "pending": "Pendente",
+        "cancelled": "Cancelado",
+        "draft": "Rascunho"
+      },
+      "events": {
+        "title": "Blocos de compromisso",
+        "description": "BaseEventBlock nas oito cores de evento, normal ou compacto.",
+        "meeting": "Reunião com cliente",
+        "online": "Online",
+        "content": "Produção de conteúdo",
+        "lunch": "Almoço"
+      },
+      "page": {
+        "title": "Cabeçalho e confirmação",
+        "description": "BasePageHeader dá o título da tela; BaseConfirmDialog confirma ações destrutivas.",
+        "header": "Clientes",
+        "subtitle": "32 cadastrados",
+        "delete": "Excluir",
+        "confirmTitle": "Excluir cliente",
+        "confirmMessage": "Esta ação não pode ser desfeita."
+      }
     }
   },
   "conventions": {

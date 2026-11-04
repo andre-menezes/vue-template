@@ -18,6 +18,18 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Adicionado
+
+- Nova identidade visual (ADR-0046): logo próprio em camadas na cor primária, cabeçalho claro com borda, menu lateral compacto e agrupado (`meta.nav.groupKey`), largura de leitura de 1200px, página inicial com painel de boas-vindas e próximos passos, e 404 tipográfica.
+- Componentes base do design system Agenda em `shared/ui`: `BasePageHeader`, `BaseStatusChip`, `BaseAvatar` (com `getInitials` e `hueFor`), `BaseConfirmDialog` e `BaseEventBlock`; tipos `EventHue`/`StatusTone` e cores `<tom>-container` no tema; seção "Design system Agenda" na vitrine (ADR-0045).
+- Escala tipográfica do design system (`text-h1`…`text-overline` e variantes por breakpoint): o Vuetify 4 não gera essas classes, que estavam sem efeito nas telas (ADR-0045).
+
+### Alterado
+
+- Vitrine: blocos de código em superfície neutra com fonte monoespaçada do sistema, cartões e camadas neutros e painel de fluxo sem gradiente. Saem a ilustração da 404 (Storyset), os gradientes e as regras de logo do `main.scss`.
+- Padrões dos componentes pelo design system: botões sem elevação, cartões com borda e sem sombra, campos em contorno, menus e diálogos com raio de 8px (ADR-0045).
+- O CRUD de clientes usa os componentes base: cabeçalhos, avatar na lista e no detalhe, chip de situação e o `BaseConfirmDialog` no lugar do `CustomerDeleteDialog`.
+
 ## [1.1.0] - 2026-11-04
 
 Experiência e produção: notificações e erro de gravação notificado, formulários com VeeValidate + Zod, imagem Docker + Nginx e monitoramento opcional com o Sentry.
@@ -34,6 +46,7 @@ Experiência e produção: notificações e erro de gravação notificado, formu
 
 ### Alterado
 
+- Tema com a paleta do design system Agenda: marca índigo (`#4162D9`), teal no secondary/accent, neutros frios e contraste AA nos dois temas, com a paleta separada por tema e os nomes de cor mantidos; novas cores `surface-bright`, `surface-light`, `border`, `primary-container` e as cores de evento do calendário (`event-<matiz>`, `event-<matiz>-bg`, `on-event-<matiz>-bg`) em oito matizes (ADR-0044).
 - O `matchMedia` simulado dos testes avalia `min-width`/`max-width` contra `window.innerWidth`, como o `useDisplay` do Vuetify 4.3 espera; alias de ícone `clock` mapeado (Vuetify 4.3).
 - Dependências atualizadas: 17 minor/patch (Vuetify 4.3.1, vue-router 5.4.0, pinia 4.1.0, vite 8.3.5, eslint 10.14.0 e outras), TypeScript 6.0.3 e as actions do CI (checkout, setup-node, upload-artifact e pnpm/action-setup).
 

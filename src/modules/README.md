@@ -57,11 +57,11 @@ sem nenhuma configuração manual adicional.
 
 ## Meta fields disponíveis
 
-| Meta       | Tipo       | Efeito                                                            |
-| ---------- | ---------- | ----------------------------------------------------------------- |
-| `layout`   | `string`   | Define o layout (`'empty'` para sem chrome)                       |
-| `titleKey` | `string`   | Chave i18n do título da aba: `"<título> · <APP_NAME>"` (ADR-0036) |
-| `nav`      | `RouteNav` | Item no menu lateral: `titleKey` (i18n), `icon` e `order`         |
+| Meta       | Tipo       | Efeito                                                                                                     |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------------------- |
+| `layout`   | `string`   | Define o layout (`'empty'` para sem chrome)                                                                |
+| `titleKey` | `string`   | Chave i18n do título da aba: `"<título> · <APP_NAME>"` (ADR-0036)                                          |
+| `nav`      | `RouteNav` | Item no menu lateral: `titleKey` (i18n), `icon`, `order` e `groupKey?` (título do grupo no menu, ADR-0046) |
 
 ## Exemplo — bom código (módulo completo)
 
@@ -118,7 +118,7 @@ invalidar depois de uma gravação.
 ```vue
 <!-- src/modules/customers/views/CustomersView.vue -->
 <template>
-  <section class="py-6">
+  <section>
     <h1 class="text-h4 font-weight-bold mb-4">Clientes</h1>
     <v-alert v-if="error" type="error" :text="error.message" />
     <CustomerList v-else :customers="data ?? []" :loading="isPending" />

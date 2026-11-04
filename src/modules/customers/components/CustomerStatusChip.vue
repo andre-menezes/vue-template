@@ -1,15 +1,15 @@
 <template>
-  <v-chip
-    size="small"
-    variant="tonal"
-    :color="active ? 'success' : 'secondary-text'"
-    :prepend-icon="active ? 'check_circle' : 'block'"
+  <BaseStatusChip
+    :label="active ? $t('customers.status.active') : $t('customers.status.inactive')"
+    :tone="active ? 'success' : 'neutral'"
+    :icon="active ? 'check_circle' : 'block'"
     data-cy="customer-status"
-  >
-    {{ active ? $t('customers.status.active') : $t('customers.status.inactive') }}
-  </v-chip>
+  />
 </template>
 
 <script setup lang="ts">
+import BaseStatusChip from '@shared/ui/components/BaseStatusChip.vue';
+
+/** Situação do cliente no chip de status do design system (ADR-0045). */
 defineProps<{ active: boolean }>();
 </script>

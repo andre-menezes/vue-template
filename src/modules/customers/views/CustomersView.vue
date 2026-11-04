@@ -1,21 +1,20 @@
 <template>
-  <section class="py-6" data-cy="customers-page">
-    <div class="d-flex flex-wrap align-center justify-space-between ga-4 mb-6">
-      <div>
-        <h1 class="text-h4 font-weight-bold mb-1" data-cy="customers-title">
-          {{ $t('customers.list.title') }}
-        </h1>
-        <p class="text-body-1 text-medium-emphasis mb-0">{{ $t('customers.list.description') }}</p>
-      </div>
-      <v-btn
-        :to="{ name: 'CustomerCreate' }"
-        color="primary"
-        prepend-icon="person_add"
-        data-cy="customer-create-btn"
-      >
-        {{ $t('customers.list.create') }}
-      </v-btn>
-    </div>
+  <section data-cy="customers-page">
+    <BasePageHeader
+      :title="$t('customers.list.title')"
+      :subtitle="$t('customers.list.description')"
+    >
+      <template #actions>
+        <v-btn
+          :to="{ name: 'CustomerCreate' }"
+          color="primary"
+          prepend-icon="person_add"
+          data-cy="customer-create-btn"
+        >
+          {{ $t('customers.list.create') }}
+        </v-btn>
+      </template>
+    </BasePageHeader>
 
     <form role="search" class="d-flex ga-2 mb-4" data-cy="customer-search" @submit.prevent="search">
       <v-text-field
@@ -64,6 +63,7 @@ import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useErrorMessage } from '@shared/composables/useErrorMessage';
 import BaseErrorState from '@shared/ui/components/BaseErrorState.vue';
+import BasePageHeader from '@shared/ui/components/BasePageHeader.vue';
 import CustomerTable from '../components/CustomerTable.vue';
 import { useCustomersQuery } from '../composables/useCustomersQuery';
 import { parseListQuery, toListQuery } from '../list-query';

@@ -47,8 +47,7 @@
     "delete": {
       "title": "Delete customer",
       "message": "Delete {name}? This cannot be undone.",
-      "confirm": "Delete",
-      "cancel": "Cancel"
+      "confirm": "Delete"
     },
     "notify": {
       "created": "Customer created: {name}.",
