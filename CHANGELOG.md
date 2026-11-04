@@ -20,6 +20,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- Monitoramento de erros opcional com o Sentry (`@sentry/vue` 11.8): com `VITE_SENTRY_DSN`, os erros do `registerErrorHandlers` vão também para o Sentry, com ambiente e versão; sem o DSN, o SDK nem é baixado (ADR-0043).
 - Formulários com VeeValidate 4.15 + Zod 4.6: adapter `toTypedSchema` em `@shared/utils/form-schema`, schema `customers/schemas.ts` (trim, telefone vazio como `null`, limite de 120 caracteres no nome) e mensagens em `validation.*`; o `CustomerForm` deixa as `rules` do Vuetify (ADR-0042, roadmap 3.3).
 - Imagem de produção: `Dockerfile` multi-stage (Node 24 + pnpm, depois `nginx-unprivileged` na porta 8080) e `docker/nginx.conf.template` com fallback da SPA, cache dos assets, gzip, `/healthz`, CSP e cabeçalhos de segurança; job `docker` no CI e guia `docs/DEPLOY.md` (ADR-0041).
 - Extensões recomendadas do VS Code: Claude Code, Vitest, Playwright, i18n Ally (com os locales dos módulos), Error Lens, GitLens e Container Tools.
