@@ -18,6 +18,10 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [1.0.0] - 2026-11-04
+
+Primeira versão estável do template: arquitetura em camadas, camada de dados completa com o CRUD de exemplo, i18n em pt-BR e en-US, acessibilidade verificada e CI no GitHub Actions.
+
 ### Removido
 
 - Autenticação corporativa: cliente OAuth, guard de rotas, callback `/token`, tela `/erro-autenticacao`, `user.store`, `useSession`, menu de conta, mock de sessão, tratamento global de 401/CSRF, instância `authBackend` e o módulo `protected-example`. Todas as páginas passam a ser públicas (ADR-0021).
@@ -67,6 +71,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- Guia `docs/NEW-PROJECT.md` para começar um projeto a partir do template, e o fluxo de publicação de versões no CONTRIBUTING (`release/<versão>` → `main` → tag → `develop`).
 - Estados de UI padronizados em `shared/ui/components`: `BaseLoadingState` (anunciado com `role="status"`), `BaseEmptyState` (título, descrição, ícone e ações) e `BaseErrorState` (mensagem e "Tentar novamente"), com textos em `states.*` nos dois locales. O módulo `customers` passa a usá-los, e a busca de lista e detalhe pode ser refeita pelo estado de erro (roadmap 2.4).
 - Upload de arquivo, simétrico ao download: `httpClient.upload` envia `multipart/form-data`; `toFormData`, `validateFile` (tamanho, tipo pelo formato do `accept` e arquivo vazio) e `formatFileSize` em `@shared/utils/file-upload`; `validateAndUpload` e `FileValidationError` em `@shared/helpers/file-upload`; exemplo `uploadReportAttachmentRequest` no service de relatórios (roadmap 2.3).
 - Padrão de paginação reutilizável: `PageParams` e `PaginatedResponse<TItem>` em `@typings/services`, e `parsePageParams`, `toPageQuery` e `firstQueryValue` em `@shared/utils/pagination` para ler e montar `page`/`pageSize` na URL, com `DEFAULT_PAGE_SIZE` e `MAX_PAGE_SIZE` de `@core/config`. O módulo `customers` passa a usá-los (roadmap 2.2).
@@ -182,5 +187,6 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Documentação arquitetural em `docs/` e READMEs por camada.
 - Testes unitários (Vitest) e E2E (Cypress).
 
-[Não lançado]: https://github.com/andre-menezes/vue-template/compare/v0.0.0...HEAD
+[Não lançado]: https://github.com/andre-menezes/vue-template/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/andre-menezes/vue-template/compare/v0.0.0...v1.0.0
 [0.0.0]: https://github.com/andre-menezes/vue-template/releases/tag/v0.0.0
