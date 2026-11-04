@@ -48,6 +48,13 @@ test.describe('Clientes', () => {
 
     await expect(page).toHaveURL(/\/customers\/33$/);
     await expect(page.getByTestId('customer-detail-title')).toHaveText('Paula Teixeira');
+    await expect(page.getByTestId('notification-message')).toHaveText(
+      'Cliente cadastrado: Paula Teixeira.'
+    );
+    // Visível, o snackbar também passa pela checagem de contraste.
+    await expectNoA11yViolations(page);
+    await page.getByTestId('notification-close').click();
+    await expect(page.getByTestId('notification-message')).toBeHidden();
 
     await page.getByTestId('customer-edit-btn').click();
     await page.getByTestId('customer-name-input').locator('input').fill('Paula T. Lima');

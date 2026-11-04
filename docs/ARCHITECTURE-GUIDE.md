@@ -239,9 +239,10 @@ Documentação detalhada: [src/shared/api/README.md](../src/shared/api/README.md
 
 Stores Pinia ficam em `shared/stores/`. Cada store tem responsabilidade única.
 
-| Store       | Responsabilidade                      |
-| ----------- | ------------------------------------- |
-| `app.store` | Estado global de UX (tema persistido) |
+| Store                | Responsabilidade                                         |
+| -------------------- | -------------------------------------------------------- |
+| `app.store`          | Estado global de UX (tema persistido)                    |
+| `notification.store` | Fila do snackbar global; use pelo `useNotify` (ADR-0040) |
 
 **Regra de uso:**
 

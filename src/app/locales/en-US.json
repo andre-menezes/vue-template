@@ -39,5 +39,8 @@
     "emptyTitle": "Nothing here",
     "errorTitle": "Couldn't load",
     "retry": "Try again"
+  },
+  "notifications": {
+    "close": "Close"
   }
 }

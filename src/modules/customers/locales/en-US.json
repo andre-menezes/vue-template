@@ -51,6 +51,11 @@
       "message": "Delete {name}? This cannot be undone.",
       "confirm": "Delete",
       "cancel": "Cancel"
+    },
+    "notify": {
+      "created": "Customer created: {name}.",
+      "updated": "Customer updated: {name}.",
+      "deleted": "Customer deleted: {name}."
     }
   }
 }

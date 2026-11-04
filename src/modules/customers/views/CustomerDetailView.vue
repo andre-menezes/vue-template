@@ -60,7 +60,7 @@
         :customer-name="customer.name"
         :deleting="deleteMutation.isPending.value"
         :error-message="deleteMutation.error.value && errorMessage(deleteMutation.error.value)"
-        @confirm="confirmDelete"
+        @confirm="confirmDelete(customer.name)"
       />
     </template>
   </section>
@@ -69,7 +69,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useErrorMessage } from '@shared/composables/useErrorMessage';
+import { useNotify } from '@shared/composables/useNotify';
 import BaseEmptyState from '@shared/ui/components/BaseEmptyState.vue';
 import BaseErrorState from '@shared/ui/components/BaseErrorState.vue';
 import BaseLoadingState from '@shared/ui/components/BaseLoadingState.vue';
@@ -83,6 +85,8 @@ const props = defineProps<{ id: number }>();
 
 const router = useRouter();
 const errorMessage = useErrorMessage();
+const notify = useNotify();
+const { t } = useI18n();
 
 const { data: customer, error, isPending, isFetching, refetch } = useCustomerQuery(() => props.id);
 const deleteMutation = useDeleteCustomerMutation();
@@ -94,9 +98,12 @@ function openDeleteDialog(): void {
   deleteDialogOpen.value = true;
 }
 
-function confirmDelete(): void {
+function confirmDelete(name: string): void {
   deleteMutation.mutate(props.id, {
-    onSuccess: () => void router.push({ name: 'Customers' }),
+    onSuccess: () => {
+      notify.success(t('customers.notify.deleted', { name }));
+      void router.push({ name: 'Customers' });
+    },
   });
 }
 </script>

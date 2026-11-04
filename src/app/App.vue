@@ -3,6 +3,7 @@
     <component :is="currentLayout">
       <router-view :key="route.name" />
     </component>
+    <TheNotifications />
   </v-app>
 </template>
 
@@ -13,6 +14,7 @@ import { useAppStore } from '@shared/stores/app.store';
 import { useRouteFocus, useRouteTitle } from '@shared/composables';
 import DefaultLayout from '@shared/ui/layouts/DefaultLayout.vue';
 import EmptyLayout from '@shared/ui/layouts/EmptyLayout.vue';
+import TheNotifications from '@shared/ui/components/TheNotifications.vue';
 
 const route = useRoute();
 const appStore = useAppStore();

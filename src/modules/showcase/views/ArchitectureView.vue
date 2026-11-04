@@ -337,6 +337,7 @@ const initFlow = computed<FlowStep[]>(() => [
 
 const stores = computed(() => [
   { name: 'app.store', responsibility: t('architecture.stores.app') },
+  { name: 'notification.store', responsibility: t('architecture.stores.notification') },
 ]);
 
 const aliases = [
