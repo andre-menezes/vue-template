@@ -18,6 +18,10 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Alterado
+
+- Visual de volta ao original (coral e azul): os merges dos PRs #39 (paleta Agenda), #40 (componentes do design system) e #41 (identidade visual) foram revertidos, e as ADRs 0044 a 0046 ficam como descontinuadas (ADR-0047).
+
 ## [1.1.0] - 2026-11-04
 
 Experiência e produção: notificações e erro de gravação notificado, formulários com VeeValidate + Zod, imagem Docker + Nginx e monitoramento opcional com o Sentry.
