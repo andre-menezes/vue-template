@@ -1,0 +1,19 @@
+# Prepara o ambiente dos jobs de CI: pnpm, Node e dependências.
+#
+# O checkout fica no workflow, antes desta action: uma action local só existe
+# no runner depois que o repositório é baixado (ADR-0034). As versões do pnpm
+# (`packageManager` do package.json) e do Node (.nvmrc) vêm do repositório.
+
+name: Setup
+description: Instala o pnpm e o Node do projeto e as dependências pelo lockfile.
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      with:
+        node-version-file: .nvmrc
+        cache: pnpm
+    - run: pnpm install --frozen-lockfile
+      shell: bash

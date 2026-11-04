@@ -1,14 +1,7 @@
 import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 import { ofetch, type FetchOptions } from 'ofetch';
-import {
-  API_BASE_URL,
-  APP_MODULO,
-  AUTH_BACKEND_URL,
-  CSRF_HEADER_NAME,
-  HTTP_TIMEOUT_MS,
-  MODULO_HEADER_NAME,
-} from '@core/config';
-import { authBackend, httpClient } from '@shared/api/instances';
+import { API_BASE_URL, HTTP_TIMEOUT_MS } from '@core/config';
+import { httpClient } from '@shared/api/instances';
 
 interface FakeInstance {
   options: FetchOptions;
@@ -16,14 +9,9 @@ interface FakeInstance {
   raw: Mock;
 }
 
-const { handleAuthError, getCookie, instances } = vi.hoisted(() => ({
-  handleAuthError: vi.fn(),
-  getCookie: vi.fn(),
+const { instances } = vi.hoisted(() => ({
   instances: new Map<string, FakeInstance>(),
 }));
-
-vi.mock('@shared/api/instances/auth-error', () => ({ handleAuthError }));
-vi.mock('@shared/utils/cookie', () => ({ getCookie }));
 
 // Captura cada `ofetch.create` (uma instância por base URL) sem rede real.
 vi.mock('ofetch', () => ({
@@ -37,9 +25,6 @@ vi.mock('ofetch', () => ({
   },
 }));
 
-type RequestHook = (context: { options: { method?: string; headers: Headers } }) => void;
-type ResponseErrorHook = (context: { response: { status: number; _data: unknown } }) => void;
-
 function instanceFor(baseURL: string): FakeInstance {
   const instance = instances.get(baseURL);
   if (!instance) throw new Error(`Instância não criada para ${baseURL}`);
@@ -51,16 +36,8 @@ function lastCallOptions(mock: Mock): FetchOptions {
   return mock.mock.lastCall?.[1] as FetchOptions;
 }
 
-function runOnRequest(method: string): Headers {
-  const options = { method, headers: new Headers({ Accept: 'application/json' }) };
-  (instanceFor(API_BASE_URL).options.onRequest as RequestHook)({ options });
-  return options.headers;
-}
-
 describe('instâncias HTTP', () => {
   beforeEach(() => {
-    handleAuthError.mockClear();
-    getCookie.mockReset();
     instances.forEach(({ fetch, raw }) => {
       fetch.mockClear();
       raw.mockReset();
@@ -75,7 +52,7 @@ describe('instâncias HTTP', () => {
     await httpClient.delete('/clientes/1');
 
     expect(vi.mocked(ofetch.create).mock.calls.length).toBe(created);
-    expect([...instances.keys()].sort()).toEqual([API_BASE_URL, AUTH_BACKEND_URL].sort());
+    expect([...instances.keys()]).toEqual([API_BASE_URL]);
     expect(instanceFor(API_BASE_URL).fetch).toHaveBeenCalledTimes(3);
   });
 
@@ -123,23 +100,30 @@ describe('instâncias HTTP', () => {
     expect(options.signal?.aborted).toBe(true);
   });
 
-  it('identifica o módulo em toda requisição e só envia o CSRF nas mutantes', () => {
-    getCookie.mockReturnValue('token-csrf');
+  it('repassa só o signal da chamada quando o navegador não tem AbortSignal.any', async () => {
+    const original = Object.getOwnPropertyDescriptor(AbortSignal, 'any');
+    Object.defineProperty(AbortSignal, 'any', { value: undefined, configurable: true });
+    const controller = new AbortController();
 
-    const get = runOnRequest('GET');
-    expect(get.get(MODULO_HEADER_NAME)).toBe(APP_MODULO);
-    expect(get.get(CSRF_HEADER_NAME)).toBeNull();
-    expect(get.get('Accept')).toBe('application/json');
-
-    for (const method of ['POST', 'put', 'PATCH', 'DELETE']) {
-      expect(runOnRequest(method).get(CSRF_HEADER_NAME)).toBe('token-csrf');
+    try {
+      await httpClient.get('/clientes', { signal: controller.signal });
+    } finally {
+      if (original) Object.defineProperty(AbortSignal, 'any', original);
     }
+
+    const options = lastCallOptions(instanceFor(API_BASE_URL).fetch);
+    expect(options.signal).toBe(controller.signal);
+    expect(options.timeout).toBeUndefined();
   });
 
-  it('não envia header CSRF quando o cookie não existe', () => {
-    getCookie.mockReturnValue(undefined);
+  it('envia PATCH com o corpo parcial', async () => {
+    await httpClient.patch('/clientes/1', { body: { ativo: false } });
 
-    expect(runOnRequest('POST').get(CSRF_HEADER_NAME)).toBeNull();
+    expect(lastCallOptions(instanceFor(API_BASE_URL).fetch)).toMatchObject({
+      method: 'PATCH',
+      body: { ativo: false },
+      timeout: HTTP_TIMEOUT_MS,
+    });
   });
 
   it('baixa arquivo devolvendo o blob e o Content-Disposition', async () => {
@@ -166,29 +150,19 @@ describe('instâncias HTTP', () => {
       'Download sem conteúdo binário'
     );
   });
-});
 
-describe('instâncias HTTP — tratamento global de 401 (ADR-0017)', () => {
-  beforeEach(() => {
-    handleAuthError.mockClear();
-  });
+  it('envia arquivos em multipart por POST, sem fixar o Content-Type', async () => {
+    const file = new File(['pdf'], 'contrato.pdf', { type: 'application/pdf' });
 
-  function triggerResponseError(baseURL: string, status: number): void {
-    (instanceFor(baseURL).options.onResponseError as ResponseErrorHook)({
-      response: { status, _data: undefined },
+    await httpClient.upload('/reports/1/attachments', {
+      fields: { file, description: 'Contrato' },
+      query: { versao: 2 },
     });
-  }
 
-  it('httpClient aplica o tratamento global de erros de autenticação', () => {
-    triggerResponseError(API_BASE_URL, 401);
-
-    expect(handleAuthError).toHaveBeenCalledWith(401, undefined);
-  });
-
-  it('authBackend não dispara o login global (o guard trata o erro)', async () => {
-    await authBackend.get('/authorization/user');
-    triggerResponseError(AUTH_BACKEND_URL, 401);
-
-    expect(handleAuthError).not.toHaveBeenCalled();
+    const options = lastCallOptions(instanceFor(API_BASE_URL).fetch);
+    expect(options).toMatchObject({ method: 'POST', query: { versao: 2 } });
+    expect(options.body).toBeInstanceOf(FormData);
+    expect((options.body as FormData).get('description')).toBe('Contrato');
+    expect(options.headers).toBeUndefined();
   });
 });

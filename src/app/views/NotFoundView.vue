@@ -11,7 +11,7 @@
       </v-card-item>
 
       <v-card-text>
-        <p class="text-overline text-secondary font-weight-bold mb-2">
+        <p class="text-overline text-secondary-text font-weight-bold mb-2">
           {{ $t('notFound.eyebrow') }}
         </p>
         <h1 class="text-h3 font-weight-bold mb-3">{{ $t('notFound.title') }}</h1>

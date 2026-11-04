@@ -5,6 +5,13 @@
 - **Decisores:** Time de frontend
 - **Relacionadas:** ADR-0001
 
+> Nota (ADR-0025): tipos usados por um módulo só ficam em `modules/<x>/types.ts`.
+> `src/types/` guarda os contratos compartilhados por dois ou mais módulos ou
+> camadas.
+>
+> Nota (2026-10-30): o alias `@root` foi removido. Nenhum arquivo o importava,
+> e a regra do ESLint que proibia `@root/src/...` (ADR-0018) saiu junto.
+
 ## Contexto e problema
 
 Contratos TypeScript repetidos inline pelo código dificultam a evolução junto ao

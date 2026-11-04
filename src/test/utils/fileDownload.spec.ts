@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest';
 import {
   parseContentDisposition,
   saveBinaryResponse,
@@ -26,6 +26,11 @@ describe('parseContentDisposition', () => {
     expect(parseContentDisposition(header)).toBe('nota final.pdf');
   });
 
+  it('usa o fallback quando o cabeçalho não informa o nome do arquivo', () => {
+    expect(parseContentDisposition('attachment')).toBe('download');
+    expect(parseContentDisposition('inline; size=120', 'relatorio.pdf')).toBe('relatorio.pdf');
+  });
+
   it('usa o fallback quando o cabeçalho é ausente', () => {
     expect(parseContentDisposition(null)).toBe('download');
     expect(parseContentDisposition(undefined, 'custom.bin')).toBe('custom.bin');
@@ -44,6 +49,13 @@ describe('toBlob', () => {
     expect(result.type).toBe('application/pdf');
   });
 
+  it('converte ArrayBuffer em Blob sem type quando nenhum é informado', () => {
+    const result = toBlob(new ArrayBuffer(8));
+
+    expect(result.size).toBe(8);
+    expect(result.type).toBe('');
+  });
+
   it('converte ArrayBuffer em Blob com o type informado', () => {
     const result = toBlob(new ArrayBuffer(8), 'application/octet-stream');
     expect(result).toBeInstanceOf(Blob);
@@ -54,7 +66,7 @@ describe('toBlob', () => {
 describe('saveBlob / saveBinaryResponse', () => {
   const createObjectURL = vi.fn(() => 'blob:mock-url');
   const revokeObjectURL = vi.fn();
-  let clickSpy: ReturnType<typeof vi.spyOn>;
+  let clickSpy: MockInstance<HTMLAnchorElement['click']>;
 
   beforeEach(() => {
     vi.useFakeTimers();

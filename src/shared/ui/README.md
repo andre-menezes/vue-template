@@ -6,11 +6,11 @@ Voltar para o guia geral: [../../../docs/ARCHITECTURE-GUIDE.md](../../../docs/AR
 
 ## Subpastas
 
-| Pasta         | Responsabilidade                                       |
-| ------------- | ------------------------------------------------------ |
-| `components/` | Componentes globais (header, menu, account menu, logo) |
-| `layouts/`    | Estruturas de página (DefaultLayout, EmptyLayout)      |
-| `icons/`      | Wrappers e padrões de ícones                           |
+| Pasta         | Responsabilidade                                          |
+| ------------- | --------------------------------------------------------- |
+| `components/` | Componentes globais (header, menu, idioma, logo, estados) |
+| `layouts/`    | Estruturas de página (DefaultLayout, EmptyLayout)         |
+| `icons/`      | Wrappers e padrões de ícones                              |
 
 ## Layouts
 
@@ -26,9 +26,37 @@ A seleção de layout é dinâmica, baseada em `route.meta.layout`:
 | Layout          | Quando usar                                     |
 | --------------- | ----------------------------------------------- |
 | `DefaultLayout` | Páginas com header + navegação lateral (padrão) |
-| `EmptyLayout`   | Páginas sem chrome (login, callback, erros)     |
+| `EmptyLayout`   | Páginas sem chrome (ex.: telas de erro)         |
 
 Para usar `EmptyLayout`, defina `meta: { layout: 'empty' }` na rota.
+
+## Estados de carregamento, vazio e erro
+
+Toda área que lê dados do servidor tem os mesmos três estados, com os mesmos
+componentes (roadmap 2.4). Os textos padrão vêm de `states.*` no locale do app.
+
+| Componente         | Quando usar                      | Props e slots                                           |
+| ------------------ | -------------------------------- | ------------------------------------------------------- |
+| `BaseLoadingState` | Primeira carga da área           | `label?` (padrão "Carregando…"); `role="status"`        |
+| `BaseEmptyState`   | Nada a exibir, ou não encontrado | `title?`, `description?`, `icon?`; slot `actions`       |
+| `BaseErrorState`   | Falha ao carregar                | `message`, `title?`, `retryable?`, `retrying?`; `retry` |
+
+```vue
+<BaseLoadingState v-if="isPending" />
+<BaseErrorState
+  v-else-if="error"
+  :message="errorMessage(error)"
+  retryable
+  :retrying="isFetching"
+  @retry="refetch"
+/>
+<BaseEmptyState v-else-if="!data?.length" :title="$t('orders.empty')" icon="inbox" />
+<OrderList v-else :orders="data" />
+```
+
+A mensagem de erro chega pronta, de `useErrorMessage()`; numa tabela do
+Vuetify, use o `BaseEmptyState` no slot `#no-data`. O módulo `customers` usa os
+três (`CustomersView`, `CustomerDetailView`, `CustomerFormView`).
 
 ## Componente apresentacional vs container
 
@@ -50,6 +78,9 @@ um módulo, ele pertence ao módulo (não ao shared).
 - Componentes compartilhados com prefixo `The` para singletons (`TheAppHeader`)
   ou `Base` para componentes base reutilizáveis (`BaseLogo`).
 - Slots para composição flexível; evitar props complexas que poderiam ser slots.
+- Texto colorido usa os tons `<cor>-text` do tema (`text-primary-text`); a cor
+  da marca não tem contraste AA como texto e fica para fundos, bordas e botões
+  (ADR-0029).
 
 ## Exemplo — bom código (componente apresentacional)
 
@@ -65,7 +96,7 @@ um módulo, ele pertence ao módulo (não ao shared).
 </template>
 
 <script setup lang="ts">
-import type { Metric } from '@typings/home';
+import type { Metric } from '@typings/metric';
 
 defineProps<{ metric: Metric }>();
 </script>
@@ -79,7 +110,7 @@ compreensível apenas lendo a interface de props.
 
 ```vue
 <template>
-  <div>
+  <div :class="{ 'bg-grey-darken-4': appStore.theme === 'dark' }">
     <p v-if="loading">Carregando...</p>
     <ul>
       <li v-for="user in users" :key="user.id">{{ user.nome }}</li>
@@ -98,16 +129,14 @@ const loading = ref(false);
 
 onMounted(async () => {
   loading.value = true;
-  appStore.loading = true;
   users.value = await ofetch('/api/users');
   loading.value = false;
-  appStore.loading = false;
 });
 </script>
 ```
 
 Por que é ruim: viola SRP — um componente "apresentacional" está buscando
-dados, manipulando store e gerenciando loading. Isso deveria estar na view
+dados, lendo store e gerenciando loading. Isso deveria estar na view
 container ou num composable. O componente se torna impossível de reutilizar
 em outro contexto sem arrastar toda essa lógica.
 
@@ -116,21 +145,17 @@ em outro contexto sem arrastar toda essa lógica.
 ```vue
 <!-- View container (modules/users/views/UsersView.vue) -->
 <template>
-  <UserList :users="users" :loading="loading" />
+  <UserList :users="data ?? []" :loading="isPending" />
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { getUsersRequest } from '@shared/api/services/user.service';
+import { useQuery } from '@tanstack/vue-query';
+import { getUsersRequest } from '../api/user.service';
 import UserList from '../components/UserList.vue';
 
-const users = ref([]);
-const loading = ref(false);
-
-onMounted(async () => {
-  loading.value = true;
-  users.value = await getUsersRequest();
-  loading.value = false;
+const { data, isPending } = useQuery({
+  queryKey: ['users'],
+  queryFn: ({ signal }) => getUsersRequest({ signal }),
 });
 </script>
 ```

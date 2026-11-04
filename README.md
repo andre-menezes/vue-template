@@ -4,12 +4,13 @@ Template frontend baseado em Vue 3 + TypeScript + Vite, com foco em:
 
 - separação clara de responsabilidades por camada
 - modularização por contexto de domínio
-- fluxo de autenticação centralizado no roteador
+- rotas auto-descobertas por módulo
 - padronização de stores, services e tipagem
 - qualidade via lint, typecheck, testes unitários/integração e E2E
 
 ## Leitura recomendada
 
+- Começar um projeto a partir do template: [docs/NEW-PROJECT.md](docs/NEW-PROJECT.md)
 - Guia arquitetural completo: [docs/ARCHITECTURE-GUIDE.md](docs/ARCHITECTURE-GUIDE.md)
 - Estrutura de código principal: [src/README.md](src/README.md)
 - Convenções da camada app: [src/app/README.md](src/app/README.md)
@@ -38,40 +39,60 @@ Template frontend baseado em Vue 3 + TypeScript + Vite, com foco em:
 ## Como executar
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
+
+Nenhuma variável de ambiente é obrigatória: os valores padrão ficam em
+`src/core/config/index.ts` e podem ser sobrescritos copiando `.env.example` para
+`.env.development.local`. Todas as páginas são públicas: o template ainda não tem autenticação
+(ADR-0021). A integração contínua roda no GitHub Actions
+(`.github/workflows/ci.yml`).
+
+## Começando um projeto a partir do template
+
+As telas de documentação do template (hub em `/docs`, arquitetura, onboarding,
+componentes, convenções e decisões) ficam no módulo `src/modules/showcase`. Ao
+criar um projeto novo, remova-as com:
+
+```bash
+pnpm template:clean
+```
+
+O comando apaga o módulo e os testes dele e mantém a página inicial
+(`src/modules/home`), a infraestrutura e a pasta `docs/` (ADR-0026).
 
 ## Qualidade e validação
 
 ```bash
 # Lint
-npm run lint
+pnpm lint
 
 # Typecheck + build
-npm run build
+pnpm build
 
 # Testes unitários/integração
-npm run test
+pnpm test
 
 # Cobertura
-npm run test:coverage
+pnpm test:coverage
 
 # E2E (headless)
-npm run test:e2e
+pnpm test:e2e
 
 # E2E (interativo)
-npm run test:e2e:open
+pnpm test:e2e:open
 
 # Tudo (unitários + E2E)
-npm run test:all
+pnpm test:all
 ```
 
 ## Estrutura de alto nível
 
 ```text
 src/
-  app/      # bootstrap, providers, auth, configurações globais, rotas base
+  app/      # bootstrap, providers, configurações globais, rotas base
+  core/     # base sem UI: config/env e constantes
   modules/  # módulos de domínio (views, componentes e rotas por contexto)
   shared/   # blocos transversais (api, stores, ui, helpers, utils, composables)
   test/     # setup e suítes de teste (Vitest)

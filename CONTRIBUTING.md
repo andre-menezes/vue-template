@@ -2,7 +2,7 @@
 
 Obrigado por contribuir com o **vue3-template**. Este guia reúne o fluxo de
 trabalho, as convenções e os critérios de qualidade do projeto. Leia antes de
-abrir seu primeiro Merge Request (MR).
+abrir seu primeiro Pull Request (PR).
 
 > Documentação de referência (fonte de verdade):
 >
@@ -23,8 +23,9 @@ abrir seu primeiro Merge Request (MR).
 - [Git hooks (Husky)](#git-hooks-husky)
 - [Padrões de código](#padrões-de-código)
 - [Testes](#testes)
-- [Validação antes do MR](#validação-antes-do-mr)
-- [Abrindo um Merge Request](#abrindo-um-merge-request)
+- [Validação antes do PR](#validação-antes-do-pr)
+- [Abrindo um Pull Request](#abrindo-um-pull-request)
+- [Publicando uma versão](#publicando-uma-versão)
 - [Registrando no CHANGELOG](#registrando-no-changelog)
 
 ---
@@ -34,8 +35,12 @@ abrir seu primeiro Merge Request (MR).
 - **Node.js**: versão exata fixada em [`.tool-versions`](.tool-versions) e
   [`.nvmrc`](.nvmrc) (**24.22.2**, linha LTS). Recomendamos o **vfox** para
   gerenciá-la (veja abaixo).
-- **npm**: versão 10 ou superior (acompanha o Node instalado pelo vfox).
-- Variáveis de ambiente: copie `.env.example` para `.env.development.local`.
+- **pnpm**: versão 10 ou superior. O campo `packageManager` do `package.json`
+  fixa a versão; com o Corepack (que acompanha o Node), basta rodar
+  `corepack enable` uma vez por máquina. Não use `npm install`: o projeto não
+  tem `package-lock.json` e o lockfile é o `pnpm-lock.yaml` (ADR-0024).
+- Variáveis de ambiente: opcionais. Para sobrescrever os padrões, copie
+  `.env.example` para `.env.development.local`.
 
 ### Gerenciando a versão do Node com vfox
 
@@ -65,9 +70,9 @@ node -v                         # confirme: v24.22.2
 > recomendação do vfox é a padrão do time, mas não é obrigatória.
 
 > **Importante:** o projeto usa `engine-strict=true` no `.npmrc`. Se a versão
-> ativa do Node não for exatamente **24.22.2**, o `npm install` falha com
-> `EBADENGINE`. Ative a versão do projeto (`vfox use nodejs`) antes de instalar
-> as dependências.
+> ativa do Node estiver fora da linha 24 (a partir da **24.22.2**), o
+> `pnpm install` falha com `ERR_PNPM_UNSUPPORTED_ENGINE`. Ative a versão do projeto
+> (`vfox use nodejs`) antes de instalar as dependências.
 
 ---
 
@@ -75,13 +80,13 @@ node -v                         # confirme: v24.22.2
 
 ```bash
 vfox use nodejs    # ativa a versão do Node do projeto (ver .tool-versions)
-npm install        # instala dependências e configura os git hooks (Husky)
-npm run dev        # sobe o servidor de desenvolvimento (porta 9081)
+pnpm install       # instala dependências e configura os git hooks (Husky)
+pnpm dev           # sobe o servidor de desenvolvimento (porta 9081)
 ```
 
 > Se preferir usar `nvm`, substitua a primeira linha por `nvm use`.
 
-O `npm install` executa o script `prepare`, que ativa o Husky automaticamente.
+O `pnpm install` executa o script `prepare`, que ativa o Husky automaticamente.
 Não é necessário nenhum passo manual adicional para habilitar os hooks.
 
 ---
@@ -92,11 +97,11 @@ Não é necessário nenhum passo manual adicional para habilitar os hooks.
 2. Crie uma branch a partir da `develop` (nunca de `main`).
 3. Implemente seguindo a arquitetura em camadas (types → service → store (se necessário) → view → components). Detalhes em [docs/ONBOARDING.md](docs/ONBOARDING.md).
 4. Escreva testes cobrindo as regras de negócio.
-5. Valide localmente: `npm run lint && npm run build && npm run test`.
+5. Valide localmente: `pnpm lint && pnpm build && pnpm test`.
 6. Commite seguindo as convenções (os hooks validam automaticamente).
-7. Faça push e abra um Merge Request para a `develop`.
+7. Faça push e abra um Pull Request para a `develop`.
 
-> **Nunca** faça push direto em `main` ou `develop`. Toda mudança passa por MR.
+> **Nunca** faça push direto em `main` ou `develop`. Toda mudança passa por PR.
 
 ---
 
@@ -108,7 +113,7 @@ Não é necessário nenhum passo manual adicional para habilitar os hooks.
 | Bug fix      | `fix/BUG-XXX-<slug>`         | `fix/BUG-007-login-redirect`  |
 | Refactor     | `refactor/<descrição-curta>` | `refactor/http-interceptors`  |
 | Documentação | `docs/<descrição-curta>`     | `docs/contributing-guide`     |
-| Chore/infra  | `chore/<descrição-curta>`    | `chore/gitlab-ci`             |
+| Chore/infra  | `chore/<descrição-curta>`    | `chore/github-actions`        |
 
 Use `kebab-case` no slug e mantenha-o curto e descritivo.
 
@@ -126,7 +131,7 @@ tipo(escopo): descrição em português, imperativo, ≤72 chars
 
 **Tipos aceitos:** `feat`, `fix`, `docs`, `refactor`, `test`, `chore`,
 `style`, `perf`, `ci`, `revert`, `build`, `wip` (o mesmo conjunto validado pelo
-hook `commit-msg`; `wip` só em branch de trabalho, reescrito antes do MR).
+hook `commit-msg`; `wip` só em branch de trabalho, reescrito antes do PR).
 
 Exemplos:
 
@@ -143,7 +148,7 @@ O hook `commit-msg` rejeita mensagens fora do padrão.
 ## Git hooks (Husky)
 
 Os hooks são gerenciados pelo [Husky](https://typicode.github.io/husky/) e
-ativados no `npm install`.
+ativados no `pnpm install`.
 
 | Hook         | O que faz                                                            |
 | ------------ | -------------------------------------------------------------------- |
@@ -177,22 +182,22 @@ Referência completa: [docs/ARCHITECTURE-GUIDE.md](docs/ARCHITECTURE-GUIDE.md).
 
 - **Unitários/integração**: Vitest + Vue Test Utils (`src/test/**/*.spec.ts`).
 - **End-to-end**: Playwright (`e2e/**/*.spec.ts`). Na primeira vez, rode
-  `npm run test:e2e:install` para baixar o Chromium; o `npm run test:e2e` sobe
+  `pnpm test:e2e:install` para baixar o Chromium; o `pnpm test:e2e` sobe
   o servidor sozinho.
 - Toda regra de negócio nova precisa de teste; bug corrigido precisa de teste
   de regressão.
 
-Os testes unitários usam o `.env.test` versionado (valores fictícios), carregado
-automaticamente pelo Vitest — não é preciso configurar variáveis para rodá-los.
+As variáveis de ambiente têm valores padrão (`src/core/config/index.ts`), então
+não é preciso configurar nada para rodar os testes.
 
 Thresholds de cobertura (o CI reprova abaixo destes valores):
 
 | Métrica    | Mínimo |
 | ---------- | ------ |
-| Lines      | 45%    |
-| Functions  | 29%    |
-| Branches   | 57%    |
-| Statements | 43%    |
+| Lines      | 100%   |
+| Functions  | 100%   |
+| Branches   | 98%    |
+| Statements | 100%   |
 
 Os valores são um **piso que só sobe** (ratchet — ADR-0016): refletem a
 cobertura real medida e devem ser elevados em `vite.config.ts` sempre que a
@@ -201,33 +206,55 @@ cobertura aumentar. A fonte de verdade é o `coverage.thresholds` do
 
 ---
 
-## Validação antes do MR
+## Validação antes do PR
 
 Garanta que os três comandos passam sem erros:
 
 ```bash
-npm run lint       # análise estática
-npm run build      # type-check + build de produção
-npm run test       # testes unitários
+pnpm lint          # análise estática
+pnpm build         # type-check + build de produção
+pnpm test          # testes unitários
 ```
 
-Para conferir cobertura: `npm run test:coverage`.
+Para conferir cobertura: `pnpm test:coverage`.
 
 ---
 
-## Abrindo um Merge Request
+## Abrindo um Pull Request
 
-1. O MR deve apontar para a branch `develop`.
-2. Preencha o template de MR (carregado automaticamente pelo GitLab).
+1. O PR deve apontar para a branch `develop`.
+2. Preencha o template de PR (carregado automaticamente pelo GitHub).
 3. Aplique as labels adequadas (tipo e prioridade) — veja
-   [.gitlab/labels.md](.gitlab/labels.md).
+   [.github/labels.md](.github/labels.md).
 4. Título conciso (< 70 caracteres) no formato Conventional Commits.
 5. Descreva o que foi feito, como testar e pendências (se houver).
 6. Vincule a issue relacionada (ex.: `Closes #123`).
-7. Aguarde o pipeline de CI passar (lint, build, testes) antes de solicitar review.
+7. Aguarde o CI do GitHub Actions passar (lint, build, testes e E2E) antes de solicitar review.
 
 O checklist objetivo de aprovação está em
 [docs/CODE-REVIEW-CHECKLIST.md](docs/CODE-REVIEW-CHECKLIST.md).
+
+---
+
+## Publicando uma versão
+
+A `main` recebe só versões; o trabalho do dia a dia vai para a `develop`.
+Versões seguem o [Versionamento Semântico](https://semver.org/lang/pt-BR/).
+
+1. Crie `release/<versão>` a partir da `develop` atualizada (ex.:
+   `release/1.1.0`).
+2. Nela, só o fechamento da versão: `version` no `package.json` e, no
+   CHANGELOG, a seção `[Não lançado]` vira `[<versão>] - <data>`, com uma
+   `[Não lançado]` vazia acima.
+3. Abra um PR da `release/<versão>` para a `main` e faça o merge com o CI
+   verde.
+4. Crie a tag e a release no GitHub a partir da `main`:
+   `gh release create v<versão> --target main --generate-notes`.
+5. Traga a `main` de volta para a `develop` (PR `main` → `develop`), para a
+   versão e o CHANGELOG ficarem iguais nas duas.
+
+Correção urgente em produção: `hotfix/<versão>` a partir da `main`, com os
+mesmos passos 2 a 5.
 
 ---
 

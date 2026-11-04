@@ -11,7 +11,7 @@ onde implementar cada tipo de funcionalidade.
 - [Estrutura de pastas](#estrutura-de-pastas)
 - [Mapa de documentação](#mapa-de-documentação)
 - [Fluxo de inicialização](#fluxo-de-inicialização)
-- [Fluxo de autenticação](#fluxo-de-autenticação)
+- [Autenticação](#autenticação)
 - [Composição de rotas](#composição-de-rotas)
 - [Camada HTTP](#camada-http)
 - [Estado global](#estado-global)
@@ -29,10 +29,10 @@ onde implementar cada tipo de funcionalidade.
 O código-fonte segue uma arquitetura em camadas com responsabilidades isoladas:
 
 ```text
-app        → inicialização, providers, guard de auth e composição de rotas
+app        → inicialização, providers e composição de rotas
 modules    → funcionalidades por domínio (features)
 shared     → infraestrutura transversal reutilizável
-core       → base sem UI: config/env e cliente OAuth (state/nonce)
+core       → base sem UI: config/env e constantes
 types      → contratos TypeScript centralizados por contexto
 test       → validação automatizada (unitários e integração)
 e2e        → testes end-to-end (Playwright)
@@ -81,13 +81,12 @@ graph TD
 | shared  | core, types                  | app, modules         |
 | core    | types                        | app, modules, shared |
 | types   | nenhuma (apenas declarações) | qualquer outra       |
+| test    | todas as camadas de src      | —                    |
 
 (*) Exceto o carregamento das rotas dos módulos via `import.meta.glob`.
 
-Para inverter uma dependência que apontaria "para cima" (ex.: a camada HTTP
-iniciar o login), a camada inferior expõe um ponto de registro e o `app`
-injeta a implementação no bootstrap (ex.: `setUnauthorizedHandler(startLogin)`).
-| test | todas as camadas de src | — |
+Para inverter uma dependência que apontaria "para cima", a camada inferior
+expõe um ponto de registro e o `app` injeta a implementação no bootstrap.
 
 ---
 
@@ -98,25 +97,24 @@ injeta a implementação no bootstrap (ex.: `setUnauthorizedHandler(startLogin)`
 ├── docs/                          # Documentação arquitetural e guias
 ├── e2e/                           # Testes end-to-end (Playwright)
 │   ├── *.spec.ts                  # Specs E2E (um arquivo por página/fluxo)
-│   └── support/                   # Helpers compartilhados (ex.: mockUserSession)
+├── mock/                          # API simulada do `pnpm dev` (plugin do Vite, ADR-0039)
 ├── public/                        # Assets estáticos servidos na raiz
 ├── src/
-│   ├── app/                       # Bootstrap, providers, guard, rotas base
-│   │   ├── locales/               # Mensagens i18n (pt-BR)
+│   ├── app/                       # Bootstrap, providers, rotas base
+│   │   ├── locales/               # Mensagens i18n (pt-BR.json, en-US.json)
 │   │   ├── providers/             # Registro de plugins (Pinia, i18n, Router, Vuetify)
 │   │   ├── styles/                # SCSS global
-│   │   └── views/                 # Views de uso global (token callback, erro, 404)
+│   │   └── views/                 # Views de uso global (404)
 │   ├── core/                      # Base sem UI (não importa app/modules/shared)
-│   │   ├── auth/                  # Cliente OAuth SSC e state/nonce
 │   │   └── config/                # Constantes e variáveis de ambiente
 │   ├── modules/                   # Features por domínio
-│   │   ├── home/                  # Hub de documentação (público)
-│   │   ├── architecture/ …        # Demais telas de documentação do template
-│   │   └── protected-example/     # Exemplo de rota autenticada
+│   │   ├── customers/             # CRUD de exemplo, o exemplo canônico (removível, ADR-0039)
+│   │   ├── home/                  # Página inicial do projeto (/)
+│   │   └── showcase/              # Documentação do template (removível, ADR-0026)
 │   ├── shared/                    # Infraestrutura transversal
 │   │   ├── api/                   # Instâncias HTTP e services
 │   │   ├── composables/           # Lógica reativa compartilhada (useXxx)
-│   │   ├── helpers/               # Funções com efeito lateral (stores/services/sessão)
+│   │   ├── helpers/               # Funções com efeito lateral (stores/services/DOM)
 │   │   ├── stores/                # Estado global (Pinia)
 │   │   ├── ui/                    # Layouts, componentes globais, ícones
 │   │   ├── utils/                 # Funções puras (sem dependência de camadas)
@@ -142,8 +140,8 @@ código, e instruções de implementação. Navegue diretamente:
 | Documento                                                 | Conteúdo                                     |
 | --------------------------------------------------------- | -------------------------------------------- |
 | [src/README.md](../src/README.md)                         | Visão geral do código-fonte                  |
-| [src/app/README.md](../src/app/README.md)                 | Bootstrap, providers, guard                  |
-| [src/core/README.md](../src/core/README.md)               | Config/env e cliente OAuth                   |
+| [src/app/README.md](../src/app/README.md)                 | Bootstrap, providers, rotas base             |
+| [src/core/README.md](../src/core/README.md)               | Config/env e constantes                      |
 | [src/modules/README.md](../src/modules/README.md)         | Como criar um módulo de feature              |
 | [src/shared/README.md](../src/shared/README.md)           | Utils, helpers, composables, stores, UI, API |
 | [src/shared/api/README.md](../src/shared/api/README.md)   | Camada HTTP (factory, services)              |
@@ -166,75 +164,30 @@ flowchart TD
   C --> E[i18n]
   C --> F[Router]
   C --> G[Vuetify]
-  F --> H[beforeResolveGuard]
-  H --> I[validar sessão no backend / iniciar login]
   B --> J[mount #app]
 ```
 
 1. `main.ts` cria a instância Vue com `App.vue`.
-2. `registerPlugins` registra Pinia → handler de 401 → i18n → Router → Vuetify.
-3. O Router carrega rotas automaticamente via `import.meta.glob('@/**/routes.ts')`.
-4. `beforeResolveGuard` verifica autenticação antes de cada navegação.
-5. A aplicação monta no elemento `#app`.
+2. `registerPlugins` registra Pinia → i18n → Router → Vuetify.
+3. O Router carrega rotas automaticamente via `import.meta.glob('@/{app,modules}/**/routes.ts')`.
+4. A aplicação monta no elemento `#app`.
 
 ---
 
-## Fluxo de autenticação
+## Autenticação
 
-A autenticação usa OAuth SSC e está centralizada no guard do Router.
-
-```mermaid
-sequenceDiagram
-  participant U as Usuário
-  participant B as Navegador (cookie HttpOnly)
-  participant R as Router Guard
-  participant S as SSC (OAuth)
-  participant A as API Auth
-  participant US as User Store
-
-  U->>R: acessa rota protegida
-  R->>A: getUserDataRequest() (cookie via credentials)
-  alt sessão válida
-    A-->>R: dados usuário
-    R->>US: setUserData()
-  else sem sessão (401)
-    R->>S: signIn(/token)
-  end
-
-  U->>R: retorno em /token?code=...
-  R->>A: getTokenRequest(code)
-  A-->>B: Set-Cookie (HttpOnly)
-  R->>A: getUserDataRequest()
-  R->>US: setUserData()
-```
-
-**Regras principais:**
-
-- Rota `/token` recebe o `code` do SSC; o backend troca por tokens e emite o
-  cookie de sessão via `Set-Cookie` (HttpOnly).
-- O token não é acessível ao JavaScript; o navegador envia o cookie
-  automaticamente (`credentials: 'include'`).
-- Rota protegida: o guard valida a sessão pelo backend (dados do usuário);
-  falha (ex.: 401) → redireciona para login SSC.
-- O `code` só é trocado se o `state` conferir com o nonce gerado no `signIn`;
-  sem nonce salvo (link de callback forjado), o retorno é rejeitado (ADR-0017).
-- Falha na validação do `state` ou na troca do code → redireciona para
-  `/erro-autenticacao?reason=<código>`; a tela traduz o código via i18n e nunca
-  exibe texto livre vindo da URL.
-- Erros das chamadas de `authBackend` são tratados pelo guard/logout, não pelo
-  handler global de 401 da camada HTTP.
-- O mock de autenticação (`VITE_AUTH_MOCK`) é desligado por padrão e proibido
-  no modo `production`.
-- O destino original é salvo em `sessionStorage` para redirect após login.
+O template não tem autenticação: todas as páginas são públicas (ADR-0021). Uma
+tela de login própria será adicionada quando existir um backend de
+autenticação, com uma nova ADR definindo o fluxo.
 
 ---
 
 ## Composição de rotas
 
-O Router carrega automaticamente todos os `routes.ts` do projeto via glob:
+O Router carrega automaticamente os `routes.ts` de `app/` e `modules/` via glob:
 
 ```ts
-const modules = import.meta.glob('@/**/routes.ts', { eager: true });
+const modules = import.meta.glob('@/{app,modules}/**/routes.ts', { eager: true });
 ```
 
 **Padrão esperado por módulo:**
@@ -247,7 +200,6 @@ const routes: RouteRecordRaw[] = [
     path: '/clientes',
     name: 'Clientes',
     component: () => import('./views/ClientesView.vue'),
-    meta: { requiresAuth: true },
   },
 ];
 
@@ -256,7 +208,6 @@ export default routes;
 
 **Meta fields disponíveis:**
 
-- `requiresAuth: true` → ativa guard de autenticação.
 - `layout: 'empty'` → usa layout sem header/navegação.
 
 ---
@@ -270,15 +221,16 @@ Documentação detalhada: [src/shared/api/README.md](../src/shared/api/README.md
 **Resumo:**
 
 - `shared/api/instances/index.ts` → factory que recebe `baseURL`, cria **uma**
-  instância do ofetch e retorna `get`, `post`, `put`, `patch`, `delete` e
-  `download`, todos com `(url, { query?, body?, headers?, signal? })` e
-  tipagem genérica, sem casts.
-- Duas instâncias pré-configuradas: `httpClient` (API interna) e `authBackend`
-  (sessão BFF: login, dados do usuário e logout). O SSC é acessado só por
-  redirecionamento (`@core/auth`), nunca por chamada HTTP.
-- Requisições usam `credentials: 'include'`: o cookie de sessão `HttpOnly` é
-  enviado automaticamente (sem header `Authorization` manual — ver ADR-0014).
-- Services em `shared/api/services/` expõem funções com nome de negócio.
+  instância do ofetch e retorna `get`, `post`, `put`, `patch`, `delete`,
+  `download` e `upload` (multipart), todos com
+  `(url, { query?, body?, headers?, signal? })` (no `upload`, `fields` no lugar
+  de `body`) e tipagem genérica, sem casts.
+- Instância pré-configurada: `httpClient` (API da aplicação, `VITE_API_BASE_URL`).
+- Services expõem funções com nome de negócio. Ficam em `modules/<x>/api/`
+  quando um módulo só os usa, e em `shared/api/services/` quando são
+  compartilhados (ADR-0025).
+- As views leem dados por queries do TanStack Query que chamam os services
+  (ADR-0027).
 - Componentes/views nunca chamam endpoints diretamente.
 
 ---
@@ -287,10 +239,9 @@ Documentação detalhada: [src/shared/api/README.md](../src/shared/api/README.md
 
 Stores Pinia ficam em `shared/stores/`. Cada store tem responsabilidade única.
 
-| Store        | Responsabilidade                               |
-| ------------ | ---------------------------------------------- |
-| `app.store`  | Estado global de UX (tema persistido, loading) |
-| `user.store` | Identidade e autorização do usuário            |
+| Store       | Responsabilidade                      |
+| ----------- | ------------------------------------- |
+| `app.store` | Estado global de UX (tema persistido) |
 
 **Regra de uso:**
 
@@ -312,9 +263,9 @@ Documentação detalhada: [src/shared/README.md](../src/shared/README.md)
 | Sim                       | Não                       | `helpers/`     |
 | Sim                       | Sim                       | `composables/` |
 
-- **utils**: funções puras — `formatCurrency`, `truncate`, `formatDate`.
-- **helpers**: interagem com stores/services — `cleanStorage`, `startLogin`, `endSession`.
-- **composables**: lógica reativa — `useSession`, `useTheme`.
+- **utils**: funções puras — `formatCurrency`, `truncate`, `formatDate`, `validateFile`.
+- **helpers**: interagem com stores/services/DOM — `downloadAndSave`, `validateAndUpload`.
+- **composables**: lógica reativa — `useTheme`.
 
 ---
 
@@ -347,7 +298,7 @@ Documentação detalhada: [src/types/README.md](../src/types/README.md)
 
 **Resumo:**
 
-- Centralizada em `src/types/` por contexto (auth, user, store, home, theme...).
+- Tipos de um módulo só ficam em `src/modules/<x>/types.ts`; os compartilhados, em `src/types/` por contexto (store, theme, http, router...) (ADR-0025).
 - Alias de importação: `@typings/<contexto>`.
 - Interfaces sem prefixo `I`, PascalCase, sem decoração de tipo no nome.
 - Separar contrato de API do contrato de UI (mapear explicitamente).
@@ -372,18 +323,18 @@ Documentação detalhada: [src/test/README.md](../src/test/README.md)
 **Comandos:**
 
 ```bash
-npm run test              # unitários (single run)
-npm run test:watch        # unitários (watch mode)
-npm run test:coverage     # cobertura
-npm run test:e2e          # E2E headless
-npm run test:e2e:open     # E2E interativo (Playwright UI)
-npm run test:all          # unitários + E2E
+pnpm test                 # unitários (single run)
+pnpm test:watch           # unitários (watch mode)
+pnpm test:coverage        # cobertura
+pnpm test:e2e             # E2E headless
+pnpm test:e2e:open        # E2E interativo (Playwright UI)
+pnpm test:all             # unitários + E2E
 ```
 
 **Thresholds de cobertura:**
 
 Piso que só sobe (ratchet — ADR-0016), definido em `vite.config.ts`:
-lines 45%, functions 29%, branches 57%, statements 43%.
+lines 29%, functions 19%, branches 51%, statements 28%.
 
 ---
 
@@ -413,7 +364,6 @@ lines 45%, functions 29%, branches 57%, statements 43%.
 | `@shared`  | `src/shared/`  |
 | `@typings` | `src/types/`   |
 | `@test`    | `src/test/`    |
-| `@root`    | `./` (raiz)    |
 
 **Regra**: sempre usar o alias mais próximo do destino. Nunca usar `@/shared/`
 quando `@shared/` está disponível.
@@ -438,7 +388,7 @@ As decisões arquiteturais relevantes do projeto são registradas como
 
 Cada ADR documenta o contexto, as opções consideradas, a decisão tomada e suas
 consequências — preservando o "porquê" das escolhas ao longo do tempo. As
-decisões estruturais descritas neste guia (camadas, camada HTTP, autenticação,
+decisões estruturais descritas neste guia (camadas, camada HTTP,
 roteamento, testes, tipagem, etc.) têm ADRs correspondentes.
 
 Ao tomar uma nova decisão arquitetural, registre-a seguindo as instruções em

@@ -7,7 +7,7 @@
 
 ## Contexto e problema
 
-A aplicação consome APIs internas e o sistema de segurança (SSC). É preciso
+A aplicação consome APIs internas e o provedor de autenticação. É preciso
 padronizar as chamadas HTTP, evitar duplicação de cabeçalhos e tratamento de
 erros, e manter as views desacopladas do transporte. Como estruturar a camada
 de comunicação com o backend?
@@ -34,11 +34,15 @@ de comunicação com o backend?
 
 Adotamos uma factory `createApiInstance(baseURL)` (em
 `src/shared/api/instances/index.ts`) construída sobre `ofetch`, expondo métodos
-tipados por generics. As instâncias são pré-configuradas: `httpClient`
-(`VITE_API_BACKEND`), `segID` (`VITE_SEGID_BASE_URL`) e `authBackend`
-(`VITE_AUTH_BACKEND`). As requisições enviam credenciais (`credentials: 'include'`)
+tipados por generics. As instâncias eram pré-configuradas: `httpClient`
+(API interna), uma instância para o provedor de identidade e `authBackend`
+(backend de autenticação). As requisições enviam credenciais (`credentials: 'include'`)
 para que o cookie de sessão trafegue automaticamente. Views e stores consomem
 funções de `src/shared/api/services/`, nunca chamando endpoints diretamente.
+
+> Nota (ADR-0021): com a remoção da autenticação corporativa, resta apenas a
+> instância `httpClient` (`VITE_API_BASE_URL`), sem `credentials: 'include'`,
+> CSRF nem tratamento global de 401.
 
 > Nota (ADR-0014): originalmente a factory injetava o header `Authorization` a
 > partir do token no cliente. Com a adoção do cookie `HttpOnly`, o header manual

@@ -22,16 +22,16 @@ Ler antes de executar:
 1. Ler a spec completamente. Identificar requisitos, regras, critérios de aceite, endpoints e layout.
 2. Listar dúvidas. Se houver ambiguidade, **parar e perguntar**.
 3. Criar branch a partir de develop: `git checkout develop && git pull && git checkout -b feat/FEAT-XXX-<slug>`.
-4. Criar tipos em `src/types/<contexto>/index.ts`. Separar contrato API do contrato UI quando diferirem.
-5. Criar service em `src/shared/api/services/<contexto>.service.ts`. Tipar retorno com generics.
-6. Criar store em `src/shared/stores/` **somente** se o estado for transversal.
-7. Criar composable em `src/shared/composables/` **somente** se houver lógica reativa reutilizável.
+4. Criar tipos em `src/modules/<x>/types.ts` (ou `src/types/<contexto>/` se já forem compartilhados por outro módulo; ADR-0025). Separar contrato API do contrato UI quando diferirem.
+5. Criar service em `src/modules/<x>/api/<contexto>.service.ts` (ou `src/shared/api/services/` se já for compartilhado por outro módulo). Tipar retorno com generics e aceitar `signal` opcional.
+6. Criar a query em `src/modules/<x>/composables/use<Contexto>Query.ts` com `useQuery` (TanStack Query, ADR-0027). Escritas usam `useMutation` e invalidam a query afetada.
+7. Criar store Pinia **somente** para estado de cliente transversal ou persistente (dados do servidor ficam na query); em `src/shared/` só se compartilhada.
 8. Criar módulo: `src/modules/<nome>/routes.ts` com `RouteRecordRaw[]` e lazy loading.
 9. Criar view container em `src/modules/<nome>/views/`. Orquestra dados e controla estados.
 10. Criar componentes apresentacionais em `src/modules/<nome>/components/`. Props tipadas, sem fetch/store. Adicionar `data-cy`.
 11. Criar testes unitários em `src/test/`. Cobrir service e regras de negócio.
 12. Criar teste E2E (Playwright) em `e2e/`. Cobrir fluxo principal com seletores `data-cy` (`getByTestId`).
-13. Validar: `npm run lint && npm run build && npm run test`.
+13. Validar: `pnpm lint && pnpm build && pnpm test`.
 14. Corrigir se necessário. Revalidar até zero erros.
 15. Se a feature envolveu uma decisão arquitetural (nova lib, novo padrão, mudança de camada, escolha entre abordagens válidas), criar/atualizar a ADR em `docs/decisions/` (template em `agent/templates/adr.md`).
 16. Commitar: commits atômicos seguindo `docs/COMMIT-CONVENTIONS.md`.
@@ -42,7 +42,7 @@ Ler antes de executar:
 ## Saída esperada
 
 - Módulo funcional com route auto-descoberta.
-- Tipos centralizados, service tipado, view + componentes puros.
+- Tipos e service no módulo, query com `useQuery`, view + componentes puros.
 - Testes unitários e E2E passando.
 - Lint e build sem erros.
 - PR aberto pronto para code review.

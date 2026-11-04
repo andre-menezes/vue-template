@@ -33,7 +33,7 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 
 - [ ] ⚠️ Sem uso de `any` em contratos de domínio (preferir `unknown` se necessário)
 - [ ] ⚠️ Props e emits tipados com `defineProps<T>()` e `defineEmits<T>()`
-- [ ] ⚠️ Tipos centralizados em `src/types/` (não inline repetido)
+- [ ] ⚠️ Tipos no módulo (`types.ts`) ou em `src/types/` quando compartilhados, nunca inline repetido (ADR-0025)
 - [ ] Interfaces sem prefixo `I`, PascalCase
 - [ ] Retorno de service tipado com generic (`httpClient.get<T>()`), sem `as unknown as`
 - [ ] Busca ou carga que pode ficar obsoleta repassa `signal` (`AbortController`) ao service
@@ -46,9 +46,10 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 
 - [ ] ⚠️ Toda regra de negócio nova tem teste unitário
 - [ ] ⚠️ Testes possuem assertions (sem `it` vazio)
-- [ ] ⚠️ Testes passam (`npm run test`)
+- [ ] ⚠️ Testes passam (`pnpm test`)
 - [ ] Mocks isolados — preferir Pinia real a mock do módulo inteiro
 - [ ] Fluxos críticos (auth, pagamento) têm teste E2E correspondente
+- [ ] ⚠️ Página nova tem E2E com `expectNoA11yViolations` (WCAG A/AA)
 - [ ] 💡 Nomes de `it` descrevem o comportamento em português
 
 ---
@@ -68,7 +69,6 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 - [ ] ⚠️ Tokens nunca expostos em logs, templates ou URLs
 - [ ] ⚠️ Dados sensíveis não persistidos em localStorage sem necessidade
 - [ ] ⚠️ Validação de input antes de enviar ao backend
-- [ ] Requisições enviam credenciais (`credentials: 'include'`) para o cookie de sessão
 - [ ] 💡 Sanitização de dados exibidos em `v-html` (se usado)
 
 ---
@@ -85,8 +85,8 @@ Voltar para o guia geral: [ARCHITECTURE-GUIDE.md](ARCHITECTURE-GUIDE.md)
 
 ## Estilo e formatação
 
-- [ ] ⚠️ Lint passa sem erros (`npm run lint`)
-- [ ] ⚠️ Build passa sem erros (`npm run build`)
+- [ ] ⚠️ Lint passa sem erros (`pnpm lint`)
+- [ ] ⚠️ Build passa sem erros (`pnpm build`)
 - [ ] Ordem dos blocos: `<template>` → `<script>` → `<style>`
 - [ ] Imports usam alias mais curto (`@shared/`, `@app/`, `@typings/`)
 - [ ] Eventos customizados em camelCase

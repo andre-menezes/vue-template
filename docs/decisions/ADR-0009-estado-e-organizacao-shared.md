@@ -5,6 +5,10 @@
 - **Decisores:** Time de frontend
 - **Relacionadas:** ADR-0001
 
+> Nota (ADR-0025): services e stores usados por um módulo só ficam no próprio módulo
+> (`modules/<x>/api`, `modules/<x>/stores`). `shared/` recebe o código quando
+> um segundo módulo precisar dele.
+
 ## Contexto e problema
 
 Dentro da camada `shared/` convivem estado global, lógica reutilizável e

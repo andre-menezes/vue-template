@@ -30,8 +30,7 @@ agent/
 │   └── PROCEDURE.md       # Fases do workflow (entrada → implementação → entrega)
 ├── skills/
 │   ├── vue-vuetify-dev/   # Conhecimento Vue 3 + Vuetify + TS deste projeto
-│   ├── testing/           # Conhecimento de testes (Vitest + Playwright)
-│   └── documentation/     # Convenções de documentação, ADR e CHANGELOG
+│   └── testing/           # Conhecimento de testes (Vitest + Playwright)
 ├── workflows/
 │   ├── create-feature.workflow.md
 │   ├── fix-bug.workflow.md
@@ -51,17 +50,20 @@ Eles referenciam o núcleo em `agent/` como fonte de verdade.
 
 | Ferramenta | Arquivo do adapter                |
 | ---------- | --------------------------------- |
-| Kiro       | `.kiro/steering/project.md`       |
+| Kiro       | `.kiro/steering/*.md`             |
 | Kiro       | `.kiro/skills/create-feature.md`  |
 | Kiro       | `.kiro/skills/fix-bug.md`         |
 | Cursor     | `.cursorrules`                    |
 | Claude     | `CLAUDE.md`                       |
-| Claude     | `.claude/skills/*/SKILL.md`       |
 | Copilot    | `.github/copilot-instructions.md` |
+
+Os adapters só apontam para os arquivos deste núcleo, sem repetir regras. Os
+do Kiro incluem os arquivos do núcleo com `#[[file:...]]`, então o conteúdo
+carregado é sempre o da fonte de verdade.
 
 ## Como usar
 
-1. Abra o projeto na IDE de sua escolha (Kiro, Cursor, VS Code + Copilot).
+1. Abra o projeto na ferramenta de sua escolha (Kiro, Claude Code, Cursor, VS Code + Copilot).
 2. A IDE carrega automaticamente as instruções do adapter correspondente.
 3. Envie uma tarefa ao agente (feature spec ou descrição de bug).
 4. O agente executa o fluxo completo conforme `core/PROCEDURE.md`.

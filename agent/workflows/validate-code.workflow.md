@@ -19,13 +19,13 @@ code review automatizado.
 ## Passos
 
 1. Identificar escopo (diff da branch ou projeto inteiro).
-2. Executar lint: `npm run lint`. Listar erros.
-3. Executar type-check: `npm run typecheck` (`vue-tsc -b`). Listar erros.
-4. Executar testes: `npm run test`. Listar falhas.
+2. Executar lint: `pnpm lint`. Listar erros.
+3. Executar type-check: `pnpm typecheck` (`vue-tsc -b`). Listar erros.
+4. Executar testes: `pnpm test`. Listar falhas.
 5. Verificar arquitetura:
    - Módulos não importam entre si.
    - `shared/` não importa de `modules/` ou `app/`; `core/` importa só de `types/`
-     (o `npm run lint` já reprova essas violações — ADR-0018).
+     (o `pnpm lint` já reprova essas violações — ADR-0018).
    - Nenhum `import.meta.env` fora de `@core/config`.
    - Aliases corretos (mais curtos).
 6. Verificar tipagem:

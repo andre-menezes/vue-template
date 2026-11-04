@@ -5,6 +5,10 @@
 - **Decisores:** Time de frontend
 - **Relacionadas:** ADR-0001
 
+> Nota (2026-11-03): o glob passou a ser `@/{app,modules}/**/routes.ts`.
+> Com `@/**/routes.ts`, um `routes.ts` em qualquer pasta de `src/` (por
+> exemplo, um helper de teste) virava rota do app.
+
 ## Contexto e problema
 
 Cada módulo de domínio define suas próprias rotas. Registrar rotas manualmente

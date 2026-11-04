@@ -1,4 +1,4 @@
-import 'material-symbols/outlined.css';
+import '@app/styles/icons.scss';
 import '@app/styles/main.scss';
 
 Object.defineProperty(window, 'matchMedia', {

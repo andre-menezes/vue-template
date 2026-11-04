@@ -5,6 +5,17 @@
 - **Decisores:** Time de frontend / Arquitetura
 - **Relacionadas:** ADR-0001 (Arquitetura em camadas), ADR-0009 (Estado e organização do `shared/`), ADR-0010 (Tipagem, aliases e env), ADR-0017 (Autenticação fail-closed)
 
+> Nota (ADR-0021): `core/auth`, `shared/helpers/session`, `useSession`, a
+> `user.store` e o handler de 401 (`auth-error.ts`) foram removidos junto com a
+> autenticação corporativa. A camada `core` e as regras de dependência seguem
+> vigentes.
+>
+> Nota (2026-10-30): os padrões casavam só com `@modules/*` e `**/modules/**`,
+> então `import x from '../../outro-modulo/...'` passava no lint. O
+> `eslint.config.mjs` agora proíbe, conforme a profundidade do arquivo, todo
+> import relativo que sobe até `src/modules/`. O teste
+> `src/test/architecture/layerRules.spec.ts` garante o bloqueio.
+
 ## Contexto e problema
 
 A ADR-0001 define que `shared` importa apenas de `types` e que `types` não
@@ -45,7 +56,7 @@ verificava as regras — elas existiam só na documentação.
 
 1. Nova camada `src/core` (alias `@core`), que importa apenas de `types`:
    - `core/config` — leitura de env e constantes (antes `app/config`).
-   - `core/auth` — cliente OAuth do SSC e `state`/nonce (antes `app/auth`). O
+   - `core/auth` — cliente OAuth e `state`/nonce (antes `app/auth`). O
      cliente só monta URLs e redireciona; não conhece stores nem services.
 2. A orquestração de sessão fica em `shared/helpers/session`
    (`cleanStorage`, `startLogin`, `endSession`), exposta aos componentes por

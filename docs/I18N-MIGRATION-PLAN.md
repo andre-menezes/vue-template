@@ -10,6 +10,12 @@ usando **apenas** o locale `pt-BR`.
 > `src/app/locales/pt-BR.json`. Este documento permanece como registro do plano
 > e das decisões tomadas na execução.
 
+> **Nota (ADR-0038):** depois da migração, o template passou a suportar
+> múltiplos locales. Hoje há `pt-BR` (base e fallback) e `en-US`, e as
+> mensagens ficam em `locales/<locale>.json` no app e em cada módulo. As
+> menções a "locale único" e a "só `pt-BR`" abaixo descrevem o escopo da
+> migração, não o estado atual.
+
 Voltar para o índice: [README.md](README.md)
 
 ---
@@ -173,7 +179,7 @@ const message = computed(() => t('auth.error.default'));
 
 - Nenhum texto de UI fixo no arquivo migrado (exceto snippets de código).
 - Chaves adicionadas ao `pt-BR.json` seguindo a convenção.
-- `npm run lint`, `npm run build` e `npm run test` verdes.
+- `pnpm lint`, `pnpm build` e `pnpm test` verdes.
 - Sem regressão visual (conferir a tela no navegador).
 
 ## Fora de escopo (por ora)

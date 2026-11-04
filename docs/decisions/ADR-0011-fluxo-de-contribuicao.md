@@ -5,6 +5,22 @@
 - **Decisores:** Time de frontend
 - **Relacionadas:** ADR-0005, ADR-0007, ADR-0008
 
+> Nota (ADR-0022): o pipeline de CI deixou de ser o `.gitlab-ci.yml` e passou
+> a ser o GitHub Actions (`.github/workflows/ci.yml`). Commits, hooks e
+> demais regras desta ADR seguem vigentes.
+>
+> Nota (ADR-0024): o gerenciador de pacotes passou a ser o pnpm. O CI usa
+> `pnpm install --frozen-lockfile` e o pre-commit, `pnpm exec lint-staged`.
+>
+> Nota (2026-10-30): o hook `commit-msg` passou a validar também a linha em
+> branco após o título e o corpo em 72 colunas, regras que já estavam no
+> `docs/COMMIT-CONVENTIONS.md` mas não eram verificadas.
+>
+> Nota (2026-11-04): o fluxo de publicação de versões ficou documentado no
+> CONTRIBUTING (seção "Publicando uma versão"): `release/<versão>` a partir
+> da `develop`, PR para a `main`, tag `v<versão>` e merge de volta na
+> `develop`.
+
 ## Contexto e problema
 
 Um template mantido por várias pessoas precisa de um histórico legível, de

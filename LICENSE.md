@@ -1,25 +1,25 @@
 # Licença Proprietária
 
-Copyright © 2026 Companhia de Tecnologia da Informação do Estado de Minas Gerais (PRODEMGE).
+Copyright © 2026 Andre Menezes.
 Todos os direitos reservados.
 
 ## 1. Titularidade
 
 Este software, incluindo, sem limitação, seu código-fonte, código-objeto,
 documentação, arquivos de configuração, artefatos de build e quaisquer materiais
-relacionados (doravante "Software"), é de propriedade exclusiva da PRODEMGE e
+relacionados (doravante "Software"), é de propriedade exclusiva do autor e
 está protegido pelas leis brasileiras de direitos autorais e propriedade
 intelectual, bem como por tratados internacionais aplicáveis.
 
 ## 2. Confidencialidade
 
 O Software é confidencial e proprietário. O acesso é concedido exclusivamente a
-colaboradores, prestadores de serviço e terceiros expressamente autorizados pela
-PRODEMGE, e somente para as finalidades internas autorizadas.
+pessoas expressamente autorizadas pelo autor, e somente para as finalidades
+autorizadas.
 
 ## 3. Restrições de uso
 
-Salvo autorização prévia e por escrito da PRODEMGE, é expressamente vedado:
+Salvo autorização prévia e por escrito do autor, é expressamente vedado:
 
 - copiar, reproduzir ou distribuir o Software, total ou parcialmente;
 - publicar, divulgar ou disponibilizar o Software a terceiros não autorizados;
@@ -37,18 +37,15 @@ de comercialização, adequação a uma finalidade específica ou não violaçã
 
 ## 5. Limitação de responsabilidade
 
-Em nenhuma hipótese a PRODEMGE será responsável por quaisquer danos diretos,
+Em nenhuma hipótese o autor será responsável por quaisquer danos diretos,
 indiretos, incidentais, especiais ou consequenciais decorrentes do uso ou da
 impossibilidade de uso do Software, ainda que informada da possibilidade de tais
 danos.
 
 ## 6. Legislação aplicável e foro
 
-Esta licença é regida pelas leis da República Federativa do Brasil. Fica eleito o
-foro da Comarca de Belo Horizonte, Estado de Minas Gerais, para dirimir quaisquer
-questões dela decorrentes, com renúncia a qualquer outro, por mais privilegiado
-que seja.
+Esta licença é regida pelas leis da República Federativa do Brasil.
 
 ---
 
-Para solicitações de autorização ou esclarecimentos, contate a PRODEMGE.
+Para solicitações de autorização ou esclarecimentos, contate o autor.

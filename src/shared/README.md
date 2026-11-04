@@ -24,7 +24,7 @@ reutilizado por dois ou mais módulos pertence a esta camada.
 ## Regras gerais
 
 - Integração com backend deve ficar em `api/services`.
-- Autenticação e sessão global devem ficar em `stores` e `helpers`.
+- Estado global deve ficar em `stores`; efeitos que orquestram stores/services, em `helpers`.
 - Componentes de UI compartilhada devem ser agnósticos de contexto.
 - Nunca importar de `modules/` dentro de `shared/`.
 
@@ -46,16 +46,18 @@ dependência de stores, services ou APIs do browser que alterem estado.
 
 ```ts
 // shared/utils/format.ts
-export function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('pt-BR', {
+export function formatCurrency(value: number, locale = 'pt-BR', currency = 'BRL'): string {
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: 'BRL',
+    currency,
   }).format(value);
 }
 ```
 
 Por que é bom: função pura, sem dependência externa, facilmente testável,
-nome descritivo, retorno previsível para qualquer entrada.
+nome descritivo, retorno previsível para qualquer entrada. O locale vem por
+parâmetro: o componente passa o locale ativo (`useLocale().locale.value`), e a
+util não lê o vue-i18n (ADR-0038).
 
 ### Exemplo — mau código
 
@@ -82,54 +84,51 @@ sessionStorage, APIs do browser. Podem ler e alterar estado global.
 
 ### Quando usar
 
-- Limpar sessão (acessar múltiplas stores).
+- Disparar efeitos no navegador a partir de dados de um service (ex.: download).
 - Orquestrar chamadas de service + atualização de store.
 - Operações com localStorage/sessionStorage que dependem de contexto da app.
 
 ### Exemplo — bom código
 
 ```ts
-// shared/helpers/session.ts
-import { STORAGE_KEYS } from '@core/config';
-import { useAppStore } from '@shared/stores/app.store';
-import { useUserStore } from '@shared/stores/user.store';
+// shared/helpers/file-download.ts
+import { saveBinaryResponse } from '@shared/utils/file-download';
+import type { BinaryResponse } from '@typings/services';
 
-export function cleanStorage(): void {
-  // Mutação sempre via actions da store.
-  useAppStore().setLoading(false);
-  useUserStore().setUserData(null);
-
-  localStorage.removeItem(STORAGE_KEYS.LAST_ACTIVITY);
+export async function downloadAndSave(request: Promise<BinaryResponse>): Promise<void> {
+  const { blob, contentDisposition } = await request;
+  saveBinaryResponse(blob, contentDisposition);
 }
 ```
 
-Por que é bom: nome claro sobre o efeito (`clean`), encapsula lógica de
-múltiplas stores num único ponto, segue SRP para a responsabilidade de
-"limpar sessão".
+Por que é bom: nome claro sobre o efeito, orquestra o service (rede) e o
+salvamento no navegador (utils) num único ponto e não contém lógica pura que
+deveria estar em `utils`.
 
 ### Exemplo — mau código
 
 ```ts
 // RUIM: helper fazendo lógica de formatação (é responsabilidade de utils)
-import { useUserStore } from '@shared/stores/user.store';
+import { useAppStore } from '@shared/stores/app.store';
 
-export function getUserInitials(): string {
-  const userStore = useUserStore();
-  return (userStore.userData?.nome || 'U').slice(0, 2).toUpperCase();
+export function getThemeLabel(): string {
+  const appStore = useAppStore();
+  return appStore.theme === 'dark' ? 'Tema escuro' : 'Tema claro';
 }
 ```
 
-Por que é ruim: a lógica de extrair iniciais é pura (recebe string, retorna
-string). O acesso à store deveria ficar num composable, e a extração num util:
+Por que é ruim: a tradução do nome do tema em rótulo é pura (recebe valor,
+retorna string). O acesso à store deveria ficar num composable, e a conversão
+num util:
 
 ```ts
-// utils/string.ts
-export function getInitials(name: string, length = 2): string {
-  return name.slice(0, length).toUpperCase();
+// utils/theme.ts
+export function toThemeLabel(theme: ThemeName): string {
+  return theme === 'dark' ? 'Tema escuro' : 'Tema claro';
 }
 
-// composables/useSession.ts
-const initials = computed(() => getInitials(userName.value || 'U'));
+// composables/useTheme.ts
+const label = computed(() => toThemeLabel(appStore.theme));
 ```
 
 ---
@@ -149,28 +148,28 @@ negócio sem acoplar diretamente às stores.
 ### Exemplo — bom código
 
 ```ts
-// shared/composables/useSession.ts
+// shared/composables/useTheme.ts
 import { computed } from 'vue';
-import { useUserStore } from '@shared/stores/user.store';
-import { endSession } from '@shared/helpers/session';
+import { useAppStore } from '@shared/stores/app.store';
+import type { ThemeName } from '@typings/theme';
 
-export function useSession() {
-  const userStore = useUserStore();
+export function useTheme() {
+  const appStore = useAppStore();
 
-  const isLoggedIn = computed(() => userStore.isAuthorized);
-  const userName = computed(() => userStore.userData?.nome ?? '');
+  const theme = computed<ThemeName>(() => appStore.theme);
+  const isDark = computed(() => appStore.theme === 'dark');
 
-  function logout(): Promise<void> {
-    return endSession();
+  function toggleTheme(): void {
+    appStore.switchTheme();
   }
 
-  return { isLoggedIn, userName, logout };
+  return { theme, isDark, toggleTheme };
 }
 ```
 
 Por que é bom: nome segue convenção `useXxx`, retorna valores reativos e
 ações, não expõe a store inteira ao componente (princípio da menor exposição),
-facilmente testável com store mockada.
+facilmente testável com Pinia real.
 
 ### Exemplo — mau código
 
@@ -191,27 +190,27 @@ export function useUsers() {
 ```
 
 Por que é ruim: viola separation of concerns. O fetch direto no composable
-acopla a camada de apresentação ao HTTP. O correto é chamar um service e o
-composable orquestra stores:
+acopla a camada de apresentação ao HTTP, e o `ref` com `load()` refaz à mão o
+que o TanStack Query já oferece (cache, loading, erro, cancelamento). O correto
+é chamar um service dentro de uma query (ADR-0027). Este composable fica em
+`shared/` porque mais de um módulo o usa; se fosse de um módulo só, ficaria no
+módulo (ADR-0025):
 
 ```ts
 // shared/api/services/user.service.ts
-export function getUsersRequest() {
-  return httpClient.get<User[]>('/users');
+export function getUsersRequest(options: { signal?: AbortSignal } = {}) {
+  return httpClient.get<User[]>('/users', { signal: options.signal });
 }
 
-// shared/composables/useUsers.ts
-import { ref } from 'vue';
+// shared/composables/useUsersQuery.ts
+import { useQuery } from '@tanstack/vue-query';
 import { getUsersRequest } from '@shared/api/services/user.service';
 
-export function useUsers() {
-  const users = ref<User[]>([]);
-
-  async function load() {
-    users.value = await getUsersRequest();
-  }
-
-  return { users, load };
+export function useUsersQuery() {
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: ({ signal }) => getUsersRequest({ signal }),
+  });
 }
 ```
 

@@ -11,27 +11,21 @@
     <v-spacer />
 
     <v-row class="flex-grow-0 ga-4" no-gutters align="center">
-      <TheHeaderActions
-        :theme="theme"
-        :is-logged-in="isLoggedIn"
-        :user="user"
-        :initials="initials"
-        @switch-theme="toggleTheme"
-        @login="login"
-        @logout="logout"
-      />
+      <TheLocaleMenu :locale="locale" @change-locale="setLocale" />
+      <TheHeaderActions :theme="theme" @switch-theme="toggleTheme" />
     </v-row>
   </v-app-bar>
 </template>
 
 <script setup lang="ts">
 import { APP_NAME } from '@core/config';
-import { useSession, useTheme } from '@shared/composables';
+import { useLocale, useTheme } from '@shared/composables';
 import BaseLogo from './BaseLogo.vue';
 import TheHeaderActions from './TheHeaderActions.vue';
+import TheLocaleMenu from './TheLocaleMenu.vue';
 
-const { isLoggedIn, user, initials, login, logout } = useSession();
 const { theme, toggleTheme } = useTheme();
+const { locale, setLocale } = useLocale();
 
 const emit = defineEmits<{
   toggleNavigation: [];

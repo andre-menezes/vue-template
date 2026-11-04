@@ -5,6 +5,10 @@
 - **Decisores:** Time de frontend
 - **Relacionadas:** ADR-0012 (atualiza a decisão de ícones)
 
+> Nota (ADR-0023): o import de `material-symbols/outlined.css` foi trocado por
+> `src/app/styles/icons.scss`, que usa uma fonte gerada com só o eixo FILL
+> variável (458 KB em vez de 3,96 MB). O uso dos ícones não mudou.
+
 ## Contexto e problema
 
 A ADR-0012 adotou o Vuetify 4 com o conjunto de ícones **Material Design Icons**

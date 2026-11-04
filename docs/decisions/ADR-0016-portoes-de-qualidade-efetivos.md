@@ -5,6 +5,23 @@
 - **Decisores:** Time de frontend / Arquitetura
 - **Relacionadas:** ADR-0005 (Estratégia de testes), ADR-0011 (Fluxo de contribuição: commits, hooks e CI)
 
+> Nota (ADR-0021): o piso de cobertura foi rebaixado uma única vez, para a
+> cobertura medida após a remoção da autenticação corporativa (código testado
+> saiu do denominador). Depois disso, o ratchet volta a valer.
+>
+> Nota (ADR-0022): o CI passou do GitLab para o GitHub Actions.
+>
+> Nota (2026-10-30): segunda exceção ao ratchet. A remoção do
+> `shared/utils/cookie.ts`, sem nenhum consumidor e 100% coberto pelo próprio
+> teste, tirou linhas cobertas do denominador: lines caiu para 37,99% e
+> statements para 36,45%. O piso foi para lines 37 e statements 36; functions
+> e branches não mudaram. Apagar código morto testado não deve ser barrado
+> pelo piso; acrescentar código sem teste continua sendo.
+>
+> Nota (ADR-0021): o `.env.test` foi removido. As variáveis de ambiente
+> ganharam valores padrão em `@core/config`, então a suíte roda igual na
+> máquina do desenvolvedor e no CI sem nenhum arquivo `.env`.
+
 ## Contexto e problema
 
 Uma auditoria do template mostrou que três portões de qualidade documentados
