@@ -18,6 +18,10 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [1.1.0] - 2026-11-04
+
+Experiência e produção: notificações e erro de gravação notificado, formulários com VeeValidate + Zod, imagem Docker + Nginx e monitoramento opcional com o Sentry.
+
 ### Adicionado
 
 - Monitoramento de erros opcional com o Sentry (`@sentry/vue` 11.8): com `VITE_SENTRY_DSN`, os erros do `registerErrorHandlers` vão também para o Sentry, com ambiente e versão; sem o DSN, o SDK nem é baixado (ADR-0043).
@@ -202,6 +206,7 @@ Primeira versão estável do template: arquitetura em camadas, camada de dados c
 - Documentação arquitetural em `docs/` e READMEs por camada.
 - Testes unitários (Vitest) e E2E (Cypress).
 
-[Não lançado]: https://github.com/andre-menezes/vue-template/compare/v1.0.0...HEAD
+[Não lançado]: https://github.com/andre-menezes/vue-template/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/andre-menezes/vue-template/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/andre-menezes/vue-template/compare/v0.0.0...v1.0.0
 [0.0.0]: https://github.com/andre-menezes/vue-template/releases/tag/v0.0.0
