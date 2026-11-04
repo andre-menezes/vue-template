@@ -39,6 +39,7 @@ docker build -t meu-app \
 | `VITE_APP_NAME`           | build (`--build-arg`) | Nome no cabeçalho e no título da aba                           |
 | `VITE_API_BASE_URL`       | build (`--build-arg`) | URL da API; padrão `/api`                                      |
 | `VITE_APP_DEFAULT_LOCALE` | build (`--build-arg`) | Idioma inicial (`pt-BR` ou `en-US`)                            |
+| `VITE_SENTRY_DSN`         | build (`--build-arg`) | Liga o envio de erros ao Sentry (ADR-0043)                     |
 | `CSP_CONNECT_SRC`         | partida (`-e`)        | Origens extras para chamadas HTTP na CSP, separadas por espaço |
 
 A API simulada (`mock/`, ADR-0039) só existe no `pnpm dev`: na imagem, as
@@ -72,6 +73,9 @@ frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 - `style-src 'unsafe-inline'`: o Vuetify aplica estilos inline (tema).
 - API em outro domínio: passe a origem na partida, senão o navegador bloqueia
   as chamadas: `docker run -e CSP_CONNECT_SRC="https://api.meu-sistema.com.br" …`.
+- Sentry ligado: o navegador envia os erros ao host de ingestão, que entra na
+  `CSP_CONNECT_SRC` (ex.: `https://o123456.ingest.sentry.io`; o host está no
+  DSN, depois do `@`).
 - Um serviço externo novo (monitoramento, analytics, imagens de CDN) também
   precisa entrar na diretiva certa do template.
 
