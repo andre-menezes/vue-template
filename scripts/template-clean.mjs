@@ -60,7 +60,8 @@ rmSync(fileURLToPath(import.meta.url));
 console.log('removido: scripts/template-clean.mjs');
 
 console.log(`
-Pronto. Próximos passos:
-  1. Ajuste src/modules/home/views/HomeView.vue para a sua tela inicial.
-  2. Revise README.md, CHANGELOG.md e docs/ para o novo projeto.
-  3. Rode: pnpm lint && pnpm build && pnpm test`);
+Pronto. Próximos passos (detalhes em docs/NEW-PROJECT.md):
+  1. Dê nome ao projeto: package.json, index.html, APP_NAME e welcome.* nos locales.
+  2. Ajuste src/modules/home/views/HomeView.vue para a sua tela inicial.
+  3. Revise README.md, CHANGELOG.md e docs/ para o novo projeto.
+  4. Rode: pnpm lint && pnpm build && pnpm test`);
