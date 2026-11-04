@@ -1,8 +1,8 @@
 <template>
-  <v-card variant="tonal" :color="layer.color" class="h-100" data-cy="layer-card">
+  <v-card class="h-100" data-cy="layer-card">
     <v-card-item>
       <template #prepend>
-        <v-avatar :color="layer.color" variant="flat" size="40">
+        <v-avatar :color="layer.color" variant="tonal" size="40" rounded="md">
           <v-icon :icon="layer.icon" />
         </v-avatar>
       </template>

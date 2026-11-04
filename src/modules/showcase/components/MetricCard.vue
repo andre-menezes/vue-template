@@ -1,5 +1,5 @@
 <template>
-  <v-card class="h-100" variant="outlined">
+  <v-card class="h-100">
     <v-card-text class="pa-5">
       <div class="d-flex align-start justify-space-between mb-5">
         <span class="text-overline font-weight-bold">{{ metric.label }}</span>
