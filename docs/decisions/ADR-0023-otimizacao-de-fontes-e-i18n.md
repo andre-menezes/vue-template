@@ -5,6 +5,9 @@
 - **Decisores:** Andre Menezes
 - **Relacionadas:** ADR-0012 (Vuetify), ADR-0013 (Material Symbols)
 
+> Nota (ADR-0047): a fonte auto-hospedada passou da Inter à Poppins
+> (`@fontsource/poppins`), com o mesmo princípio desta ADR.
+
 ## Contexto e problema
 
 O build de produção tinha 4,8 MB. Medido no `dist`:

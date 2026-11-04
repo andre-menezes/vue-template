@@ -6,6 +6,10 @@
 - **Relacionadas:** ADR-0012 (Vuetify como UI), ADR-0029 (emenda a paleta e
   os tons de texto)
 
+> Nota (ADR-0047): o primary, o secondary, o accent, os neutros e os
+> containers passaram aos valores do design Vora. As cores de status e de
+> evento desta ADR continuam.
+
 ## Contexto e problema
 
 O tema do Vuetify usava a paleta original do template: primary coral

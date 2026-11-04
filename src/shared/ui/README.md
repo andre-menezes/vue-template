@@ -30,7 +30,7 @@ A seleção de layout é dinâmica, baseada em `route.meta.layout`:
 
 Para usar `EmptyLayout`, defina `meta: { layout: 'empty' }` na rota.
 
-## Design system Agenda (ADR-0044, ADR-0045)
+## Design system (ADR-0044, ADR-0045, ADR-0047)
 
 O tema, os padrões dos componentes e a tipografia seguem o
 [Figma](https://www.figma.com/design/6FDGyIeX9bSEEn0mU3un7Z). Uma tela nova já
@@ -40,20 +40,25 @@ sai no design system usando os componentes do Vuetify e os `Base*` abaixo.
   `text-caption`, `text-overline`…), definidas em
   `src/app/styles/typography.scss`, com variantes por breakpoint
   (`text-md-h3`).
-- **Padrões:** botões sem elevação, cartões com borda e sem sombra, campos em
-  contorno, menus e diálogos com raio de 8px e sombra
+- **Visual Vora (ADR-0047):** azul `#2953E8`, Poppins, cartões brancos com
+  sombra suave (`.app-surface`) sobre fundo cinza e item ativo do menu com
+  barra lateral. O raio continua em 4px.
+- **Padrões:** botões sem elevação, cartões sem borda e com a sombra do Vora,
+  campos em contorno, menus e diálogos com raio de 8px e sombra
   (`componentDefaults` em `@app/providers/vuetify`). Não repita essas props
   nas telas.
 - **Cores:** marca nas ações; texto colorido com `<cor>-text`; fundos de
   status com `<tom>-container`; compromissos com `event-<matiz>`.
 
-| Componente          | Para quê                               | Principais props                                                                              |
-| ------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `BasePageHeader`    | `<h1>` da tela com ações               | `title`, `subtitle?`, `overline?`; slots `prepend`, `actions`                                 |
-| `BaseStatusChip`    | Situação de um item                    | `label`, `tone` (`success`…`neutral`), `icon?`                                                |
-| `BaseAvatar`        | Pessoa (iniciais e cor estável)        | `name`, `size?`, `hue?`, `decorative?`                                                        |
-| `BaseConfirmDialog` | Confirmar uma ação (destrutiva ou não) | `v-model`, `title`, `message`, `confirm-label`, `tone`, `loading`, `error-message`; `confirm` |
-| `BaseEventBlock`    | Compromisso numa agenda                | `title`, `time`, `hue`, `subtitle?`, `compact?`, `clickable?`; `select`                       |
+| Componente             | Para quê                               | Principais props                                                                              |
+| ---------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `BasePageHeader`       | `<h1>` da tela com ações               | `title`, `subtitle?`, `overline?`; slots `prepend`, `actions`                                 |
+| `BaseStatusChip`       | Situação de um item                    | `label`, `tone` (`success`…`neutral`), `icon?`                                                |
+| `BaseAvatar`           | Pessoa (iniciais e cor estável)        | `name`, `size?`, `hue?`, `decorative?`                                                        |
+| `BaseConfirmDialog`    | Confirmar uma ação (destrutiva ou não) | `v-model`, `title`, `message`, `confirm-label`, `tone`, `loading`, `error-message`; `confirm` |
+| `BaseStatCard`         | Indicador de dashboard                 | `value`, `label`, `detail?`, `icon?`, `color?`                                                |
+| `BaseSegmentedControl` | Alternar visão ou período              | `v-model`, `options` (`{ value, label }[]`), `label`                                          |
+| `BaseEventBlock`       | Compromisso numa agenda                | `title`, `time`, `hue`, `subtitle?`, `compact?`, `clickable?`; `select`                       |
 
 O módulo decide o significado e o componente só desenha: o
 `CustomerStatusChip` traduz "ativo" em `tone="success"`. Exemplos vivos na
