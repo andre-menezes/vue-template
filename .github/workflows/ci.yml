@@ -1,7 +1,7 @@
 # Pipeline de CI — vue3-template
 #
-# Jobs: lint, build (typecheck + build), test (unitários + cobertura) e e2e
-# (Playwright). A versão do Node segue a fixada em .nvmrc / .tool-versions, e a
+# Jobs: lint, build (typecheck + build), test (unitários + cobertura), e2e
+# (Playwright) e docker (a imagem de produção sobe e responde — ADR-0041). A versão do Node segue a fixada em .nvmrc / .tool-versions, e a
 # do pnpm, o campo `packageManager` do package.json (ADR-0024).
 #
 # Cada job faz o checkout e chama a action local `.github/actions/setup`
@@ -77,3 +77,16 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
+
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: docker build -t app .
+      - name: Sobe a imagem e confere o health check e o fallback da SPA
+        run: |
+          docker run -d --name app -p 8080:8080 app
+          for attempt in $(seq 1 10); do curl -fs http://localhost:8080/healthz && break; sleep 1; done
+          curl -fs -o /dev/null http://localhost:8080/rota/da/spa
+          curl -fsI http://localhost:8080/ | grep -i content-security-policy
