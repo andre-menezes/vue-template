@@ -60,7 +60,7 @@ entregues e mergeados na `develop`.**
 > autenticado), cada uma validada por `lint + build + test` e com merge `--no-ff`
 > na `develop`.
 
-## Fase 2 — Completar a camada de dados (CRUD de referência)
+## Fase 2 — Completar a camada de dados (CRUD de referência) ✅ concluída
 
 Objetivo: o template demonstra camadas, mas não um fluxo de dados real de ponta
 a ponta. Um módulo de exemplo `customers` (ou similar) fecha essa lacuna e vira
@@ -71,7 +71,7 @@ o "exemplo canônico" citado no Onboarding.
 | 2.1 | **Módulo CRUD de exemplo**      | Listagem com paginação + detalhe + criar/editar/excluir                 | módulo: `types → api → query/mutation → view → components` | Médio | ✅ Concluído |
 | 2.2 | **Padrão de paginação/filtros** | Tipos e util de paginação reutilizáveis (`DEFAULT_PAGE_SIZE` já existe) | `types/services`, `utils`                                  | Baixo | ✅ Concluído |
 | 2.3 | **Upload de arquivo**           | Service + helper + util simétricos ao download (multipart)              | `shared/api`, `helpers`, `utils`                           | Médio | ✅ Concluído |
-| 2.4 | **Estados de UI padronizados**  | Loading/empty/error como componentes compartilhados reutilizáveis       | `shared/ui`                                                | Baixo | Pendente     |
+| 2.4 | **Estados de UI padronizados**  | Loading/empty/error como componentes compartilhados reutilizáveis       | `shared/ui`                                                | Baixo | ✅ Concluído |
 
 ## Fase 3 — Experiência e robustez
 
@@ -111,9 +111,9 @@ Isto é estratégico e precisa de decisão explícita (ADR) antes de execução.
 Fase 1 (dívidas)  →  Fase 2 (dados/CRUD)  →  Fase 3 (UX/robustez)  →  Fase 4 (multi-framework)
 ```
 
-A **Fase 1** está concluída (i18n migrado e testes dos utils novos cobertos),
-deixando a base limpa. O próximo foco é a **Fase 2 (dados/CRUD)**, começando
-pelo módulo CRUD de exemplo (2.1) que vira o "exemplo canônico" do Onboarding.
+As **Fases 1 e 2** estão concluídas: i18n migrado, utils cobertos e a camada
+de dados completa, com o CRUD de exemplo como "exemplo canônico" do
+Onboarding. O próximo foco é a **Fase 3 (UX/robustez)**.
 
 - **2.1 (concluído):** módulo `src/modules/customers` com listagem paginada
   e busca na URL, detalhe, cadastro, edição e exclusão, servido no `pnpm dev`
@@ -127,6 +127,9 @@ pelo módulo CRUD de exemplo (2.1) que vira o "exemplo canônico" do Onboarding.
   `validateAndUpload` em `@shared/helpers/file-upload` e o exemplo
   `uploadReportAttachmentRequest`. Sem lib nova, então sem ADR; progresso de
   envio fica de fora (o `fetch` não o informa).
+- **2.4 (concluído):** `BaseLoadingState`, `BaseEmptyState` e `BaseErrorState`
+  em `shared/ui/components`, com textos em `states.*`, "Tentar novamente"
+  ligado ao `refetch` e uso no módulo `customers`.
 
 ## Itens que exigem ADR antes de executar
 

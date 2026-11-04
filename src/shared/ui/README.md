@@ -6,11 +6,11 @@ Voltar para o guia geral: [../../../docs/ARCHITECTURE-GUIDE.md](../../../docs/AR
 
 ## Subpastas
 
-| Pasta         | Responsabilidade                                       |
-| ------------- | ------------------------------------------------------ |
-| `components/` | Componentes globais (header, menu, account menu, logo) |
-| `layouts/`    | Estruturas de página (DefaultLayout, EmptyLayout)      |
-| `icons/`      | Wrappers e padrões de ícones                           |
+| Pasta         | Responsabilidade                                          |
+| ------------- | --------------------------------------------------------- |
+| `components/` | Componentes globais (header, menu, idioma, logo, estados) |
+| `layouts/`    | Estruturas de página (DefaultLayout, EmptyLayout)         |
+| `icons/`      | Wrappers e padrões de ícones                              |
 
 ## Layouts
 
@@ -29,6 +29,34 @@ A seleção de layout é dinâmica, baseada em `route.meta.layout`:
 | `EmptyLayout`   | Páginas sem chrome (ex.: telas de erro)         |
 
 Para usar `EmptyLayout`, defina `meta: { layout: 'empty' }` na rota.
+
+## Estados de carregamento, vazio e erro
+
+Toda área que lê dados do servidor tem os mesmos três estados, com os mesmos
+componentes (roadmap 2.4). Os textos padrão vêm de `states.*` no locale do app.
+
+| Componente         | Quando usar                      | Props e slots                                           |
+| ------------------ | -------------------------------- | ------------------------------------------------------- |
+| `BaseLoadingState` | Primeira carga da área           | `label?` (padrão "Carregando…"); `role="status"`        |
+| `BaseEmptyState`   | Nada a exibir, ou não encontrado | `title?`, `description?`, `icon?`; slot `actions`       |
+| `BaseErrorState`   | Falha ao carregar                | `message`, `title?`, `retryable?`, `retrying?`; `retry` |
+
+```vue
+<BaseLoadingState v-if="isPending" />
+<BaseErrorState
+  v-else-if="error"
+  :message="errorMessage(error)"
+  retryable
+  :retrying="isFetching"
+  @retry="refetch"
+/>
+<BaseEmptyState v-else-if="!data?.length" :title="$t('orders.empty')" icon="inbox" />
+<OrderList v-else :orders="data" />
+```
+
+A mensagem de erro chega pronta, de `useErrorMessage()`; numa tabela do
+Vuetify, use o `BaseEmptyState` no slot `#no-data`. O módulo `customers` usa os
+três (`CustomersView`, `CustomerDetailView`, `CustomerFormView`).
 
 ## Componente apresentacional vs container
 
