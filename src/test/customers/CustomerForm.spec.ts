@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { flushPromises } from '@vue/test-utils';
+import { describe, expect, it, vi } from 'vitest';
+import type { VueWrapper } from '@vue/test-utils';
 import CustomerForm from '@modules/customers/components/CustomerForm.vue';
 import type { CustomerParams } from '@modules/customers/types';
 import { mountWithPlugins } from '@test/utils/mountWithPlugins';
@@ -8,83 +8,78 @@ function mountForm(initialValues?: CustomerParams, errorMessage?: string) {
   return mountWithPlugins(CustomerForm, { props: { initialValues, saving: false, errorMessage } });
 }
 
+const input = (wrapper: VueWrapper, cy: string) =>
+  wrapper.find<HTMLInputElement>(`[data-cy="${cy}"] input`);
+
+/**
+ * Envia o formulário. A validação do VeeValidate é assíncrona e termina numa
+ * tarefa seguinte; o `waitFor` espera o efeito (emit ou mensagem).
+ */
+async function submit(wrapper: VueWrapper) {
+  await wrapper.find('form').trigger('submit');
+}
+
 describe('CustomerForm', () => {
   it('começa vazio e ativo no cadastro', () => {
     const wrapper = mountForm();
 
-    expect(
-      wrapper.find<HTMLInputElement>('[data-cy="customer-name-input"] input').element.value
-    ).toBe('');
-    expect(
-      wrapper.find<HTMLInputElement>('[data-cy="customer-active-input"] input').element.checked
-    ).toBe(true);
+    expect(input(wrapper, 'customer-name-input').element.value).toBe('');
+    expect(input(wrapper, 'customer-active-input').element.checked).toBe(true);
   });
 
   it('preenche com os valores iniciais na edição', () => {
     const wrapper = mountForm({ name: 'Maria', email: 'm@x.com', phone: null, active: false });
 
-    expect(
-      wrapper.find<HTMLInputElement>('[data-cy="customer-email-input"] input').element.value
-    ).toBe('m@x.com');
-    expect(
-      wrapper.find<HTMLInputElement>('[data-cy="customer-active-input"] input').element.checked
-    ).toBe(false);
+    expect(input(wrapper, 'customer-email-input').element.value).toBe('m@x.com');
+    expect(input(wrapper, 'customer-phone-input').element.value).toBe('');
+    expect(input(wrapper, 'customer-active-input').element.checked).toBe(false);
   });
 
-  it('não envia com campos obrigatórios vazios e mostra as mensagens', async () => {
+  it('não envia com campos obrigatórios vazios e mostra as mensagens traduzidas', async () => {
     const wrapper = mountForm();
 
-    await wrapper.find('form').trigger('submit');
-    await flushPromises();
+    await submit(wrapper);
 
+    await vi.waitFor(() => expect(wrapper.text()).toContain('Campo obrigatório.'));
     expect(wrapper.emitted('submit')).toBeUndefined();
-    expect(wrapper.text()).toContain('Campo obrigatório.');
   });
 
   it('não envia com e-mail inválido', async () => {
     const wrapper = mountForm();
-    await wrapper.find('[data-cy="customer-name-input"] input').setValue('Maria');
-    await wrapper.find('[data-cy="customer-email-input"] input').setValue('maria@');
+    await input(wrapper, 'customer-name-input').setValue('Maria');
+    await input(wrapper, 'customer-email-input').setValue('maria@');
 
-    await wrapper.find('form').trigger('submit');
-    await flushPromises();
+    await submit(wrapper);
 
+    await vi.waitFor(() => expect(wrapper.text()).toContain('Informe um e-mail válido.'));
     expect(wrapper.emitted('submit')).toBeUndefined();
-    expect(wrapper.text()).toContain('Informe um e-mail válido.');
   });
 
-  it('envia os campos limpos, com telefone vazio como null', async () => {
+  it('envia os campos limpos pelo schema, com telefone vazio como null', async () => {
     const wrapper = mountForm();
-    await wrapper.find('[data-cy="customer-name-input"] input').setValue('  Maria Souza ');
-    await wrapper.find('[data-cy="customer-email-input"] input').setValue(' maria@example.com ');
-    await wrapper.find('[data-cy="customer-phone-input"] input').setValue('   ');
+    await input(wrapper, 'customer-name-input').setValue('  Maria Souza ');
+    await input(wrapper, 'customer-email-input').setValue(' maria@example.com ');
+    await input(wrapper, 'customer-phone-input').setValue('   ');
 
-    await wrapper.find('form').trigger('submit');
-    await flushPromises();
+    await submit(wrapper);
 
-    expect(wrapper.emitted('submit')).toEqual([
-      [{ name: 'Maria Souza', email: 'maria@example.com', phone: null, active: true }],
-    ]);
+    await vi.waitFor(() =>
+      expect(wrapper.emitted('submit')).toEqual([
+        [{ name: 'Maria Souza', email: 'maria@example.com', phone: null, active: true }],
+      ])
+    );
   });
 
-  it('mantém o telefone informado', async () => {
+  it('mantém o telefone e a situação escolhidos', async () => {
     const wrapper = mountForm({ name: 'Maria', email: 'm@x.com', phone: null, active: true });
-    await wrapper.find('[data-cy="customer-phone-input"] input').setValue(' 3199 ');
+    await input(wrapper, 'customer-phone-input').setValue(' 3199 ');
+    await input(wrapper, 'customer-active-input').setValue(false);
 
-    await wrapper.find('form').trigger('submit');
-    await flushPromises();
+    await submit(wrapper);
 
-    expect(wrapper.emitted('submit')?.[0]?.[0]).toMatchObject({ phone: '3199' });
-  });
-
-  it('envia a situação escolhida no switch', async () => {
-    const wrapper = mountForm({ name: 'Maria', email: 'm@x.com', phone: null, active: true });
-    await wrapper.find('[data-cy="customer-active-input"] input').setValue(false);
-
-    await wrapper.find('form').trigger('submit');
-    await flushPromises();
-
-    expect(wrapper.emitted('submit')?.[0]?.[0]).toMatchObject({ active: false });
+    await vi.waitFor(() =>
+      expect(wrapper.emitted('submit')?.[0]?.[0]).toMatchObject({ phone: '3199', active: false })
+    );
   });
 
   it('mostra o erro da gravação e emite o cancelamento', async () => {
