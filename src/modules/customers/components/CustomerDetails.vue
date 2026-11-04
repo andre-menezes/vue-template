@@ -1,5 +1,5 @@
 <template>
-  <v-card variant="outlined" data-cy="customer-details">
+  <v-card data-cy="customer-details">
     <v-list lines="two" class="bg-transparent">
       <v-list-item :title="$t('customers.fields.email')" prepend-icon="mail">
         <v-list-item-subtitle data-cy="customer-email">{{ customer.email }}</v-list-item-subtitle>

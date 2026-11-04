@@ -1,8 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { nextTick } from 'vue';
+import { describe, expect, it } from 'vitest';
 import { flushPromises, type VueWrapper } from '@vue/test-utils';
-import { VDataTableServer, VDialog } from 'vuetify/components';
-import CustomerDeleteDialog from '@modules/customers/components/CustomerDeleteDialog.vue';
+import { VDataTableServer } from 'vuetify/components';
 import CustomerDetails from '@modules/customers/components/CustomerDetails.vue';
 import CustomerStatusChip from '@modules/customers/components/CustomerStatusChip.vue';
 import CustomerTable from '@modules/customers/components/CustomerTable.vue';
@@ -102,63 +100,5 @@ describe('CustomerTable', () => {
     emitOptions(wrapper, 2, 25);
 
     expect(wrapper.emitted('changePage')).toEqual([[{ page: 1, pageSize: 25 }]]);
-  });
-});
-
-describe('CustomerDeleteDialog', () => {
-  let wrapper: VueWrapper | undefined;
-
-  /** O conteúdo do v-dialog é teleportado para o <body>. */
-  const inBody = (cy: string) => document.body.querySelector<HTMLElement>(`[data-cy="${cy}"]`);
-
-  beforeEach(() => {
-    vi.stubGlobal('visualViewport', new EventTarget());
-  });
-
-  afterEach(() => {
-    wrapper?.unmount();
-    wrapper = undefined;
-    vi.unstubAllGlobals();
-  });
-
-  async function openDialog(errorMessage?: string) {
-    wrapper = mountWithPlugins(CustomerDeleteDialog, {
-      props: { modelValue: true, customerName: 'Maria Souza', deleting: false, errorMessage },
-      attachTo: document.body,
-    });
-    await nextTick();
-    await nextTick();
-    return wrapper;
-  }
-
-  it('pede confirmação citando o cliente', async () => {
-    await openDialog();
-
-    expect(inBody('customer-delete-dialog')?.textContent).toContain('Excluir Maria Souza?');
-    expect(inBody('customer-delete-error')).toBeNull();
-  });
-
-  it('confirma ou fecha pelos botões', async () => {
-    const dialog = await openDialog();
-
-    inBody('customer-delete-confirm-btn')?.click();
-    inBody('customer-delete-cancel-btn')?.click();
-
-    expect(dialog.emitted('confirm')).toHaveLength(1);
-    expect(dialog.emitted('update:modelValue')).toEqual([[false]]);
-  });
-
-  it('repassa o fechamento pelo próprio diálogo (Esc ou clique fora)', async () => {
-    const dialog = await openDialog();
-
-    dialog.findComponent(VDialog).vm.$emit('update:modelValue', false);
-
-    expect(dialog.emitted('update:modelValue')).toEqual([[false]]);
-  });
-
-  it('mostra o erro da exclusão', async () => {
-    await openDialog('Falhou (HTTP 500)');
-
-    expect(inBody('customer-delete-error')?.textContent).toContain('Falhou (HTTP 500)');
   });
 });

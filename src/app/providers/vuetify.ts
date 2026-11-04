@@ -16,7 +16,7 @@ import { en, pt } from 'vuetify/locale';
 import type { SupportedLocale } from '@core/config';
 import { aliases, ms } from './icons';
 import i18n from './i18n';
-import type { AppThemeDefinition } from '@typings/theme';
+import type { AppThemeDefinition, EventHue } from '@typings/theme';
 
 /**
  * Textos internos do Vuetify (paginação, tabela, "sem dados"...) por locale
@@ -33,7 +33,6 @@ const vuetifyMessages: Record<SupportedLocale, LocaleMessages> = {
  * destaque, `event-<matiz>-bg` para o fundo do bloco e
  * `on-event-<matiz>-bg` para o texto sobre ele (ADR-0044).
  */
-type EventHue = 'indigo' | 'teal' | 'violet' | 'pink' | 'orange' | 'amber' | 'green' | 'sky';
 type EventTone = readonly [event: string, background: string, text: string];
 
 function eventColors(tones: Record<EventHue, EventTone>): Record<string, string> {
@@ -72,6 +71,18 @@ const lightTheme: AppThemeDefinition = {
 
     'primary-container': '#E3EBFF',
     'on-primary-container': '#263C8D',
+    // Fundos tonais de status do design system (tokens `<tom>/container`),
+    // usados pelo `BaseStatusChip` (ADR-0045).
+    'success-container': '#E4FFEC',
+    'on-success-container': '#00532D',
+    'warning-container': '#FEF5EB',
+    'on-warning-container': '#613C02',
+    'error-container': '#FEF4F3',
+    'on-error-container': '#7E181B',
+    'info-container': '#F0F8FE',
+    'on-info-container': '#024A6F',
+    'neutral-container': '#E8EBF0',
+    'on-neutral-container': '#41454C',
     'primary-variant': '#E3EBFF',
     'secondary-variant': '#C4F7F3',
     'accent-variant': '#C4F7F3',
@@ -138,6 +149,16 @@ const darkTheme: AppThemeDefinition = {
 
     'primary-container': '#192967',
     'on-primary-container': '#E3EBFF',
+    'success-container': '#003B1E',
+    'on-success-container': '#CCF8DA',
+    'warning-container': '#452901',
+    'on-warning-container': '#FFE7CC',
+    'error-container': '#5C0E10',
+    'on-error-container': '#FFE4E1',
+    'info-container': '#013450',
+    'on-info-container': '#D9EFFF',
+    'neutral-container': '#2E3035',
+    'on-neutral-container': '#D4D8DE',
     'primary-variant': '#192967',
     'secondary-variant': '#003936',
     'accent-variant': '#003936',
@@ -183,8 +204,29 @@ const darkTheme: AppThemeDefinition = {
  *
  * https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
  */
+/**
+ * Padrões dos componentes do Vuetify pelo design system Agenda (ADR-0045):
+ * raio de 4px, borda de 1px no lugar de sombra e sombra só no que flutua
+ * (menus e diálogos, com raio de 8px). Campos em contorno, botões sem
+ * elevação. Uma prop explícita no componente continua prevalecendo.
+ */
+export const componentDefaults = {
+  VBtn: { variant: 'flat' },
+  VCard: { elevation: 0, border: true },
+  VAlert: { variant: 'tonal' },
+  VTextField: { variant: 'outlined', density: 'comfortable', color: 'primary' },
+  VTextarea: { variant: 'outlined', density: 'comfortable', color: 'primary' },
+  VSelect: { variant: 'outlined', density: 'comfortable', color: 'primary' },
+  VAutocomplete: { variant: 'outlined', density: 'comfortable', color: 'primary' },
+  VCheckbox: { color: 'primary' },
+  VSwitch: { color: 'primary', inset: true },
+  VMenu: { VList: { rounded: 'lg', elevation: 2 } },
+  VDialog: { VCard: { rounded: 'lg', elevation: 3, border: false } },
+};
+
 export function createAppVuetify(locale: Readonly<Ref<SupportedLocale>> = ref('pt-BR')) {
   const vuetify = createVuetify({
+    defaults: componentDefaults,
     icons: {
       defaultSet: 'ms',
       aliases,
