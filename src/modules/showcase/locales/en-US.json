@@ -166,7 +166,8 @@
       }
     },
     "stores": {
-      "app": "Global UX state (persisted theme)."
+      "app": "Global UX state (persisted theme).",
+      "notification": "Notification queue for the global snackbar (useNotify)."
     },
     "languageRules": {
       "docs": {

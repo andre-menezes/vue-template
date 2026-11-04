@@ -166,7 +166,8 @@
       }
     },
     "stores": {
-      "app": "Estado global de UX (tema persistido)."
+      "app": "Estado global de UX (tema persistido).",
+      "notification": "Fila de notificações do snackbar global (useNotify)."
     },
     "languageRules": {
       "docs": {
