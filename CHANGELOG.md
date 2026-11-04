@@ -20,6 +20,7 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- Formulários com VeeValidate 4.15 + Zod 4.6: adapter `toTypedSchema` em `@shared/utils/form-schema`, schema `customers/schemas.ts` (trim, telefone vazio como `null`, limite de 120 caracteres no nome) e mensagens em `validation.*`; o `CustomerForm` deixa as `rules` do Vuetify (ADR-0042, roadmap 3.3).
 - Imagem de produção: `Dockerfile` multi-stage (Node 24 + pnpm, depois `nginx-unprivileged` na porta 8080) e `docker/nginx.conf.template` com fallback da SPA, cache dos assets, gzip, `/healthz`, CSP e cabeçalhos de segurança; job `docker` no CI e guia `docs/DEPLOY.md` (ADR-0041).
 - Extensões recomendadas do VS Code: Claude Code, Vitest, Playwright, i18n Ally (com os locales dos módulos), Error Lens, GitLens e Container Tools.
 - Notificações globais: `notification.store`, `useNotify()` (`success`, `info`, `warning`, `error`) e o snackbar `TheNotifications` no `App.vue`, com fundo `surface` para manter o contraste AA (ADR-0040, roadmap 3.1).
