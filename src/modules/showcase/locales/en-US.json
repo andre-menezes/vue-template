@@ -10,10 +10,7 @@
     "onboarding": "Onboarding",
     "components": "Components",
     "conventions": "Conventions",
-    "decisions": "Decisions",
-    "groups": {
-      "docs": "Template docs"
-    }
+    "decisions": "Decisions"
   },
   "docsHome": {
     "eyebrow": "Living documentation",

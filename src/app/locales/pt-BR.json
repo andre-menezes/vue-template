@@ -16,29 +16,12 @@
     "eyebrow": "Erro 404",
     "title": "Página não encontrada",
     "description": "O endereço informado não aponta para uma página disponível.",
-    "goBack": "Voltar"
+    "illustrationCredit": "Web illustrations by Storyset"
   },
   "welcome": {
-    "eyebrow": "Página inicial",
     "title": "Bem-vindo ao {appName}",
-    "description": "Projeto criado a partir do Vue Template: arquitetura em camadas, camada de dados, i18n, acessibilidade e deploy prontos. Comece criando um módulo em src/modules/.",
-    "docsLink": "Ver a documentação do template",
-    "exampleLink": "Ver o CRUD de exemplo",
-    "nextSteps": "Próximos passos",
-    "steps": {
-      "module": {
-        "title": "Criar um módulo",
-        "description": "Rotas, telas, service e queries ficam juntos na pasta do módulo; o menu lateral o encontra sozinho."
-      },
-      "test": {
-        "title": "Testar com o piso de cobertura",
-        "description": "Unitários com Vitest e E2E com Playwright e axe. O CI reprova abaixo do piso de cobertura."
-      },
-      "deploy": {
-        "title": "Publicar com Docker",
-        "description": "Imagem com Nginx, fallback de SPA, cache e cabeçalhos de segurança, pronta para qualquer nuvem."
-      }
-    }
+    "description": "Projeto criado a partir do Vue Template. Comece criando um módulo em src/modules/.",
+    "docsLink": "Ver a documentação do template"
   },
   "pageTitle": {
     "home": "Início",
