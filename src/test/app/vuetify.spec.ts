@@ -151,10 +151,10 @@ describe('padrões dos componentes (ADR-0045)', () => {
     expect(vuetify.defaults.value).toMatchObject(componentDefaults);
   });
 
-  it('campos em contorno, botões sem elevação e sombra só no que flutua', () => {
+  it('campos em contorno, botões sem elevação e cartões com a sombra do Vora', () => {
     expect(componentDefaults.VTextField.variant).toBe('outlined');
     expect(componentDefaults.VBtn.variant).toBe('flat');
-    expect(componentDefaults.VCard).toEqual({ elevation: 0, border: true });
+    expect(componentDefaults.VCard).toEqual({ elevation: 0, border: false, class: 'app-surface' });
     expect(componentDefaults.VDialog.VCard).toMatchObject({ rounded: 'lg', elevation: 3 });
   });
 });

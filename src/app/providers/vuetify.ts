@@ -5,7 +5,10 @@
  */
 
 // Styles
-import '@fontsource-variable/inter';
+// Poppins, a fonte do design Vora (ADR-0047): só os pesos usados.
+import '@fontsource/poppins/400.css';
+import '@fontsource/poppins/500.css';
+import '@fontsource/poppins/600.css';
 import 'vuetify/styles';
 import '@app/styles/icons.scss';
 import '@app/styles/main.scss';
@@ -48,14 +51,14 @@ function eventColors(tones: Record<EventHue, EventTone>): Record<string, string>
 const lightTheme: AppThemeDefinition = {
   dark: false,
   colors: {
-    primary: '#4162D9',
-    secondary: '#0A7F7A',
-    accent: '#0A7F7A',
-    background: '#F4F7FB',
+    primary: '#2953E8',
+    secondary: '#09268A',
+    accent: '#0B7FA0',
+    background: '#F4F4F4',
     surface: '#FFFFFF',
     'surface-bright': '#FFFFFF',
-    'surface-light': '#E8EBF0',
-    border: '#D4D8DE',
+    'surface-light': '#F0F0F0',
+    border: '#E4E4E7',
 
     error: '#C42D31',
     warning: '#996105',
@@ -69,8 +72,8 @@ const lightTheme: AppThemeDefinition = {
     'on-info': '#FFFFFF',
     'on-success': '#FFFFFF',
 
-    'primary-container': '#E3EBFF',
-    'on-primary-container': '#263C8D',
+    'primary-container': '#EEF2FF',
+    'on-primary-container': '#1E3FBF',
     // Fundos tonais de status do design system (tokens `<tom>/container`),
     // usados pelo `BaseStatusChip` (ADR-0045).
     'success-container': '#E4FFEC',
@@ -81,26 +84,26 @@ const lightTheme: AppThemeDefinition = {
     'on-error-container': '#7E181B',
     'info-container': '#F0F8FE',
     'on-info-container': '#024A6F',
-    'neutral-container': '#E8EBF0',
-    'on-neutral-container': '#41454C',
-    'primary-variant': '#E3EBFF',
-    'secondary-variant': '#C4F7F3',
-    'accent-variant': '#C4F7F3',
-    'on-accent-variant': '#01504D',
-    'surface-variant': '#E8EBF0',
+    'neutral-container': '#F0F0F0',
+    'on-neutral-container': '#3F3F46',
+    'primary-variant': '#EEF2FF',
+    'secondary-variant': '#E6EAFB',
+    'accent-variant': '#E3F4F9',
+    'on-accent-variant': '#065A72',
+    'surface-variant': '#F0F0F0',
     'error-variant': '#FFE4E1',
     'warning-variant': '#FFE7CC',
     'info-variant': '#D9EFFF',
     'success-variant': '#CCF8DA',
-    'light-grey': '#E8EBF0',
+    'light-grey': '#F0F0F0',
 
     // Tons para texto: as cores base já passam no contraste AA (4,5:1) como
     // texto sobre a superfície (só `success` fica abaixo sobre o fundo, em
     // 4,4:1). Os tons `-text`, mais escuros, passam com folga nos dois:
     // prefira `text-<cor>-text` em texto e a cor base em fundos e botões.
-    'primary-text': '#3450B5',
-    'secondary-text': '#046965',
-    'accent-text': '#046965',
+    'primary-text': '#2346C8',
+    'secondary-text': '#09268A',
+    'accent-text': '#066A86',
     'info-text': '#036190',
     'success-text': '#056D3D',
     'warning-text': '#7E4F03',
@@ -125,14 +128,14 @@ const lightTheme: AppThemeDefinition = {
 const darkTheme: AppThemeDefinition = {
   dark: true,
   colors: {
-    primary: '#7A9CFE',
-    secondary: '#44B6AF',
-    accent: '#44B6AF',
-    background: '#111316',
-    surface: '#1D1F23',
-    'surface-bright': '#2E3035',
-    'surface-light': '#2E3035',
-    border: '#41454C',
+    primary: '#7B95FF',
+    secondary: '#A9B8FF',
+    accent: '#4CC3E3',
+    background: '#0E1015',
+    surface: '#171A21',
+    'surface-bright': '#222631',
+    'surface-light': '#222631',
+    border: '#2C313C',
 
     error: '#F4756E',
     warning: '#D3923F',
@@ -140,15 +143,15 @@ const darkTheme: AppThemeDefinition = {
     success: '#5FB781',
 
     // No escuro as cores base são claras: o conteúdo sobre elas é escuro.
-    'on-primary': '#0E1A48',
-    'on-secondary': '#012523',
+    'on-primary': '#0B1440',
+    'on-secondary': '#0B1440',
     'on-error': '#3F0608',
     'on-warning': '#2E1A00',
     'on-info': '#002236',
     'on-success': '#002712',
 
-    'primary-container': '#192967',
-    'on-primary-container': '#E3EBFF',
+    'primary-container': '#1B2A66',
+    'on-primary-container': '#DCE4FF',
     'success-container': '#003B1E',
     'on-success-container': '#CCF8DA',
     'warning-container': '#452901',
@@ -157,24 +160,24 @@ const darkTheme: AppThemeDefinition = {
     'on-error-container': '#FFE4E1',
     'info-container': '#013450',
     'on-info-container': '#D9EFFF',
-    'neutral-container': '#2E3035',
-    'on-neutral-container': '#D4D8DE',
-    'primary-variant': '#192967',
-    'secondary-variant': '#003936',
-    'accent-variant': '#003936',
-    'on-accent-variant': '#C4F7F3',
-    'surface-variant': '#2E3035',
+    'neutral-container': '#222631',
+    'on-neutral-container': '#D4D4D8',
+    'primary-variant': '#1B2A66',
+    'secondary-variant': '#1E2547',
+    'accent-variant': '#0E3542',
+    'on-accent-variant': '#C9F0FA',
+    'surface-variant': '#222631',
     'error-variant': '#5C0E10',
     'warning-variant': '#452901',
     'info-variant': '#013450',
     'success-variant': '#003B1E',
-    'light-grey': '#2E3035',
+    'light-grey': '#222631',
 
     // No tema escuro as cores base já passam como texto; os tons `-text`,
     // mais claros, dão folga extra sobre o fundo e a superfície.
-    'primary-text': '#A2BCFE',
-    'secondary-text': '#7BCFC9',
-    'accent-text': '#7BCFC9',
+    'primary-text': '#A3B5FF',
+    'secondary-text': '#C3CEFF',
+    'accent-text': '#7FD6EE',
     'info-text': '#83C6F5',
     'success-text': '#8BD0A3',
     'warning-text': '#E8B274',
@@ -205,14 +208,15 @@ const darkTheme: AppThemeDefinition = {
  * https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
  */
 /**
- * Padrões dos componentes do Vuetify pelo design system Agenda (ADR-0045):
- * raio de 4px, borda de 1px no lugar de sombra e sombra só no que flutua
- * (menus e diálogos, com raio de 8px). Campos em contorno, botões sem
- * elevação. Uma prop explícita no componente continua prevalecendo.
+ * Padrões dos componentes do Vuetify (ADR-0045, revistos pela ADR-0047):
+ * raio de 4px (8px em menus e diálogos), cartões com a sombra suave do
+ * design Vora no lugar da borda, campos em contorno e botões sem elevação.
+ * Uma prop explícita no componente continua prevalecendo.
  */
 export const componentDefaults = {
   VBtn: { variant: 'flat' },
-  VCard: { elevation: 0, border: true },
+  // Cartões do Vora: sem borda, com a sombra suave do `.app-surface` (ADR-0047).
+  VCard: { elevation: 0, border: false, class: 'app-surface' },
   VAlert: { variant: 'tonal' },
   VTextField: { variant: 'outlined', density: 'comfortable', color: 'primary' },
   VTextarea: { variant: 'outlined', density: 'comfortable', color: 'primary' },
