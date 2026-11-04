@@ -47,7 +47,7 @@ test.describe('Clientes', () => {
     await page.getByTestId('customer-submit-btn').click();
 
     await expect(page).toHaveURL(/\/customers\/33$/);
-    await expect(page.getByTestId('page-header-title')).toHaveText('Paula Teixeira');
+    await expect(page.getByTestId('customer-detail-title')).toHaveText('Paula Teixeira');
     await expect(page.getByTestId('notification-message')).toHaveText(
       'Cliente cadastrado: Paula Teixeira.'
     );
@@ -59,10 +59,10 @@ test.describe('Clientes', () => {
     await page.getByTestId('customer-edit-btn').click();
     await page.getByTestId('customer-name-input').locator('input').fill('Paula T. Lima');
     await page.getByTestId('customer-submit-btn').click();
-    await expect(page.getByTestId('page-header-title')).toHaveText('Paula T. Lima');
+    await expect(page.getByTestId('customer-detail-title')).toHaveText('Paula T. Lima');
 
     await page.getByTestId('customer-delete-btn').click();
-    await page.getByTestId('confirm-dialog-confirm').click();
+    await page.getByTestId('customer-delete-confirm-btn').click();
 
     await expect(page).toHaveURL(/\/customers$/);
     await page.goto('/customers/33');

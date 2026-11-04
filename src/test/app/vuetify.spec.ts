@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { VDataTable } from 'vuetify/components';
-import { componentDefaults, createAppVuetify } from '@app/providers/vuetify';
+import { createAppVuetify } from '@app/providers/vuetify';
 import type { SupportedLocale } from '@core/config';
 import { mountWithPlugins } from '@test/utils/mountWithPlugins';
 
@@ -127,34 +127,5 @@ describe('tema do design system Agenda', () => {
         ).toBeGreaterThanOrEqual(4.5);
       }
     }
-  });
-
-  it.each(['light', 'dark'] as const)(
-    'o texto dos chips de status passa no AA no tema %s',
-    (name) => {
-      const colors = name === 'light' ? light : dark;
-
-      for (const tone of ['success', 'warning', 'error', 'info', 'neutral']) {
-        expect(
-          contrast(String(colors[`on-${tone}-container`]), String(colors[`${tone}-container`])),
-          tone
-        ).toBeGreaterThanOrEqual(4.5);
-      }
-    }
-  );
-});
-
-describe('padrões dos componentes (ADR-0045)', () => {
-  it('são os da instância do Vuetify', () => {
-    const vuetify = createAppVuetify();
-
-    expect(vuetify.defaults.value).toMatchObject(componentDefaults);
-  });
-
-  it('campos em contorno, botões sem elevação e sombra só no que flutua', () => {
-    expect(componentDefaults.VTextField.variant).toBe('outlined');
-    expect(componentDefaults.VBtn.variant).toBe('flat');
-    expect(componentDefaults.VCard).toEqual({ elevation: 0, border: true });
-    expect(componentDefaults.VDialog.VCard).toMatchObject({ rounded: 'lg', elevation: 3 });
   });
 });

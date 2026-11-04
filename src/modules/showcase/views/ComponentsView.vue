@@ -186,117 +186,19 @@
         </template>
       </ShowcaseCard>
     </DocSection>
-    <DocSection
-      :title="$t('components.designSystem.title')"
-      :description="$t('components.designSystem.description')"
-      icon="calendar_month"
-      anchor="design-system"
-    >
-      <div class="d-flex flex-column ga-6">
-        <ShowcaseCard
-          :title="$t('components.designSystem.status.title')"
-          :description="$t('components.designSystem.status.description')"
-          :code="statusCode"
-          language="vue"
-        >
-          <template #preview>
-            <BaseStatusChip
-              :label="$t('components.designSystem.status.confirmed')"
-              tone="success"
-            />
-            <BaseStatusChip :label="$t('components.designSystem.status.pending')" tone="warning" />
-            <BaseStatusChip :label="$t('components.designSystem.status.cancelled')" tone="error" />
-            <BaseStatusChip :label="$t('components.designSystem.status.draft')" tone="neutral" />
-            <BaseAvatar name="Ana Souza" />
-            <BaseAvatar name="Bruno Lima" />
-            <BaseAvatar name="Carla Costa" :size="32" />
-          </template>
-        </ShowcaseCard>
-
-        <ShowcaseCard
-          :title="$t('components.designSystem.events.title')"
-          :description="$t('components.designSystem.events.description')"
-          :code="eventCode"
-          language="vue"
-        >
-          <template #preview>
-            <div class="d-flex flex-column ga-2 flex-grow-1" style="max-width: 360px">
-              <BaseEventBlock
-                time="09:00 – 10:00"
-                :title="$t('components.designSystem.events.meeting')"
-                :subtitle="$t('components.designSystem.events.online')"
-                hue="indigo"
-              />
-              <BaseEventBlock
-                time="10:30"
-                :title="$t('components.designSystem.events.content')"
-                hue="violet"
-              />
-              <BaseEventBlock
-                time="12:00"
-                :title="$t('components.designSystem.events.lunch')"
-                hue="green"
-                compact
-              />
-            </div>
-          </template>
-        </ShowcaseCard>
-
-        <ShowcaseCard
-          :title="$t('components.designSystem.page.title')"
-          :description="$t('components.designSystem.page.description')"
-          :code="pageCode"
-          language="vue"
-        >
-          <template #preview>
-            <BasePageHeader
-              class="flex-grow-1 mb-0"
-              :title="$t('components.designSystem.page.header')"
-              :subtitle="$t('components.designSystem.page.subtitle')"
-            >
-              <template #actions>
-                <v-btn
-                  color="error"
-                  variant="tonal"
-                  prepend-icon="delete"
-                  data-cy="ds-confirm-open"
-                  @click="confirmOpen = true"
-                >
-                  {{ $t('components.designSystem.page.delete') }}
-                </v-btn>
-              </template>
-            </BasePageHeader>
-            <BaseConfirmDialog
-              v-model="confirmOpen"
-              :title="$t('components.designSystem.page.confirmTitle')"
-              :message="$t('components.designSystem.page.confirmMessage')"
-              :confirm-label="$t('components.designSystem.page.delete')"
-              tone="error"
-              @confirm="confirmOpen = false"
-            />
-          </template>
-        </ShowcaseCard>
-      </div>
-    </DocSection>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useTheme } from 'vuetify';
 import DocSection from '../components/DocSection.vue';
 import ShowcaseCard from '../components/ShowcaseCard.vue';
 import CodeBlock from '../components/CodeBlock.vue';
 import { useErrorMessage } from '@shared/composables';
-import BaseAvatar from '@shared/ui/components/BaseAvatar.vue';
-import BaseConfirmDialog from '@shared/ui/components/BaseConfirmDialog.vue';
-import BaseEventBlock from '@shared/ui/components/BaseEventBlock.vue';
-import BasePageHeader from '@shared/ui/components/BasePageHeader.vue';
-import BaseStatusChip from '@shared/ui/components/BaseStatusChip.vue';
 import type { ProblemDetails } from '@typings/http';
 
 const theme = useTheme();
-const confirmOpen = ref(false);
 
 /** Retorna o hexadecimal da cor no tema ativo (adapta-se a light/dark). */
 function colorHex(color: string): string {
@@ -321,11 +223,6 @@ const problemJson = JSON.stringify(problem, null, 2);
 
 const apiErrorCode = `import { useI18n } from 'vue-i18n';
 import { useErrorMessage } from '@shared/composables';
-import BaseAvatar from '@shared/ui/components/BaseAvatar.vue';
-import BaseConfirmDialog from '@shared/ui/components/BaseConfirmDialog.vue';
-import BaseEventBlock from '@shared/ui/components/BaseEventBlock.vue';
-import BasePageHeader from '@shared/ui/components/BasePageHeader.vue';
-import BaseStatusChip from '@shared/ui/components/BaseStatusChip.vue';
 import { transferRequest } from '../api/account.service';
 
 const { t } = useI18n();
@@ -381,30 +278,4 @@ const cardCode = `<v-card variant="tonal" color="primary">
     <v-btn color="primary" variant="text" append-icon="arrow_forward">Abrir</v-btn>
   </v-card-actions>
 </v-card>`;
-
-// Componentes do design system Agenda (ADR-0045).
-const statusCode = `<BaseStatusChip label="Confirmado" tone="success" />
-<BaseStatusChip label="Pendente" tone="warning" icon="schedule" />
-<BaseAvatar name="Ana Souza" />           <!-- iniciais e cor estáveis pelo nome -->
-<BaseAvatar name="Ana Souza" decorative /> <!-- ao lado do nome escrito -->`;
-
-const eventCode = `<BaseEventBlock time="09:00 – 10:00" title="Reunião com cliente" subtitle="Online" hue="indigo" />
-<BaseEventBlock time="12:00" title="Almoço" hue="green" compact />
-<BaseEventBlock time="15:30" title="Academia" hue="teal" clickable @select="abrir" />`;
-
-const pageCode = `<BasePageHeader title="Clientes" subtitle="32 cadastrados">
-  <template #actions>
-    <v-btn color="primary" prepend-icon="person_add">Novo cliente</v-btn>
-  </template>
-</BasePageHeader>
-
-<BaseConfirmDialog
-  v-model="aberto"
-  title="Excluir cliente"
-  message="Esta ação não pode ser desfeita."
-  confirm-label="Excluir"
-  tone="error"
-  :loading="excluindo"
-  @confirm="excluir"
-/>`;
 </script>

@@ -18,16 +18,6 @@ e o projeto adota [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
-### Adicionado
-
-- Componentes base do design system Agenda em `shared/ui`: `BasePageHeader`, `BaseStatusChip`, `BaseAvatar` (com `getInitials` e `hueFor`), `BaseConfirmDialog` e `BaseEventBlock`; tipos `EventHue`/`StatusTone` e cores `<tom>-container` no tema; seção "Design system Agenda" na vitrine (ADR-0045).
-- Escala tipográfica do design system (`text-h1`…`text-overline` e variantes por breakpoint): o Vuetify 4 não gera essas classes, que estavam sem efeito nas telas (ADR-0045).
-
-### Alterado
-
-- Padrões dos componentes pelo design system: botões sem elevação, cartões com borda e sem sombra, campos em contorno, menus e diálogos com raio de 8px (ADR-0045).
-- O CRUD de clientes usa os componentes base: cabeçalhos, avatar na lista e no detalhe, chip de situação e o `BaseConfirmDialog` no lugar do `CustomerDeleteDialog`.
-
 ## [1.1.0] - 2026-11-04
 
 Experiência e produção: notificações e erro de gravação notificado, formulários com VeeValidate + Zod, imagem Docker + Nginx e monitoramento opcional com o Sentry.
