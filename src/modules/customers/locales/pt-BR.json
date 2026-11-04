@@ -51,6 +51,11 @@
       "message": "Excluir {name}? Esta ação não pode ser desfeita.",
       "confirm": "Excluir",
       "cancel": "Cancelar"
+    },
+    "notify": {
+      "created": "Cliente cadastrado: {name}.",
+      "updated": "Cliente atualizado: {name}.",
+      "deleted": "Cliente excluído: {name}."
     }
   }
 }

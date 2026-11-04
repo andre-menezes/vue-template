@@ -3,6 +3,7 @@ import { flushPromises, type VueWrapper } from '@vue/test-utils';
 import * as service from '@modules/customers/api/customer.service';
 import CustomerDetailView from '@modules/customers/views/CustomerDetailView.vue';
 import { mountWithPlugins } from '@test/utils/mountWithPlugins';
+import { useNotificationStore } from '@shared/stores/notification.store';
 import { buildCustomer, httpError } from './fixtures';
 import { createCustomersRouter } from './router';
 
@@ -87,6 +88,10 @@ describe('CustomerDetailView', () => {
 
     expect(service.deleteCustomerRequest).toHaveBeenCalledWith(7);
     await vi.waitFor(() => expect(router.currentRoute.value.name).toBe('Customers'));
+    expect(useNotificationStore().current).toMatchObject({
+      type: 'success',
+      message: 'Cliente excluído: Maria Souza.',
+    });
   });
 
   it('mostra o erro da exclusão no diálogo e o limpa ao reabrir', async () => {

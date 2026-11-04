@@ -35,7 +35,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useErrorMessage } from '@shared/composables/useErrorMessage';
+import { useNotify } from '@shared/composables/useNotify';
 import BaseEmptyState from '@shared/ui/components/BaseEmptyState.vue';
 import BaseErrorState from '@shared/ui/components/BaseErrorState.vue';
 import BaseLoadingState from '@shared/ui/components/BaseLoadingState.vue';
@@ -53,6 +55,8 @@ const props = defineProps<{ id?: number }>();
 
 const router = useRouter();
 const errorMessage = useErrorMessage();
+const notify = useNotify();
+const { t } = useI18n();
 
 const isEdit = computed(() => props.id !== undefined);
 const {
@@ -78,9 +82,22 @@ function showDetail({ id }: Customer): void {
 
 function save(params: CustomerParams): void {
   if (props.id === undefined) {
-    createMutation.mutate(params, { onSuccess: showDetail });
+    createMutation.mutate(params, {
+      onSuccess: (customer) => {
+        notify.success(t('customers.notify.created', { name: customer.name }));
+        showDetail(customer);
+      },
+    });
   } else {
-    updateMutation.mutate({ id: props.id, params }, { onSuccess: showDetail });
+    updateMutation.mutate(
+      { id: props.id, params },
+      {
+        onSuccess: (customer) => {
+          notify.success(t('customers.notify.updated', { name: customer.name }));
+          showDetail(customer);
+        },
+      }
+    );
   }
 }
 
